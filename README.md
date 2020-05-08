@@ -1,23 +1,11 @@
-
+[TOC]
 # AILink SDK Instructions-Android
 
 [aar package download address](https://github.com/elinkthings/AILinkSdkDemoAndroid/releases)
 
 [key registered address](http://sdk.aicare.net.cn)
 
-[中文文档](README_CN.md)
 
-## Contents
-- Conditions of use:
-- Import SDK
-- Permission settings
-- Start integration
-- More commonly used interface introduction
-- Matters needing attention
-- AILinkBleParsingAndroid library overview
-- Version History
-- FQA
-- Contact Us
 
 
 ## Conditions of use:
@@ -49,7 +37,7 @@ Add this to the root build.gradle at the end of the repository:
 2. Add dependencies
 	dependencies {
 	        ...
-	        implementation 'com.github.elinkthings:AILinkSDKRepositoryAndroid:1.3.0'//Bluetooth library
+	        implementation 'com.github.elinkthings:AILinkSDKRepositoryAndroid:1.3.1'//Bluetooth library
 	        implementation 'com.github.elinkthings:AILinkSDKParsingLibraryAndroid:1.2.9'//Parsing library
 	}
 

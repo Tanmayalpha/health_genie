@@ -1,4 +1,4 @@
-
+[TOC]
 # AILink SDK使用说明 - Android
 
 [aar包下载地址](https://github.com/elinkthings/AILinkSdkDemoAndroid/releases)
@@ -7,14 +7,6 @@
 
 [English documentation](README.md)
 
-## 目录
-- 使用条件
-- 导入SDK
-- 权限设置
-- 开始集成
-- 版本历史
-- FQA
-- 联系我们
 
 
 ##  使用条件
@@ -45,7 +37,7 @@ repositories {
 
 2.添加依赖项
 	dependencies {
-	        implementation 'com.github.elinkthings:AILinkSDKRepositoryAndroid:1.3.0'//蓝牙库
+	        implementation 'com.github.elinkthings:AILinkSDKRepositoryAndroid:1.3.1'//蓝牙库
 	        implementation 'com.github.elinkthings:AILinkSDKParsingLibraryAndroid:1.2.9'//解析库
 	}
 
