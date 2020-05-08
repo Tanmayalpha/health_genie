@@ -354,7 +354,7 @@ User user information object
 |:----|:---|:-----|-----|
 |1.2.9|	2020/04/10|	xing|	Modify SDK to gradle form dependency, fix known bugs
 |1.3.0|	2020/05/08|	xing|	Fix bug that only parses 20 bytes
-
+|1.3.1|	2020/05/08|	xing|	Fix disconnected bug
 
 ## FQA
 
