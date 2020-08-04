@@ -84,6 +84,12 @@
             android:layout_height="wrap_content"
             android:text="WiFi+Ble体脂秤"
             />
+        <Button
+            android:id="@+id/btn_bloodglucose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="血糖仪"
+            />
     </LinearLayout>
 
     <LinearLayout

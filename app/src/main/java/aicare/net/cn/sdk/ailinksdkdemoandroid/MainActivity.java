@@ -29,11 +29,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AILinkSDK.getInstance().init(this,"28307eb356debd69","00deaab8ea81acba686e725a2b");
+        AILinkSDK.getInstance().init(this, "28307eb356debd69", "00deaab8ea81acba686e725a2b");
         setContentView(R.layout.activity_main);
         BleLog.init("", "", BuildConfig.DEBUG);
-        String version=getString(R.string.version)+":"+BuildConfig.VERSION_NAME;
-        ((TextView)findViewById(R.id.tv_app_version)).setText(version);
+        String version = getString(R.string.version) + ":" + BuildConfig.VERSION_NAME;
+        ((TextView) findViewById(R.id.tv_app_version)).setText(version);
         init();
         initPermissions();
     }
@@ -47,12 +47,14 @@ public class MainActivity extends AppCompatActivity {
         Button btn_height = findViewById(R.id.btn_height);
         Button btn_ble = findViewById(R.id.btn_ble);
         findViewById(R.id.btn_ad_weight).setOnClickListener(listener);
+        findViewById(R.id.btn_bloodglucose).setOnClickListener(listener);
         btn_shpy.setOnClickListener(listener);
         btn_tempgun.setOnClickListener(listener);
         btn_temp.setOnClickListener(listener);
         btn_baby.setOnClickListener(listener);
         btn_height.setOnClickListener(listener);
         btn_ble.setOnClickListener(listener);
+
         findViewById(R.id.btn_wifi_ble_weight).setOnClickListener(listener);
 
     }
@@ -86,19 +88,20 @@ public class MainActivity extends AppCompatActivity {
                     type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD;
                     break;
                 case R.id.btn_wifi_ble_weight:
-                    type= BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE;
+                    type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE;
+                    break;
+                case R.id.btn_bloodglucose:
+                    type = BleDeviceConfig.BLOOD_GLUCOSE;
                     break;
                 case R.id.btn_ble:
                     type = 0;
                     break;
 
+
             }
             startActivity(type);
         }
     }
-
-
-
 
 
     /**
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     private void initPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
     }
 

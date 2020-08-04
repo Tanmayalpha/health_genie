@@ -280,6 +280,9 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE:
                 intent.setClass(ShowBleActivity.this,WeightScaleWifiBle.class);
                 break;
+            case BleDeviceConfig.BLOOD_GLUCOSE:
+                intent.setClass(ShowBleActivity.this,BloodGlucoseActivity.class);
+                break;
             case 0:
                 intent.setClass(ShowBleActivity.this, BleCmdActivityDataData.class);
                 break;
