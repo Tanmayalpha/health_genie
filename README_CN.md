@@ -5,7 +5,6 @@
 
 [key注册地址](http://sdk.aicare.net.cn)
 
-[English documentation](README.md)
 
 
 

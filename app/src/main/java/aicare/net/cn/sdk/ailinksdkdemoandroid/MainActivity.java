@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AILinkSDK.getInstance().init(this,"","");
+        AILinkSDK.getInstance().init(this,"28307eb356debd69","00deaab8ea81acba686e725a2b");
         setContentView(R.layout.activity_main);
         BleLog.init("", "", BuildConfig.DEBUG);
         String version=getString(R.string.version)+":"+BuildConfig.VERSION_NAME;
@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+//            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
     }
 

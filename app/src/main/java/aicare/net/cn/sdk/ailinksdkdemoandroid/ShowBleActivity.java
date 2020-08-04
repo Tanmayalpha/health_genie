@@ -111,7 +111,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             public void onClick(View v) {
                 if (mBluetoothService != null) {
                     BleLog.i(TAG, "搜索设备");
-                    mBluetoothService.scanLeDevice(0, BleConfig.SERVER_UUID);
+                    mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER);
                     mList.clear();
                     listAdapter.notifyDataSetChanged();
                 }
