@@ -72,7 +72,12 @@
             android:layout_height="wrap_content"
             android:text="艾迪体脂秤"
             />
-
+        <Button
+            android:id="@+id/btn_eight_body_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="八电极体脂秤"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,6 +94,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="血糖仪"
+            />
+        <Button
+            android:id="@+id/btn_tooth_brush_wifi_ble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="牙刷(ble+WiFi)"
             />
     </LinearLayout>
 

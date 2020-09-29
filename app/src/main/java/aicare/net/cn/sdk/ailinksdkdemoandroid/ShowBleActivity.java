@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
-import com.pingwang.bluetoothlib.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import com.pingwang.bluetoothlib.listener.CallbackDisIm;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
@@ -153,10 +153,20 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String itemStr = mList.get(position);
                 String mac = itemStr.split("=")[0];
-                if (mBluetoothService != null) {
-                    mBluetoothService.stopScan();
-                    mBluetoothService.connectDevice(mac);
-                    showLoading();
+                if (BleDeviceConfig.TOOTHBRUSH_WIFI_BLE==mType){
+                    Intent intent=new Intent();
+                    intent.setClass(ShowBleActivity.this, ToothBrushWifiBleActivity.class);
+                    intent.putExtra("type", mType);
+                    intent.putExtra("mac", mac);
+                    startActivity(intent);
+                    finish();
+
+                }else {
+                    if (mBluetoothService != null) {
+                        mBluetoothService.stopScan();
+                        mBluetoothService.connectDevice(mac);
+                        showLoading();
+                    }
                 }
             }
         });
@@ -282,6 +292,8 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 break;
             case BleDeviceConfig.BLOOD_GLUCOSE:
                 intent.setClass(ShowBleActivity.this,BloodGlucoseActivity.class);
+            case BleDeviceConfig.EIGHT_BODY_FAT_SCALE:
+                intent.setClass(ShowBleActivity.this,EightBodyfatActivity.class);
                 break;
             case 0:
                 intent.setClass(ShowBleActivity.this, BleCmdActivityDataData.class);

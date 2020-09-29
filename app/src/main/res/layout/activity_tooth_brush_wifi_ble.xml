@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+             xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+    <Button
+        android:id="@+id/wifistatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="查看wifi状态" />
+
+    <Button
+        android:id="@+id/scan_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/wifistatus"
+        android:text="搜索wifi热点" />
+
+    <Button
+        android:id="@+id/sn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scan_wifi"
+        android:layout_marginTop="8dp"
+        android:text="查看设备id" />
+
+    <EditText
+        android:id="@+id/select_wifi_et"
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_toEndOf="@+id/scan_wifi"
+        android:hint="选择wifi序号"
+        android:inputType="number"
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/connect_wifi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/select_wifi_et"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="11dp"
+        android:layout_toEndOf="@+id/disconnect"
+        android:text="发起连接" />
+
+    <Button
+        android:id="@+id/disconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scan_wifi"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/sn"
+        android:text="断开连接" />
+
+
+    <Button
+    android:id="@+id/default_try_out"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/sn"
+
+    android:layout_marginTop="5dp"
+    android:text="试用" />
+
+    <Button
+    android:id="@+id/default_mode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/sn"
+    android:layout_toEndOf="@id/default_try_out"
+    android:layout_marginStart="9dp"
+    android:layout_marginTop="5dp"
+    android:text="默认档位" />
+
+    <EditText
+        android:id="@+id/select_gears_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_alignTop="@id/default_mode"
+        android:layout_toEndOf="@id/default_mode"
+        android:hint="时长(s),档位,档位级别"
+
+        android:textSize="14dp" />
+    <Button
+        android:id="@+id/setedname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/default_mode"
+        android:layout_marginTop="5dp"
+        android:text="获取wifi名称" />
+
+
+    <Button
+        android:id="@+id/support_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/setedname"
+        android:layout_below="@+id/default_mode"
+        android:layout_marginTop="5dp"
+        android:text="获取支持档位" />
+    <Button
+        android:id="@+id/default_time_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/support_unit"
+        android:layout_below="@+id/default_mode"
+        android:layout_marginTop="5dp"
+        android:text="获取时长和档位" />
+    <ListView
+        android:id="@+id/log_list"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/setedname"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+</RelativeLayout>

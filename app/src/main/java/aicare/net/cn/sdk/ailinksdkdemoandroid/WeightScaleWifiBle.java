@@ -13,7 +13,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.pingwang.bluetoothlib.bean.BleValueBean;
-import com.pingwang.bluetoothlib.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;

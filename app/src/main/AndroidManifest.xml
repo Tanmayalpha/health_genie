@@ -38,6 +38,8 @@
         <activity android:name=".TpmsConnectCmdActivity" />
         <activity android:name=".BloodGlucoseActivity" />
         <activity android:name=".ADWeightScaleCmdActivity"/>
+        <activity android:name=".EightBodyfatActivity"/>
+        <activity android:name=".ToothBrushWifiBleActivity"/>
         <activity android:name=".ADWeightScaleUserActivity"
                   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             />

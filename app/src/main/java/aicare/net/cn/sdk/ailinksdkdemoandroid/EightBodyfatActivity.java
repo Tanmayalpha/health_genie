@@ -207,17 +207,17 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
 
                 loglist.add(0, adc);
                 break;
-            case EightBodyfatUtil.HEARTRATE:
+            case EightBodyfatUtil.HEART_RATE:
                 switch (typestate) {
-                    case EightBodyfatUtil.HEARTRATE_MEASUREMENT:
+                    case EightBodyfatUtil.HEART_RATE_MEASUREMENT:
                         //心率测量完成
                         loglist.add(0, "心率测量中");
                         break;
-                    case EightBodyfatUtil.HEARTRATE_SUCCESS:
+                    case EightBodyfatUtil.HEART_RATE_SUCCESS:
                         loglist.add(0, "心率测量成功");
                         //心率测量成功
                         break;
-                    case EightBodyfatUtil.HEARTRATE_FAILED:
+                    case EightBodyfatUtil.HEART_RATE_FAILED:
                         loglist.add(0, "心率测量失败");
                         //心率测量失败
                         break;
@@ -226,13 +226,13 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             case EightBodyfatUtil.TEMP_MEASUREMENT:
                 loglist.add(0, "测量温度");
                 break;
-            case EightBodyfatUtil.MEASUREMENTED:
+            case EightBodyfatUtil.MEASUREMENT_END:
                 loglist.add(0, "测量完成");
                 //测量完成
                 break;
-            case EightBodyfatUtil.MUCCALLBACK_RESULT:
+            case EightBodyfatUtil.MUC_CALL_BACK_RESULT:
                 switch (typestate) {
-                    case EightBodyfatUtil.APPCMD_CALIIBRATION:
+                    case EightBodyfatUtil.APP_CMD_CALIBRATION:
                         //校验
                         if (result == EightBodyfatUtil.SUCCESS) {
                             loglist.add(0, "校验成功");
@@ -242,7 +242,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
                             loglist.add(0, "校验中");
                         }
                         break;
-                    case EightBodyfatUtil.APPCMD_TEMP_UNIT:
+                    case EightBodyfatUtil.APP_CMD_TEMP_UNIT:
                         if (result == EightBodyfatUtil.SUCCESS) {
                             loglist.add(0, "切换温度成功");
                         } else if (result == EightBodyfatUtil.FAILED) {
@@ -252,7 +252,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
                         }
                         //切换温度
                         break;
-                    case EightBodyfatUtil.APPCMD_WEIGHT_UNIT:
+                    case EightBodyfatUtil.APP_CMD_WEIGHT_UNIT:
                         if (result == EightBodyfatUtil.SUCCESS) {
                             loglist.add(0, "切换体重单位成功");
                         } else if (result == EightBodyfatUtil.FAILED) {
@@ -283,9 +283,11 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     }
 
     @Override
-    public void onimpedance(int adc, int part, int arithmetic) {
+    public void onImpedance(int adc, int part, int arithmetic) {
         loglist.add(0, "阻抗:" + adc + "  部位: " + part + "  算法" + arithmetic);
     }
+
+
 
     @Override
     public void onHeartRate(int heartrate) {
@@ -293,9 +295,11 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     }
 
     @Override
-    public void onTEMP(int sign, float temp, int unit, int decimal) {
+    public void onTemp(int sign, float temp, int unit, int decimal) {
         loglist.add(0, "  温度 正负" + sign + "   温度:" + temp + "   单位: " + unit + "  小数位" + decimal);
     }
+
+
 
     @Override
     public void onVersion(String version) {
@@ -313,7 +317,9 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     }
 
     @Override
-    public void showdata(String data) {
-        loglist.add(0, data);
+    public void showData(String data) {
+
     }
+
+
 }

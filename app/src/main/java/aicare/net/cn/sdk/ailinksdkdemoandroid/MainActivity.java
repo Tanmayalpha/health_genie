@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pingwang.bluetoothlib.AILinkSDK;
-import com.pingwang.bluetoothlib.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
 import androidx.annotation.NonNull;
@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
         Button btn_height = findViewById(R.id.btn_height);
         Button btn_ble = findViewById(R.id.btn_ble);
         findViewById(R.id.btn_ad_weight).setOnClickListener(listener);
+        findViewById(R.id.btn_eight_body_fat).setOnClickListener(listener);
         findViewById(R.id.btn_bloodglucose).setOnClickListener(listener);
+        findViewById(R.id.btn_tooth_brush_wifi_ble).setOnClickListener(listener);
         btn_shpy.setOnClickListener(listener);
         btn_tempgun.setOnClickListener(listener);
         btn_temp.setOnClickListener(listener);
@@ -92,6 +94,12 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_bloodglucose:
                     type = BleDeviceConfig.BLOOD_GLUCOSE;
+                    break;
+                case R.id.btn_eight_body_fat:
+                    type = BleDeviceConfig.EIGHT_BODY_FAT_SCALE;
+                    break;
+                case R.id.btn_tooth_brush_wifi_ble:
+                    type=BleDeviceConfig.TOOTHBRUSH_WIFI_BLE;
                     break;
                 case R.id.btn_ble:
                     type = 0;
