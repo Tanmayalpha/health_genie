@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+             xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/user_list"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+    </ListView>
+         <Button
+             android:layout_marginTop="20dp"
+             android:layout_below="@id/user_list"
+             android:id="@+id/history"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="请求历史记录"/>
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/user_list"
+            android:id="@+id/userlist"
+            android:layout_toRightOf="@id/history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="同步用户列表"/>
+
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/user_list"
+        android:id="@+id/adduser"
+        android:layout_toRightOf="@id/userlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加用户"/>
+
+    <Button
+        android:layout_below="@id/history"
+        android:id="@+id/user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="同步单个用户"/>
+    <EditText
+        android:id="@+id/edit_Userid"
+        android:layout_toRightOf="@id/user"
+        android:layout_below="@id/history"
+        android:layout_width="100dp"
+        android:hint="输入用户id"
+        android:padding="10dp"
+        android:inputType="number"
+        android:digits="12345678"
+        android:layout_height="60dp" />
+    <Button
+        android:layout_below="@id/history"
+        android:id="@+id/syntime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/edit_Userid"
+        android:text="同步时间"/>
+
+
+
+
+
+
+
+
+    <RadioGroup
+        android:id="@+id/unit"
+        android:layout_below="@+id/edit_Userid"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/kg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="kg"/>
+        <RadioButton
+            android:id="@+id/jin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="斤"/>
+        <RadioButton
+            android:id="@+id/st_lb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="st:lb"/>
+        <RadioButton
+            android:id="@+id/lb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="lb"/>
+    </RadioGroup>
+    <ListView
+        android:id="@+id/log_list"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/unit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+</RelativeLayout>

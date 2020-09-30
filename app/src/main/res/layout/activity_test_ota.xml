@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            >
+
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="版本号:"
+                android:textSize="18dp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                >
+
+                <Button
+                    android:id="@+id/btn_ota_connect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="连接"
+                    />
+
+                <Button
+                    android:id="@+id/btn_ota_dis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="断开"
+                    />
+
+                <Button
+                    android:id="@+id/btn_ota_file"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选择文件"
+                    />
+
+
+                <Button
+                    android:id="@+id/btn_ota_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTA"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        >
+
+
+    </ListView>
+
+</LinearLayout>

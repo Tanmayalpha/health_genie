@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
@@ -22,6 +23,7 @@ import com.pingwang.bluetoothlib.listener.OnCallbackDis;
 import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,13 +33,15 @@ import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.tpms.TpmsDeviceData;
 
 
+
 /**
  * xing<br>
  * 2019/9/2<br>
  * 显示数据
  */
 public class TpmsConnectCmdActivity extends BleBaseActivity implements OnCallbackDis,
-        TpmsDeviceData.onNotifyData, TpmsDeviceData.onTpmsSetting, TpmsDeviceData.onTpmsInfo, OnBleVersionListener, OnMcuParameterListener, OnBleCompanyListener, View.OnClickListener {
+        TpmsDeviceData.onNotifyData, TpmsDeviceData.onTpmsSetting, TpmsDeviceData.onTpmsInfo, OnBleVersionListener,
+        OnMcuParameterListener, OnBleCompanyListener, View.OnClickListener {
 
     private static String TAG = TpmsConnectCmdActivity.class.getName();
     private final int REFRESH_DATA = 3;

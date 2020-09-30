@@ -17,20 +17,17 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.pingwang.bluetoothlib.bean.BleValueBean;
-import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.listener.CallbackDisIm;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
-import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.server.ELinkBleServer;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,35 +38,39 @@ import androidx.appcompat.app.AppCompatActivity;
  * 2019/3/6<br>
  * java类作用描述
  */
-public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle, OnScanFilterListener {
+public class ConnectBleTestActivity extends AppCompatActivity implements OnCallbackBle {
 
-    private static String TAG = ShowBleActivity.class.getName();
+    private static String TAG = ConnectBleTestActivity.class.getName();
 
     private final int BIND_SERVER_OK = 1;
     private final int BIND_SERVER_ERR = 2;
-    private final int REFRESH_DATA = 3;
+    private final int REFRESH_LIST = 3;
+    private final int REFRESH_DATA = 4;
     private List<String> mList;
+    private List<String> mListData;
     private ArrayAdapter listAdapter;
+    private ArrayAdapter listDataAdapter;
     private ELinkBleServer mBluetoothService;
     /**
      * 服务Intent
      */
     private Intent bindIntent;
     private Context mContext;
-    private int mType;
     private boolean mFilter = true;
+    private long mConnectTime = 0;
+
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-
                 case BIND_SERVER_OK:
-
                     break;
-
-                case REFRESH_DATA:
+                case REFRESH_LIST:
                     listAdapter.notifyDataSetChanged();
+                    break;
+                case REFRESH_DATA:
+                    listDataAdapter.notifyDataSetChanged();
                     break;
             }
         }
@@ -78,16 +79,11 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_ble);
+        setContentView(R.layout.activity_connect_ble_test);
         Intent mUserService = new Intent(this.getApplicationContext(), ELinkBleServer.class);
         //核心用户服务
         startService(mUserService);
         mContext = this;
-        mType = getIntent().getIntExtra("type", 0);
-        if (0 == mType) {
-            finish();
-            return;
-        }
         init();
         initData();
 
@@ -100,12 +96,20 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     }
 
     private void init() {
-
         mList = new ArrayList<>();
+        mListData = new ArrayList<>();
         ListView listView = findViewById(R.id.listview);
+        ListView listviewData = findViewById(R.id.listviewData);
         Button btn = findViewById(R.id.btn);
         Button btn1 = findViewById(R.id.btn1);
         Button clear = findViewById(R.id.clear);
+        findViewById(R.id.clearData).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListData.clear();
+                listDataAdapter.notifyDataSetChanged();
+            }
+        });
         final Button filter = findViewById(R.id.filter);
         filter.setTag(true);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -113,26 +117,18 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             public void onClick(View v) {
                 if (mBluetoothService != null) {
                     BleLog.i(TAG, "搜索设备");
-                    if (mType == -3) {
-                        mBluetoothService.scanLeDevice(0);
-
-                    } else {
-                        if (mFilter)
-                            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER, UUID.fromString("0000FEE7-0000-1000-8000-00805F9B34FB"));
-                        else
-                            mBluetoothService.scanLeDevice(0);
-                    }
+                    mBluetoothService.scanLeDevice(30000);
                     mList.clear();
                     listAdapter.notifyDataSetChanged();
                 }
             }
         });
-
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mBluetoothService != null) {
                     mBluetoothService.stopScan();
+                    mBluetoothService.disconnectAll();
                 }
             }
         });
@@ -145,7 +141,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 }
             }
         });
-
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,32 +150,24 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 filter.setText("过滤:" + mFilter);
             }
         });
-
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mList);
         listView.setAdapter(listAdapter);
+        listDataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mListData);
+        listviewData.setAdapter(listDataAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String itemStr = mList.get(position);
                 String mac = itemStr.split("=")[0];
-                if (BleDeviceConfig.TOOTHBRUSH_WIFI_BLE==mType){
-                    Intent intent=new Intent();
-                    intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.ToothBrushWifiBleActivity.class);
-                    intent.putExtra("type", mType);
-                    intent.putExtra("mac", mac);
-                    startActivity(intent);
-                    finish();
-
-                }else {
-                    if (mBluetoothService != null) {
-                        mBluetoothService.stopScan();
-                        mBluetoothService.connectDevice(mac);
-                        showLoading();
-                    }
+                if (mBluetoothService != null) {
+                    mBluetoothService.stopScan();
+                    mBluetoothService.disconnectAll();
+                    mBluetoothService.connectDevice(mac);
+                    mConnectTime = System.currentTimeMillis();
+                    showLoading();
                 }
             }
         });
-
         findViewById(R.id.跳过).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,8 +176,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         });
 
     }
-
-
     //---------------------------------服务---------------------------------------------------
 
     private void bindService() {
@@ -204,13 +189,9 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
 
 
     private void unbindService() {
-        if (mBluetoothService != null)
-            mBluetoothService.stopForeground();//停止前台服务
         CallbackDisIm.getInstance().removeListener(this);
-        if (mFhrSCon != null) {
-            BleLog.i(TAG, "解绑服务");
+        if (mFhrSCon != null)
             this.unbindService(mFhrSCon);
-        }
         bindIntent = null;
     }
 
@@ -225,11 +206,8 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             //与服务建立连接
             mBluetoothService = ((ELinkBleServer.BluetoothBinder) service).getService();
             if (mBluetoothService != null) {
-                mBluetoothService.setOnCallback(ShowBleActivity.this);
-                mBluetoothService.setOnScanFilterListener(ShowBleActivity.this);
-                mBluetoothService.initForegroundService(1, R.mipmap.ic_launcher, "前台服务", MainActivity.class);
-                mBluetoothService.startForeground();//启动前台服务
-
+                mBluetoothService.setOnCallback(ConnectBleTestActivity.this);
+                mBluetoothService.setOnScanFilterListener(null);
                 mHandler.sendEmptyMessage(BIND_SERVER_OK);
             }
         }
@@ -245,17 +223,14 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
 
     @Override
     public void onStartScan() {
-
     }
 
     @Override
     public void onScanning(@NonNull BleValueBean data) {
         String mAddress = data.getMac();
-        BleLog.i(TAG, "MAC=" + mAddress + "||CID=" + data.getCid() + "||VID=" + data.getVid() + "||PID=" + data.getPid());
         if (!mList.contains(mAddress + "=" + data.getName())) {
             String data1 = BleStrUtils.byte2HexStr(data.getScanRecord());
-            String data2 = BleStrUtils.byte2HexStr(data.getManufacturerData());
-            BleLog.i(TAG, "设备地址+广播数据:" + mAddress + "||" + data1 + "||" + data2);
+            BleLog.i(TAG, "设备地址+广播数据:" + mAddress + "||" + data1);
             mList.add(mAddress + "=" + data.getName());
             listAdapter.notifyDataSetChanged();
         }
@@ -264,9 +239,10 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     }
 
 
+
+
     @Override
     public void onConnecting(@NonNull String mac) {
-
     }
 
     @Override
@@ -278,95 +254,19 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
 
     @Override
     public void onServicesDiscovered(@NonNull String mac) {
+        long time = System.currentTimeMillis() - mConnectTime;
         dismissLoading();
-        Intent intent = new Intent();
-        int type = mType;//默认婴儿秤
-        switch (type) {
-            case BleDeviceConfig.BABY_SCALE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.BabyCmdActivity.class);
-                break;
-            case BleDeviceConfig.INFRARED_THERMOMETER:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.TempGunCmdActivity.class);
-                break;
-            case BleDeviceConfig.BLOOD_PRESSURE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.SphyCmdActivity.class);
-                break;
-            case BleDeviceConfig.THERMOMETER:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.TempCmdActivity.class);
-                break;
-            case BleDeviceConfig.HEIGHT_METER:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.HeightCmdActivity.class);
-                break;
-            case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.WeightScaleBle.class);
-                break;
-            case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.ADWeightScaleCmdActivity.class);
-                break;
-            case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.WeightScaleWifiBle.class);
-                break;
-            case BleDeviceConfig.TOOTHBRUSH_WIFI_BLE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.ToothBrushWifiBleActivity.class);
-                break;
-            case BleDeviceConfig.EIGHT_BODY_FAT_SCALE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.EightBodyfatActivity.class);
-                break;
-            case BleDeviceConfig.BLOOD_GLUCOSE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.BloodGlucoseActivity.class);
-                break;
-            case BleDeviceConfig.BABY_BODY_FAT:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.BabyBodyFatCmdActivity.class);
-                break;
-            case BleDeviceConfig.SMART_MASK:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.SmartMaskActivity.class);
-                break;
-            case -1:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.BleCmdActivity.class);
-                break;
-            case -2:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.TestCmdActivity.class);
-                break;
-            case -3:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.TestOtaActivity.class);
-                break;
-            case -4:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.TransmissionActivity.class);
-                break;
-
-        }
-
-
-        intent.putExtra("type", type);
-        intent.putExtra("mac", mac);
-        startActivity(intent);
-
+        mListData.add(TimeUtils.getTime() + "连接成功获取服务成功:" + time);
+        mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
 
     @Override
     public void bleOpen() {
-
     }
 
     @Override
     public void bleClose() {
-
-    }
-
-    @Override
-    public boolean onFilter(BleValueBean bleValueBean) {
-        int cid = bleValueBean.getCid();
-        BleLog.i(TAG, "绑定设备广播类型:" + cid + "||添加的类型:" + mType);
-        if (mType < 0 || mType > 0xFF)
-            return true;
-        else
-            return mType == cid;
-    }
-
-    @Override
-    public void onScanRecord(BleValueBean mBle) {
-        //TODO 过滤后的设备
     }
 
 
@@ -389,18 +289,8 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         if (mDialogFragment != null)
             mDialogFragment.dismiss();
     }
-
     //--------------------------end Loading--------------------------
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(ShowBleActivity.this);
-            mBluetoothService.setOnScanFilterListener(ShowBleActivity.this);
-        }
-    }
 
     @Override
     protected void onDestroy() {

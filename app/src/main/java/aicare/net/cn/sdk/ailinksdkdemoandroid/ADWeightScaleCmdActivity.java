@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -28,6 +29,7 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleBodyFatData;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleBodyFatDataRecord;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleDeviceData;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleUserData;
+
 
 
 /**
@@ -402,7 +405,7 @@ public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallb
 
     @Override
     public void getWeight(int weight, int decimal, int unit) {
-        String weightStr = BleDensityUtil.getInstance().holdNumber(weight, decimal);
+        String weightStr = BleDensityUtil.getInstance().holdDecimals(weight, decimal);
 
         mList.add(TimeUtils.getTime() + "稳定体重=" + weightStr + ";小数位=" + decimal + ";单位=" + unit);
         if (weightUnit != unit) {
@@ -414,7 +417,7 @@ public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallb
 
     @Override
     public void getWeightNow(int weight, int decimal, int unit) {
-        String weightStr = BleDensityUtil.getInstance().holdNumber(weight, decimal);
+        String weightStr = BleDensityUtil.getInstance().holdDecimals(weight, decimal);
         mList.add(TimeUtils.getTime() + "实时体重=" + weightStr + ";小数位=" + decimal + ";单位=" + unit);
         //10.00,2,0
         if (weightUnit != unit) {

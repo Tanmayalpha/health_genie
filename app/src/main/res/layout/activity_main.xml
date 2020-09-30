@@ -17,6 +17,7 @@
 
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -52,6 +53,7 @@
     </LinearLayout>
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -66,15 +68,50 @@
 
 
 
+
         <Button
             android:id="@+id/btn_ad_weight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="艾迪体脂秤"
             />
+        <Button
+            android:id="@+id/btn_smart_mask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="口罩"
+            />
+
 
     </LinearLayout>
+
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_baby_body_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="婴儿体脂两用秤"
+            />
+        <Button
+            android:id="@+id/btn_broadcast_scale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="广播秤"
+            />
+        <Button
+            android:id="@+id/btn_broadcast_blood_oxygen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="血氧仪"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_margin="10dp"
         android:layout_height="wrap_content">
@@ -84,8 +121,73 @@
             android:layout_height="wrap_content"
             android:text="WiFi+Ble体脂秤"
             />
+
         <Button
-            android:id="@+id/btn_bloodglucose"
+            android:id="@+id/btn_ble_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ble体脂秤"
+            />
+        <Button
+            android:id="@+id/btn_wifi_ble_tooth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="牙刷(wifi+ble)"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        >
+
+        <Button
+            android:id="@+id/btn_ble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ble通用设置"
+            />
+
+        <Button
+            android:id="@+id/btn_ble_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="BleTest"
+
+            />
+
+        <Button
+            android:id="@+id/btnConnectTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BleConnectTest"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <Button
+            android:id="@+id/wifi_config"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WIFI设备(配置wifi)"
+            />
+        <Button
+            android:id="@+id/eight_scale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="八极秤"
+            />
+        <Button
+            android:id="@+id/glucometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="血糖仪"
@@ -99,10 +201,26 @@
         >
 
         <Button
-            android:id="@+id/btn_ble"
+
+            android:id="@+id/btn_ota"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ble通用设置"
+            android:text="OTA通用"
+            />
+
+        <Button
+
+            android:id="@+id/btn_wristband"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手环"
+            />
+
+        <Button
+            android:id="@+id/btn_transmission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="透传"
             />
 
 

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                >
+
+                <EditText
+                    android:id="@+id/et_cmd"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:hint="透传数据"
+                    android:text="4"
+                    />
+
+                <Button
+                    android:id="@+id/btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发送"
+                    />
+                <Button
+                    android:id="@+id/btn_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="停止"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+
+                >
+                <EditText
+                    android:id="@+id/et_uuid"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:hint="uuid"
+                    android:text="0000FFE1"
+                    android:lines="1"
+                    />
+
+                <Button
+                    android:id="@+id/btn_uuid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="特征设置"
+                    />
+
+
+            </LinearLayout> <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+            >
+
+                <EditText
+                    android:id="@+id/et_uuid_server"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:hint="uuid_server"
+                    android:text="0000FFE0"
+                    android:maxLines="1"
+                    />
+
+                <Button
+                    android:id="@+id/btn_uuid_server"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服务设置"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                >
+                <EditText
+                    android:id="@+id/et_notify"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:hint="uuid_notify"
+                    android:text="0000FFE2"
+                    android:maxLines="1"
+                    />
+
+
+                <Button
+                    android:id="@+id/btn_notify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notify"
+                    />
+                <Button
+                    android:id="@+id/btn_notify_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="true"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                >
+                <EditText
+                    android:id="@+id/et_time"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:hint="发送间隔"
+                    android:text="1000"
+                    android:maxLines="1"
+                    />
+
+                <Button
+                    android:id="@+id/btn_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置"
+                    />
+
+
+                <Button
+                    android:id="@+id/clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        >
+
+
+    </ListView>
+
+</LinearLayout>

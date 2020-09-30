@@ -14,6 +14,8 @@
         android:layout_weight="1"
         >
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,6 +34,24 @@
                     android:layout_height="wrap_content"
                     android:text="@string/clear"
                     />
+
+                <Button
+                    android:id="@+id/btnPause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="暂停"
+                    />
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
 
                 <Button
                     android:id="@+id/btnHandshake"
@@ -94,6 +114,8 @@
                     />
 
             </LinearLayout>
+
+            
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -187,6 +209,13 @@
                     android:text="读名称"
                     />
 
+                <Button
+                    android:id="@+id/btn_start_ble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="唤醒模块"
+                    />
+
 
             </LinearLayout>
 
@@ -247,6 +276,37 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="读广播间隔"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                >
+
+                <EditText
+                    android:id="@+id/etSleepTime"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:digits="0987654321,"
+                    android:text="1,60,1,1000"
+                    android:hint="标记,时间,操作,广播时间"
+                    />
+
+                <Button
+                    android:id="@+id/btnSleepTimeWrite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="写自动休眠"
+                    />
+
+                <Button
+                    android:id="@+id/btnSleepTimeRead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读自动休眠"
                     />
             </LinearLayout>
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <EditText
+        android:id="@+id/et"
+        android:hint="输入payload数据"
+        android:digits="0123456789ABCDEFabcdef"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_cid"
+            android:digits="0123456789ABCDEFabcdef"
+            android:layout_width="120dp"
+            android:hint="填入cid 16进制数"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/send"
+            android:text="发送"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/bt_clear"
+            android:text="清空"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/bt_clear_log"
+            android:text="清空log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/bt_cid"
+        android:text="读cid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

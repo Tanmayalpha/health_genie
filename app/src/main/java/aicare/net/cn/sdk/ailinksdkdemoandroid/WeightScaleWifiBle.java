@@ -12,12 +12,14 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
-import com.pingwang.bluetoothlib.config.BleDeviceConfig;
+import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -41,7 +43,8 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
     private BodyFatBleUtilsData bodyFatBleUtilsData;
     private MHandler mMHandler;
     private EditText mEditText;
-    private RadioButton kg,jing,stlb,lb;
+    private RadioButton kg, jing, stlb, lb;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +58,10 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
         findViewById(R.id.setedpaw).setOnClickListener(this);
         findViewById(R.id.setedmac).setOnClickListener(this);
         mEditText = findViewById(R.id.select_wifi_et);
-        kg=findViewById(R.id.kg);
-        jing=findViewById(R.id.jin);
-        stlb=findViewById(R.id.st_lb);
-        lb=findViewById(R.id.lb);
+        kg = findViewById(R.id.kg);
+        jing = findViewById(R.id.jin);
+        stlb = findViewById(R.id.st_lb);
+        lb = findViewById(R.id.lb);
         kg.setChecked(true);
         mAddress = getIntent().getStringExtra("mac");
         mList = new ArrayList<>();
@@ -70,36 +73,32 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
         kg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    bodyFatBleUtilsData.sendData(BodyFatDataUtil
-                            .getInstance().setWeightUnit(0, BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE));
+                if (isChecked) {
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().setWeightUnit(BodyFatDataUtil.KG, BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE));
                 }
             }
         });
-       jing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        jing.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    bodyFatBleUtilsData.sendData(BodyFatDataUtil
-                            .getInstance().setWeightUnit(1, BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE));
+                if (isChecked) {
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().setWeightUnit(BodyFatDataUtil.JIN, BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE));
                 }
             }
         });
         stlb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    bodyFatBleUtilsData.sendData(BodyFatDataUtil
-                            .getInstance().setWeightUnit(4, BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE));
+                if (isChecked) {
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().setWeightUnit(BodyFatDataUtil.ST, BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE));
                 }
             }
         });
-       lb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        lb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    bodyFatBleUtilsData.sendData(BodyFatDataUtil
-                            .getInstance().setWeightUnit(6, BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE));
+                if (isChecked) {
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().setWeightUnit(BodyFatDataUtil.LB, BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE));
                 }
             }
         });
@@ -181,42 +180,42 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
     @Override
     public void onStatus(int status) {
 
-      switch (status){
-          case BodyFatDataUtil.WEIGHT_TESTING:
-              mList.add(0, "测量状态：" + status+" 测量实时体重");
-              break;
-          case BodyFatDataUtil.WEIGHT_RESULT:
-              mList.add(0, "测量状态：" + status+" 稳定体重");
-              break;
-          case BodyFatDataUtil.IMPEDANCE_TESTING:
-              mList.add(0, "测量状态：" + status+" 阻抗测量中");
-              break;
-          case BodyFatDataUtil.IMPEDANCE_SUCCESS_DATA:
-          case BodyFatDataUtil.IMPEDANCE_SUCCESS:
-              mList.add(0, "测量状态：" + status+" 阻抗测量成功");
-              break;
-          case BodyFatDataUtil.IMPEDANCE_FAIL:
-              mList.add(0, "测量状态：" + status+" 阻抗测量失败");
-              break;
-          case BodyFatDataUtil.HEART_TESTING:
-              mList.add(0, "测量状态：" + status+" 心率测量中");
-              break;
-          case BodyFatDataUtil.HEART_SUCCESS:
-              mList.add(0, "测量状态：" + status+" 心率测量成功");
-              break;
-          case BodyFatDataUtil.HEART_FAIL:
-              mList.add(0, "测量状态：" + status+" 心率测量失败");
-              break;
-          case BodyFatDataUtil.TEST_FINISH:
-              mList.add(0, "测量状态：" + status+" 测量完成");
-              break;
-          case BodyFatDataUtil.MUC_REQUEST_USER_INFO:
-              mList.add(0,"测量状态：" + status+"请求用户信息");
-              break;
-          default:
-              mList.add(0, "测量状态：" + status);
+        switch (status) {
+            case BodyFatDataUtil.WEIGHT_TESTING:
+                mList.add(0, "测量状态：" + status + " 测量实时体重");
+                break;
+            case BodyFatDataUtil.WEIGHT_RESULT:
+                mList.add(0, "测量状态：" + status + " 稳定体重");
+                break;
+            case BodyFatDataUtil.IMPEDANCE_TESTING:
+                mList.add(0, "测量状态：" + status + " 阻抗测量中");
+                break;
+            case BodyFatDataUtil.IMPEDANCE_SUCCESS_DATA:
+            case BodyFatDataUtil.IMPEDANCE_SUCCESS:
+                mList.add(0, "测量状态：" + status + " 阻抗测量成功");
+                break;
+            case BodyFatDataUtil.IMPEDANCE_FAIL:
+                mList.add(0, "测量状态：" + status + " 阻抗测量失败");
+                break;
+            case BodyFatDataUtil.HEART_TESTING:
+                mList.add(0, "测量状态：" + status + " 心率测量中");
+                break;
+            case BodyFatDataUtil.HEART_SUCCESS:
+                mList.add(0, "测量状态：" + status + " 心率测量成功");
+                break;
+            case BodyFatDataUtil.HEART_FAIL:
+                mList.add(0, "测量状态：" + status + " 心率测量失败");
+                break;
+            case BodyFatDataUtil.TEST_FINISH:
+                mList.add(0, "测量状态：" + status + " 测量完成");
+                break;
+            case BodyFatDataUtil.MUC_REQUEST_USER_INFO:
+                mList.add(0, "测量状态：" + status + "请求用户信息");
+                break;
+            default:
+                mList.add(0, "测量状态：" + status);
 
-      }
+        }
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
@@ -234,10 +233,9 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
 
     @Override
     public void onBodyFat(BodyFatRecord bodyFatRecord) {
-        mList.add(0, "体脂数：" + bodyFatRecord.toString());
+        mList.add(0, "体脂数据：" + bodyFatRecord.toString());
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
-
 
     @Override
     public void onError(int code) {
@@ -249,14 +247,14 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
     public void onHistoryMcu(McuHistoryRecordBean mcuHistoryRecordBean) {
         mList.add(0, "历史记录Mcu：" + mcuHistoryRecordBean.toString());
         mMHandler.sendEmptyMessage(ToRefreUi);
-        mMHandler.sendEmptyMessage(ToRefreUi);
+//        mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
     @Override
     public void onHistoryApp(AppHistoryRecordBean appHistoryRecordBean) {
         mList.add(0, "历史记录app：" + appHistoryRecordBean.toString());
         mMHandler.sendEmptyMessage(ToRefreUi);
-        mMHandler.sendEmptyMessage(ToRefreUi);
+
     }
 
     @Override
@@ -268,63 +266,74 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
 
     @Override
     public void onMcuBatteryStatus(int status, int battery) {
-        mList.add(0,"电量状态"+status+" 电量："+battery);
+        mList.add(0, "电量状态" + status + " 电量：" + battery);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
     @Override
     public void onSysTime(int status, int[] times) {
-        mList.add(0,"时间状态"+status);
+        mList.add(0, "时间状态" + status);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
     @Override
     public void requestSynTime() {
-        mList.add(0,"请求同步时间");
-        mMHandler.sendEmptyMessage(ToRefreUi);
+        mList.add(0,"同步时间");
+        bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().synTime());
     }
 
     @Override
-    public void setTimeCallback(int type, int status) {
-        mList.add(0,"设置时间回调");
+    public void setTimeCallback(int type,int status) {
+        String msg = "";
+        if (type == CmdConfig.SET_SYS_TIME) {
+            msg = "设置系统当前时间：";
+        } else if (type == CmdConfig.SET_DEVICE_TIME) {
+            msg = "同步时间";
+        }
+        if (status == BodyFatDataUtil.STATUS_SUCCESS) {
+            msg = msg + status + " 成功";
+        } else if (status == BodyFatDataUtil.STATUS_FAIL) {
+            msg = msg + status + " 失败";
+        } else if (status == BodyFatDataUtil.STATUS_NOSUPORT) {
+            msg = msg + status + " 不支持";
+        }
+        mList.add(0, msg);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
     @Override
     public void requestSynHistoryCallback(int status) {
-        if (status==0) {
-            mList.add(0, "" + status+" 无历史记录");
-        }else if (status==1){
-            mList.add(0, "请求历史记录" + status+" 开始发送历史记录");
-        }else {
-            mList.add(0, "请求历史记录" + status+" 发送历史记录结束");
-        }
-    }
-
-
-    @Override
-    public void updateUserCallback(int status) {
-        if (status==0) {
-            mList.add(0, "更新用户或列表回调" + status+" 更新列表成功");
-        }else if (status==1){
-            mList.add(0, "更新用户或列表回调" + status+" 更新个人用户成功");
-        }else if (status==2){
-            mList.add(0, "更新用户或列表回调" + status+" 更新列表失败");
-        }else {
-            mList.add(0, "更新用户或列表回调" + status+" 更新个人用户失败");
+        if (status == 0) {
+            mList.add(0, "" + status + " 无历史记录");
+        } else if (status == 1) {
+            mList.add(0, "请求历史记录" + status + " 开始发送历史记录");
+        } else {
+            mList.add(0, "请求历史记录" + status + " 发送历史记录结束");
         }
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
-
+    @Override
+    public void updateUserCallback(int status) {
+        if (status == 0) {
+            mList.add(0, "更新用户或列表回调" + status + " 更新列表成功");
+        } else if (status == 1) {
+            mList.add(0, "更新用户或列表回调" + status + " 更新个人用户成功");
+        } else if (status == 2) {
+            mList.add(0, "更新用户或列表回调" + status + " 更新列表失败");
+        } else {
+            mList.add(0, "更新用户或列表回调" + status + " 更新个人用户失败");
+        }
+        mMHandler.sendEmptyMessage(ToRefreUi);
+    }
 
     @Override
     public void setUnitCallback(int status) {
-        if (status==0) {
+        if (status == 0) {
             mList.add(0, "下发单位回调" + status + " 成功");
-        }else if (status==1){
+        } else if (status == 1) {
             mList.add(0, "下发单位回调" + status + " 失败");
-        }else {
+        } else {
             mList.add(0, "下发单位回调" + status + " 不支持");
         }
         mMHandler.sendEmptyMessage(ToRefreUi);
@@ -332,16 +341,15 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
 
     @Override
     public void requestUserData(int status) {
-        if (status==0x01){
-            mList.add(0,"下发用户信息 "+status);
-        }else if (status==0x03){
-            mList.add(0,"下发用户信息成功 "+status);
-        }else {
-            mList.add(0,"下发用户信息失败 "+status);
+        if (status == 0x01) {
+            mList.add(0, "下发用户信息 " + status);
+        } else if (status == 0x03) {
+            mList.add(0, "下发用户信息成功 " + status);
+        } else {
+            mList.add(0, "下发用户信息失败 " + status);
         }
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
-
 
 
     @Override
@@ -390,22 +398,34 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
-    private boolean issetMac=false;
+    private boolean issetMac = false;
 
+    /**
+     *
+     * @param type
+     * @param status {@link BodyFatDataUtil#STATUS_SUCCESS}
+     *
+     */
     @Override
     public void OnSetWifiNameOrPwdOrConnectCallback(int type, int status) {
-        if (type== BodyFatDataUtil.SET_WIFI_MAC){
-            mList.add(0, "获取到设置的mac地址状态 " +status);
-            if (status== BodyFatDataUtil.STATUS_SUCCESS)issetMac=true;
-//            bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().getSelectWifiMac());
+        if (type == BodyFatDataUtil.SET_WIFI_MAC) {
+            mList.add(0, "获取到设置的mac地址状态 " + status);
+            if (status == BodyFatDataUtil.STATUS_SUCCESS){
+                issetMac = true;
+            }else {
+
+            }
+
         }
-        if (type== BodyFatDataUtil.SET_WIFI_PAW){
-            mList.add(0, "获取到设置的密码状态 " +status);
-//            bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().getSelectWifiPwd());
-            if (issetMac)mMHandler.sendEmptyMessage(ConnectWifi);
+        if (type == BodyFatDataUtil.SET_WIFI_PAW) {
+            mList.add(0, "获取到设置的密码状态 " + status);
+
+            if (status == BodyFatDataUtil.STATUS_SUCCESS && issetMac) {
+                mMHandler.sendEmptyMessage(ConnectWifi);
+            }
         }
-        if (type== BodyFatDataUtil.DIS_OR_CON_WIFI){
-            mList.add(0, "发起连接 " +status);
+        if (type == BodyFatDataUtil.DIS_OR_CON_WIFI) {
+            mList.add(0, "发起连接 " + status);
             mMHandler.sendEmptyMessage(ToRefreUi);
         }
 
@@ -423,13 +443,12 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
+
     @Override
-    public void getDid(long did) {
-        mList.add(0, "did: " + did);
+    public void getDid(long sn) {
+        mList.add(0, "sn: " + sn);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -447,31 +466,34 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
             case R.id.connect_wifi:
                 try {
                     int selectWifi = Integer.valueOf(mEditText.getText().toString().trim());
-                    WifiDialog.newInstance().setTitle(mHashMap.get(selectWifi),wifimacMap.get(selectWifi)).setOnDialogListener(new WifiDialog.OnDialogListener() {
-                        @Override
-                        public void tvCancelListener(View v) {
+                    if (mHashMap.get(selectWifi) != null && wifimacMap.get(selectWifi) != null) {
+                        WifiDialog.newInstance().setTitle(mHashMap.get(selectWifi), wifimacMap.get(selectWifi)).setOnDialogListener(new WifiDialog.OnDialogListener() {
+                            @Override
+                            public void tvCancelListener(View v) {
 
-                        }
-
-                        @Override
-                        public void tvSucceedListener(View v, String data) {
-                            bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().setWifiMac(wifimacMap.get(selectWifi)));
-                            if (data.equals("") || data.length() > 8) {
-                                setPaw(data);
-                            } else {
-                                Toast.makeText(WeightScaleWifiBle.this, "密码格式不对", Toast.LENGTH_SHORT).show();
                             }
-                        }
 
-                        @Override
-                        public void etModifyName(EditText v) {
+                            @Override
+                            public void tvSucceedListener(View v, String data) {
+                                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().setWifiMac(wifimacMap.get(selectWifi)));
+                                if (data.equals("") || data.length() > 8) {
+                                    setPaw(data);
+                                } else {
+                                    Toast.makeText(WeightScaleWifiBle.this, "密码格式不对", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-                        }
-                    }).show(getSupportFragmentManager());
+                            @Override
+                            public void etModifyName(EditText v) {
+
+                            }
+                        }).show(getSupportFragmentManager());
+                    }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                     mMHandler.sendEmptyMessage(ConnectWifi);
                 }
+
                 break;
             case R.id.setedmac:
                 bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().getSelectWifiMac());
@@ -492,7 +514,7 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
     }
 
     private final int ToRefreUi = 300;
-    private final int ConnectWifi=400;
+    private final int ConnectWifi = 400;
 
     private class MHandler extends Handler {
         @Override
@@ -511,6 +533,15 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
         }
     }
 
+
+    /**
+     * wifi密码一次只能传14个byte
+     * 如果密码长度超过14个byte 就需要分包传送
+     * subpackage 为0 时，表示后面还有数据
+     * subpackage 为1 时，表示数据小于或等于14个byte,后面没有数据
+     *
+     * @param paw
+     */
     private void setPaw(String paw) {
         if (paw.isEmpty()) {
             byte[] bytes = new byte[0];
@@ -547,7 +578,6 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
             }
         }
     }
-
 
 
 }

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
@@ -24,6 +25,7 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +35,14 @@ import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.foreheadgun.TempGunDeviceData;
 
 
+
 /**
  * xing<br>
  * 2019/4/25<br>
  * 显示数据
  */
-public class TempGunCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleVersionListener, TempGunDeviceData.onNotifyData , OnBleCompanyListener, OnMcuParameterListener, View.OnClickListener {
+public class TempGunCmdActivity extends BleBaseActivity implements OnCallbackDis,
+        OnBleVersionListener, TempGunDeviceData.onNotifyData , OnBleCompanyListener, OnMcuParameterListener, View.OnClickListener {
 
     private static String TAG = TempGunCmdActivity.class.getName();
     private final int REFRESH_DATA = 3;

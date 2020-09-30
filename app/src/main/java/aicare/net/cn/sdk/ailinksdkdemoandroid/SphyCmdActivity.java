@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
@@ -24,12 +25,14 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import cn.net.aicare.modulelibrary.module.sphygmomanometer.SphyBleConfig;
 import cn.net.aicare.modulelibrary.module.sphygmomanometer.SphyDeviceData;
 
 
@@ -111,12 +114,12 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         btn_set_unit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (unit == 0) {
-                    mBleDevice.setUnit((byte) 1);
-                    unit = 1;
+                if (unit == SphyBleConfig.SPHY_UNIT_MMHG) {
+                    unit = SphyBleConfig.SPHY_UNIT_KPA;
+                    mBleDevice.setUnit(unit);
                 } else {
-                    mBleDevice.setUnit((byte) 0);
-                    unit = 0;
+                    unit = SphyBleConfig.SPHY_UNIT_MMHG;
+                    mBleDevice.setUnit(unit);
                 }
             }
         });
@@ -221,8 +224,10 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     @Override
     public void onDisConnected(@NonNull String mac, int code) {
         //TODO 连接断开
-        if (mAddress.equals(mac))
+        if (mAddress.equals(mac)){
             BleLog.i(TAG, "连接断开");
+            finish();
+        }
     }
 
     @Override
@@ -241,6 +246,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     @Override
     public void bleClose() {
         BleLog.i(TAG, "蓝牙未开启,可请求开启");
+        finish();
     }
 
 

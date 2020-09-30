@@ -14,9 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pingwang.bluetoothlib.AILinkSDK;
-import com.pingwang.bluetoothlib.config.BleDeviceConfig;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tv_app_version)).setText(version);
         init();
         initPermissions();
+        SP.init(this);
     }
 
     private void init() {
@@ -46,17 +48,29 @@ public class MainActivity extends AppCompatActivity {
         Button btn_baby = findViewById(R.id.btn_baby);
         Button btn_height = findViewById(R.id.btn_height);
         Button btn_ble = findViewById(R.id.btn_ble);
+        findViewById(R.id.btn_ble_test).setOnClickListener(listener);
+        findViewById(R.id.btnConnectTest).setOnClickListener(listener);
         findViewById(R.id.btn_ad_weight).setOnClickListener(listener);
-        findViewById(R.id.btn_bloodglucose).setOnClickListener(listener);
+        findViewById(R.id.btn_ble_weight).setOnClickListener(listener);
+        findViewById(R.id.btn_wifi_ble_tooth).setOnClickListener(listener);
+        findViewById(R.id.wifi_config).setOnClickListener(listener);
+        findViewById(R.id.eight_scale).setOnClickListener(listener);
+        findViewById(R.id.btn_ota).setOnClickListener(listener);
+        findViewById(R.id.btn_wristband).setOnClickListener(listener);
+        findViewById(R.id.glucometer).setOnClickListener(listener);
+        findViewById(R.id.btn_broadcast_scale).setOnClickListener(listener);
+        findViewById(R.id.btn_broadcast_blood_oxygen).setOnClickListener(listener);
+        findViewById(R.id.btn_smart_mask).setOnClickListener(listener);
+
+        findViewById(R.id.btn_transmission).setOnClickListener(listener);
         btn_shpy.setOnClickListener(listener);
         btn_tempgun.setOnClickListener(listener);
         btn_temp.setOnClickListener(listener);
         btn_baby.setOnClickListener(listener);
         btn_height.setOnClickListener(listener);
         btn_ble.setOnClickListener(listener);
-
         findViewById(R.id.btn_wifi_ble_weight).setOnClickListener(listener);
-
+        findViewById(R.id.btn_baby_body_fat).setOnClickListener(listener);
     }
 
     private class MyListener implements View.OnClickListener {
@@ -83,19 +97,64 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_height:
                     type = BleDeviceConfig.HEIGHT_METER;
                     break;
-
                 case R.id.btn_ad_weight:
                     type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD;
                     break;
                 case R.id.btn_wifi_ble_weight:
                     type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE;
                     break;
-                case R.id.btn_bloodglucose:
+                case R.id.btn_wifi_ble_tooth:
+                    type = BleDeviceConfig.TOOTHBRUSH_WIFI_BLE;
+                    break;
+                case R.id.btn_ble_weight:
+                    type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE;
+                    break;
+                case R.id.glucometer:
                     type = BleDeviceConfig.BLOOD_GLUCOSE;
                     break;
-                case R.id.btn_ble:
-                    type = 0;
+                case R.id.btn_baby_body_fat:
+                    type = BleDeviceConfig.BABY_BODY_FAT;
                     break;
+                case R.id.btn_broadcast_scale:
+                    Intent intentBroadcast = new Intent(MainActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.BroadcastScaleActivity.class);
+                    startActivity(intentBroadcast);
+                    return;
+                case R.id.btn_broadcast_blood_oxygen:
+                    Intent intentBloodOxygen = new Intent(MainActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.BroadcastBloodOxygenActivity.class);
+                    startActivity(intentBloodOxygen);
+                    return;
+
+                case R.id.btn_smart_mask:
+                    type = BleDeviceConfig.SMART_MASK;
+                    break;
+
+                case R.id.btn_ble:
+                    type = -1;
+                    break;
+                case R.id.btn_ble_test:
+                    type = -2;
+                    break;
+                case R.id.btn_ota:
+                    type = -3;
+                    break;
+                case R.id.btn_wristband:
+                    type = 65536;
+                    break;
+                case R.id.btn_transmission:
+                    type=-4;
+                    break;
+                case R.id.eight_scale:
+                    type = BleDeviceConfig.EIGHT_BODY_FAT_SCALE;
+                    break;
+                case R.id.btnConnectTest:
+                    Intent intent = new Intent(MainActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.ConnectBleTestActivity.class);
+                    startActivity(intent);
+                    return;
+                case R.id.wifi_config:
+                    Intent intent1 = new Intent(MainActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.WifiConfigActivity.class);
+                    startActivity(intent1);
+                    return;
+
 
 
             }
@@ -109,14 +168,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            ActivityCompat
+                    .requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CHANGE_WIFI_MULTICAST_STATE, Manifest.permission.ACCESS_WIFI_STATE,
+                            Manifest.permission.CHANGE_WIFI_STATE}, 1);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode != 1) {
             return;
@@ -125,55 +184,45 @@ public class MainActivity extends AppCompatActivity {
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
                 //权限请求失败，但未选中“不再提示”选项
-                new AlertDialog.Builder(this).setTitle("提示")
-                        .setMessage("请求使用定位权限搜索蓝牙设备")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //引导用户至设置页手动授权
-                                Intent intent =
-                                        new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package",
-                                        getApplicationContext().getPackageName(), null);
-                                intent.setData(uri);
-                                startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (dialog != null) {
-                                    dialog.cancel();
-                                }
+                new AlertDialog.Builder(this).setTitle("提示").setMessage("请求使用定位权限搜索蓝牙设备").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //引导用户至设置页手动授权
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getApplicationContext().getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (dialog != null) {
+                            dialog.cancel();
+                        }
 
-                            }
-                        })
-                        .show();
+                    }
+                }).show();
             } else {
                 //权限请求失败，选中“不再提示”选项
 //                T.showShort(MainActivity.this, "获取权限失败");
-                new AlertDialog.Builder(this).setTitle("提示")
-                        .setMessage("请求使用定位权限搜索蓝牙设备")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //引导用户至设置页手动授权
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package", getApplicationContext().getPackageName(), null);
-                                intent.setData(uri);
-                                startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (dialog != null) {
-                                    dialog.cancel();
-                                }
+                new AlertDialog.Builder(this).setTitle("提示").setMessage("请求使用定位权限搜索蓝牙设备").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //引导用户至设置页手动授权
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getApplicationContext().getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (dialog != null) {
+                            dialog.cancel();
+                        }
 
-                            }
-                        })
-                        .show();
+                    }
+                }).show();
             }
 
         }
@@ -182,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void startActivity(int tyep) {
-        Intent intent = new Intent(this, ShowBleActivity.class);
+        Intent intent = new Intent(this, aicare.net.cn.sdk.ailinksdkdemoandroid.ShowBleActivity.class);
         intent.putExtra("type", tyep);
         startActivity(intent);
     }
@@ -198,4 +247,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         BleLog.quit();
     }
+
+
 }

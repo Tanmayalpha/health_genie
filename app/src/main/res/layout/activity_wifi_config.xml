@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:weightSum="1">
+
+        <CheckedTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SSID :"
+            android:id="@+id/checkedTextView"
+            android:checked="false" />
+
+        <EditText
+            android:layout_width="match_parent"
+             android:layout_height="40dp"
+            android:ems="10"
+            android:id="@+id/ssid"
+            android:inputType="text" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:weightSum="1" >
+
+        <CheckedTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PASSWORD:"
+            android:id="@+id/checkedTextView2"
+            android:checked="false" />
+
+        <EditText
+            android:layout_width="match_parent"
+             android:layout_height="40dp"
+            android:ems="10"
+            android:id="@+id/password"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:weightSum="1" >
+
+        <CheckedTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="KEY:"
+            android:id="@+id/checkedTextView3"
+            android:checked="false" />
+
+        <EditText
+            android:layout_width="match_parent"
+             android:layout_height="40dp"
+            android:ems="10"
+            android:id="@+id/key"
+            android:inputType="text" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:weightSum="1" >
+
+        <CheckedTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SN:"
+            android:id="@+id/checkedTextView4"
+            android:checked="false" />
+
+        <EditText
+            android:layout_width="match_parent"
+             android:layout_height="40dp"
+            android:ems="10"
+
+            android:id="@+id/sn"
+            android:inputType="text" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:weightSum="1" >
+
+        <CheckedTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设备名:"
+            android:id="@+id/checkedTextView5"
+            android:checked="false" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:id="@+id/device_name"
+            android:inputType="text" />
+    </LinearLayout>
+    <LinearLayout     android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_connect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始配网"
+            />
+        <Button android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登录" />
+        <Button
+            android:id="@+id/deviceid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取设备id"
+            />
+        <Button
+            android:id="@+id/weight_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取体重数据"
+            />
+
+    </LinearLayout>
+    <LinearLayout     android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/clear_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除log"
+            />
+
+        <Button
+            android:id="@+id/clear_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删除这条记录"
+            />
+
+        <Button
+            android:id="@+id/get_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取测试数据"
+            />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/unit"
+        android:layout_below="@+id/edit_Userid"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/kg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="kg"/>
+        <RadioButton
+            android:id="@+id/jin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="斤"/>
+        <RadioButton
+            android:id="@+id/st_lb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="st:lb"/>
+        <RadioButton
+            android:id="@+id/lb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="lb"/>
+    </RadioGroup>
+    <ListView
+        android:id="@+id/log_list"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/unit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+
+
+</LinearLayout>

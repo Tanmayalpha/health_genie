@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
@@ -23,6 +24,7 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.babyscale.BabyBleConfig;
 import cn.net.aicare.modulelibrary.module.babyscale.BabyDeviceData;
+
 
 
 /**
@@ -315,8 +318,8 @@ public class BabyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
         @Override
         public void getWeight(int weight, int decimal, byte unit) {
-            String weightStr = BleDensityUtil.getInstance().holdNumber(weight, decimal);
-            String showStr="稳定体重:" + weightStr + "|小数:" + decimal + "|单位:" + unit;
+            String weightStr = BleDensityUtil.getInstance().holdDecimals(weight, decimal);
+            String showStr="稳定体重:" + weightStr + "|小数位:" + decimal + "|单位:" + unit;
             mList.add(TimeUtils.getTime() + showStr);
             if (weightUnit != unit) {
                 weightUnit = unit;
@@ -327,8 +330,8 @@ public class BabyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
         @Override
         public void getWeightNow(int weight, int decimal, byte unit) {
-            String weightStr = BleDensityUtil.getInstance().holdNumber(weight, decimal);
-            mList.add(TimeUtils.getTime() + "实时体重:" + weightStr + "|小数:" + decimal + "|单位:" + unit);//10.00,2,0
+            String weightStr = BleDensityUtil.getInstance().holdDecimals(weight, decimal);
+            mList.add(TimeUtils.getTime() + "实时体重:" + weightStr + "|单位:" + unit);//10.00,2,0
             if (weightUnit != unit) {
                 weightUnit = unit;
                 showWeightUnit(weightUnit);
@@ -338,8 +341,8 @@ public class BabyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
         @Override
         public void getHeight(int height, int decimal, byte unit) {
-            String heightStr = BleDensityUtil.getInstance().holdNumber(height, decimal);
-            mList.add(TimeUtils.getTime() + "稳定身高:" + heightStr + "|小数:" + decimal + "|单位:" + unit);
+            String heightStr = BleDensityUtil.getInstance().holdDecimals(height, decimal);
+            mList.add(TimeUtils.getTime() + "稳定身高:" + heightStr + "|单位:" + unit);
             if (heightUnit != unit) {
                 heightUnit = unit;
                 showHeightUnit(heightUnit);
