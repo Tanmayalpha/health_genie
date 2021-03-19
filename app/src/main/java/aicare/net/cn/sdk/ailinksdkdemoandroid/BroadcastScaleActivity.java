@@ -22,12 +22,12 @@ import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleBleConfig;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleDeviceData;
@@ -201,7 +201,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
             mDevice = BroadcastScaleDeviceData.getInstance();
             mDevice.setOnNotifyData(this);
             mBluetoothService.setOnScanFilterListener(this);
-            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_BROADCAST);
+            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
         }
     }
 

@@ -50,7 +50,6 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
      * 服务Intent
      */
     private Context mContext;
-    private EditText et_type;
     private TempDeviceData mBleDevice;
     private String mAddress;
     private BleSendCmdUtil mBleSendCmdUtil;
@@ -92,7 +91,6 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         findViewById(R.id.btnBattery).setOnClickListener(this);
         findViewById(R.id.btn_get_did).setOnClickListener(this);
         findViewById(R.id.clear).setOnClickListener(this);
-        et_type = findViewById(R.id.et_type);
 
         cmdBtn();
     }
@@ -131,12 +129,7 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
                 sendBleBean.setHex(mBleSendCmdUtil.getDid());
                 mBleDevice.sendData(sendBleBean);
                 break;
-            case R.id.btn1:
-                String cmd = et_type.getText().toString().trim();
-                SendMcuBean sendDataBean = new SendMcuBean();
-                sendDataBean.setHex(type,cmd.getBytes());
-                mBleDevice.sendData(sendDataBean);
-                break;
+
             case R.id.clear:
                 if (mList != null)
                     mList.clear();

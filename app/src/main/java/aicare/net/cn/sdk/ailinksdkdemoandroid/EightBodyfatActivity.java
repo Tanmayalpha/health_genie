@@ -17,7 +17,7 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyFatBleDeviceData;
-import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyfatUtil;
+import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyFatUtil;
 
 public class EightBodyfatActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, EightBodyFatBleDeviceData.EightBodyFatCallback {
 
@@ -54,7 +54,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     if (mEightBodyFatBleDeviceData != null)
-                        mEightBodyFatBleDeviceData.setWeightUnit(EightBodyfatUtil.KG);
+                        mEightBodyFatBleDeviceData.setWeightUnit(EightBodyFatUtil.KG);
 
                 }
             }
@@ -64,7 +64,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     if (mEightBodyFatBleDeviceData != null)
-                        mEightBodyFatBleDeviceData.setWeightUnit(EightBodyfatUtil.JIN);
+                        mEightBodyFatBleDeviceData.setWeightUnit(EightBodyFatUtil.JIN);
                 }
             }
         });
@@ -73,7 +73,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     if (mEightBodyFatBleDeviceData != null)
-                        mEightBodyFatBleDeviceData.setWeightUnit(EightBodyfatUtil.ST);
+                        mEightBodyFatBleDeviceData.setWeightUnit(EightBodyFatUtil.ST);
                 }
             }
         });
@@ -82,7 +82,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     if (mEightBodyFatBleDeviceData != null)
-                        mEightBodyFatBleDeviceData.setWeightUnit(EightBodyfatUtil.LB);
+                        mEightBodyFatBleDeviceData.setWeightUnit(EightBodyFatUtil.LB);
                 }
             }
         });
@@ -91,7 +91,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     if (mEightBodyFatBleDeviceData != null)
-                        mEightBodyFatBleDeviceData.setTempUnit(EightBodyfatUtil.C);
+                        mEightBodyFatBleDeviceData.setTempUnit(EightBodyFatUtil.C);
                 }
             }
         });
@@ -100,7 +100,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     if (mEightBodyFatBleDeviceData != null)
-                        mEightBodyFatBleDeviceData.setTempUnit(EightBodyfatUtil.F);
+                        mEightBodyFatBleDeviceData.setTempUnit(EightBodyFatUtil.F);
                 }
             }
         });
@@ -143,67 +143,67 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     @Override
     public void onState(int type, int typeState, int result) {
         switch (type) {
-//            case EightBodyfatUtil.WEIGHING:
+//            case EightBodyFatUtil.WEIGHING:
 //                switch (typeState) {
-//                    case EightBodyfatUtil.WEIGHT_REAL_TIME_WEIGH:
+//                    case EightBodyFatUtil.WEIGHT_REAL_TIME_WEIGH:
 //                        loglist.add(0, "实时体重");
 //                        break;
-//                    case EightBodyfatUtil.WEIGHT_STABILIZATION_WEIGHT:
+//                    case EightBodyFatUtil.WEIGHT_STABILIZATION_WEIGHT:
 //                        loglist.add(0, "稳定体重");
 //                }
 //                break;
-            case EightBodyfatUtil.IMPEDANCE:
+            case EightBodyFatUtil.IMPEDANCE:
                 String adc = "";
                 switch (typeState) {
-                    case EightBodyfatUtil.IMPEDANCE_MEASUREMENT:
+                    case EightBodyFatUtil.IMPEDANCE_MEASUREMENT:
 
                         adc = "阻抗测量中";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_SUCCESS:
+                    case EightBodyFatUtil.IMPEDANCE_SUCCESS:
                         //阻抗测量成功
                         adc = "阻抗测量成功";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_FAILED:
+                    case EightBodyFatUtil.IMPEDANCE_FAILED:
                         adc = "阻抗测量失败";
                         //阻抗测量失败
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_FINISH:
+                    case EightBodyFatUtil.IMPEDANCE_FINISH:
                         //阻抗测量完成
                         adc = "阻抗测量完成";
                         break;
                 }
                 switch (result) {
-                    case EightBodyfatUtil.IMPEDANCE_FOOT:
+                    case EightBodyFatUtil.IMPEDANCE_FOOT:
                         adc = adc + "双脚阻抗";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_HAND:
+                    case EightBodyFatUtil.IMPEDANCE_HAND:
                         adc = adc + "双手阻抗";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_BODY:
+                    case EightBodyFatUtil.IMPEDANCE_BODY:
                         adc = adc + "躯干阻抗";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_L_HAND:
+                    case EightBodyFatUtil.IMPEDANCE_L_HAND:
                         adc = adc + "左手阻抗";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_R_HAND:
+                    case EightBodyFatUtil.IMPEDANCE_R_HAND:
                         adc = adc + "右手阻抗";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_L_FOOT:
+                    case EightBodyFatUtil.IMPEDANCE_L_FOOT:
                         adc = adc + "左脚阻抗";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_R_FOOT:
+                    case EightBodyFatUtil.IMPEDANCE_R_FOOT:
                         adc = adc + "右脚阻抗";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_L_BODY:
+                    case EightBodyFatUtil.IMPEDANCE_L_BODY:
                         adc = adc + "左驱干";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_R_BODY:
+                    case EightBodyFatUtil.IMPEDANCE_R_BODY:
                         adc = adc + "右躯干";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_R_HAND_L_FOOT:
+                    case EightBodyFatUtil.IMPEDANCE_R_HAND_L_FOOT:
                         adc = adc + "右手左脚";
                         break;
-                    case EightBodyfatUtil.IMPEDANCE_L_HAND_R_FOOT:
+                    case EightBodyFatUtil.IMPEDANCE_L_HAND_R_FOOT:
                         adc = adc + "左手右脚";
                         break;
                     default:
@@ -213,55 +213,55 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
 
                 loglist.add(0, adc);
                 break;
-            case EightBodyfatUtil.HEART_RATE:
+            case EightBodyFatUtil.HEART_RATE:
                 switch (typeState) {
-                    case EightBodyfatUtil.HEART_RATE_MEASUREMENT:
+                    case EightBodyFatUtil.HEART_RATE_MEASUREMENT:
                         //心率测量完成
                         loglist.add(0, "心率测量中");
                         break;
-                    case EightBodyfatUtil.HEART_RATE_SUCCESS:
+                    case EightBodyFatUtil.HEART_RATE_SUCCESS:
                         loglist.add(0, "心率测量成功");
                         //心率测量成功
                         break;
-                    case EightBodyfatUtil.HEART_RATE_FAILED:
+                    case EightBodyFatUtil.HEART_RATE_FAILED:
                         loglist.add(0, "心率测量失败");
                         //心率测量失败
                         break;
                 }
                 break;
-            case EightBodyfatUtil.TEMP_MEASUREMENT:
+            case EightBodyFatUtil.TEMP_MEASUREMENT:
                 loglist.add(0, "测量温度");
                 break;
-            case EightBodyfatUtil.MEASUREMENT_END:
+            case EightBodyFatUtil.MEASUREMENT_END:
                 loglist.add(0, "测量完成");
                 //测量完成
                 break;
-            case EightBodyfatUtil.MUC_CALL_BACK_RESULT:
+            case EightBodyFatUtil.MUC_CALL_BACK_RESULT:
                 switch (typeState) {
-                    case EightBodyfatUtil.APP_CMD_CALIBRATION:
+                    case EightBodyFatUtil.APP_CMD_CALIBRATION:
                         //校验
-                        if (result == EightBodyfatUtil.SUCCESS) {
+                        if (result == EightBodyFatUtil.SUCCESS) {
                             loglist.add(0, "校验成功");
-                        } else if (result == EightBodyfatUtil.FAILED) {
+                        } else if (result == EightBodyFatUtil.FAILED) {
                             loglist.add(0, "校验失败");
                         } else {
                             loglist.add(0, "校验中");
                         }
                         break;
-                    case EightBodyfatUtil.APP_CMD_TEMP_UNIT:
-                        if (result == EightBodyfatUtil.SUCCESS) {
+                    case EightBodyFatUtil.APP_CMD_TEMP_UNIT:
+                        if (result == EightBodyFatUtil.SUCCESS) {
                             loglist.add(0, "切换温度成功");
-                        } else if (result == EightBodyfatUtil.FAILED) {
+                        } else if (result == EightBodyFatUtil.FAILED) {
                             loglist.add(0, "切换温度失败");
                         } else {
                             loglist.add(0, "切换温度中");
                         }
                         //切换温度
                         break;
-                    case EightBodyfatUtil.APP_CMD_WEIGHT_UNIT:
-                        if (result == EightBodyfatUtil.SUCCESS) {
+                    case EightBodyFatUtil.APP_CMD_WEIGHT_UNIT:
+                        if (result == EightBodyFatUtil.SUCCESS) {
                             loglist.add(0, "切换体重单位成功");
-                        } else if (result == EightBodyfatUtil.FAILED) {
+                        } else if (result == EightBodyFatUtil.FAILED) {
                             loglist.add(0, "切换体重单位失败");
                         } else {
                             loglist.add(0, "切换体重单位中");
@@ -270,7 +270,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
                         break;
                 }
                 break;
-            case EightBodyfatUtil.ERROR_CODE:
+            case EightBodyFatUtil.ERROR_CODE:
                 loglist.add(0, "错误码" + typeState);
                 break;
 
@@ -283,14 +283,14 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     public void onWeight(int state, float weight, int unit, int decimal) {
         //测量状态 1实时体重 2稳定体重
         String stateStr = "";
-        if (state == EightBodyfatUtil.WEIGHT_REAL_TIME_WEIGH) {
+        if (state == EightBodyFatUtil.WEIGHT_REAL_TIME_WEIGH) {
             stateStr = "实时体重";
-        } else if (state == EightBodyfatUtil.WEIGHT_STABILIZATION_WEIGHT) {
+        } else if (state == EightBodyFatUtil.WEIGHT_STABILIZATION_WEIGHT) {
             stateStr = "稳定体重";
         }
 
-        if (unit == EightBodyfatUtil.ST) {
-            loglist.add(0, "测量状态：" + state + stateStr + "  体重:" + EightBodyfatUtil.lbtostlb(weight) + "  体重单位:" + unit + " 小数点位" + decimal);
+        if (unit == EightBodyFatUtil.ST) {
+            loglist.add(0, "测量状态：" + state + stateStr + "  体重:" + EightBodyFatUtil.lbtostlb(weight) + "  体重单位:" + unit + " 小数点位" + decimal);
         } else {
             loglist.add(0, "测量状态：" + state + stateStr + "  体重:" + weight + "  体重单位:" + unit + " 小数点位" + decimal);
         }

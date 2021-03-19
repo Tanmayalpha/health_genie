@@ -16,21 +16,21 @@
                 android:id="@+id/btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="搜索"
+                android:text="@string/search"
         />
 
         <Button
                 android:id="@+id/btn1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="停止"
+                android:text="@string/stop"
         />
 
         <Button
                 android:id="@+id/clear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="清空"
+                android:text="@string/clear"
         />
 
 
@@ -48,15 +48,10 @@
             android:id="@+id/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="过滤:true"
+            android:text="@string/filter"
             />
 
-        <Button
-            android:id="@+id/跳过"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="跳过"
-            />
+
     </LinearLayout>
 
 

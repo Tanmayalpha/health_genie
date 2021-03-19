@@ -23,18 +23,18 @@ import android.widget.Toast;
 import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnBleDeviceDataListener;
+import com.pingwang.bluetoothlib.listener.OnBleOTAListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
-import com.pingwang.bluetoothlib.listener.OnDialogOTAListener;
 import com.pingwang.bluetoothlib.utils.BleLog;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.DialogStringImageAdapter;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.ShowListDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.FileUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -46,7 +46,7 @@ import androidx.core.app.ActivityCompat;
  * 显示数据
  */
 public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
-        OnBleDeviceDataListener, View.OnClickListener, OnDialogOTAListener, ShowListDialogFragment.onDialogListener {
+        OnBleDeviceDataListener, View.OnClickListener, OnBleOTAListener, ShowListDialogFragment.onDialogListener {
 
     private static String TAG = TestOtaActivity.class.getName();
     private final int REFRESH_DATA = 3;

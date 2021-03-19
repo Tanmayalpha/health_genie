@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AILinkSDK.getInstance().init(this, "28307eb356debd69", "00deaab8ea81acba686e725a2b");
+        AILinkSDK.getInstance().init(this);
         setContentView(R.layout.activity_main);
         BleLog.init("", "", BuildConfig.DEBUG);
         String version = getString(R.string.version) + ":" + BuildConfig.VERSION_NAME;
@@ -48,15 +48,11 @@ public class MainActivity extends AppCompatActivity {
         Button btn_baby = findViewById(R.id.btn_baby);
         Button btn_height = findViewById(R.id.btn_height);
         Button btn_ble = findViewById(R.id.btn_ble);
-        findViewById(R.id.btn_ble_test).setOnClickListener(listener);
-        findViewById(R.id.btnConnectTest).setOnClickListener(listener);
-        findViewById(R.id.btn_ad_weight).setOnClickListener(listener);
         findViewById(R.id.btn_ble_weight).setOnClickListener(listener);
         findViewById(R.id.btn_wifi_ble_tooth).setOnClickListener(listener);
         findViewById(R.id.wifi_config).setOnClickListener(listener);
         findViewById(R.id.eight_scale).setOnClickListener(listener);
         findViewById(R.id.btn_ota).setOnClickListener(listener);
-        findViewById(R.id.btn_wristband).setOnClickListener(listener);
         findViewById(R.id.glucometer).setOnClickListener(listener);
         findViewById(R.id.btn_broadcast_scale).setOnClickListener(listener);
         findViewById(R.id.btn_broadcast_blood_oxygen).setOnClickListener(listener);
@@ -97,9 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_height:
                     type = BleDeviceConfig.HEIGHT_METER;
                     break;
-                case R.id.btn_ad_weight:
-                    type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD;
-                    break;
+
                 case R.id.btn_wifi_ble_weight:
                     type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE;
                     break;
@@ -127,34 +121,22 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_smart_mask:
                     type = BleDeviceConfig.SMART_MASK;
                     break;
-
                 case R.id.btn_ble:
                     type = -1;
-                    break;
-                case R.id.btn_ble_test:
-                    type = -2;
                     break;
                 case R.id.btn_ota:
                     type = -3;
                     break;
-                case R.id.btn_wristband:
-                    type = 65536;
-                    break;
                 case R.id.btn_transmission:
-                    type=-4;
+                    type = -4;
                     break;
                 case R.id.eight_scale:
                     type = BleDeviceConfig.EIGHT_BODY_FAT_SCALE;
                     break;
-                case R.id.btnConnectTest:
-                    Intent intent = new Intent(MainActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.ConnectBleTestActivity.class);
-                    startActivity(intent);
-                    return;
                 case R.id.wifi_config:
                     Intent intent1 = new Intent(MainActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.WifiConfigActivity.class);
                     startActivity(intent1);
                     return;
-
 
 
             }

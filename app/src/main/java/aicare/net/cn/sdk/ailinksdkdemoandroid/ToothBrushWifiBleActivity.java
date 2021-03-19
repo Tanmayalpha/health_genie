@@ -250,7 +250,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
                     mToothBrushWiFiBleUtilsData.queryBleStatus();
                     break;
                 case R.id.sn:
-                    mToothBrushWiFiBleUtilsData.getDevicedid();
+                    mToothBrushWiFiBleUtilsData.getDeviceId();
                     break;
                 case R.id.scan_wifi:
                     mToothBrushWiFiBleUtilsData.scanWifi();
@@ -270,7 +270,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
 
                                     if (data.equals("") || data.length() > 8) {
                                         dataPaw = data.trim();
-                                        mToothBrushWiFiBleUtilsData.setWifimac(wifimacMap.get(selectWifi));
+                                        mToothBrushWiFiBleUtilsData.setWifiMac(wifimacMap.get(selectWifi));
                                     } else {
                                         Toast.makeText(ToothBrushWifiBleActivity.this, "密码格式不对", Toast.LENGTH_SHORT).show();
                                     }
@@ -345,7 +345,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
                     break;
                 case R.id.default_time_mode:
 
-                    mToothBrushWiFiBleUtilsData.getdefaultGearAndDuration();
+                    mToothBrushWiFiBleUtilsData.getDefaultGearAndDuration();
                     break;
         }
 

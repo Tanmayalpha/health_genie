@@ -15,7 +15,6 @@ import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
-import com.pingwang.bluetoothlib.device.SendMcuBean;
 import com.pingwang.bluetoothlib.listener.CallbackDisIm;
 import com.pingwang.bluetoothlib.listener.OnBleCompanyListener;
 import com.pingwang.bluetoothlib.listener.OnBleVersionListener;
@@ -23,11 +22,11 @@ import com.pingwang.bluetoothlib.listener.OnCallbackDis;
 import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.tpms.TpmsDeviceData;
@@ -52,7 +51,6 @@ public class TpmsConnectCmdActivity extends BleBaseActivity implements OnCallbac
      * 服务Intent
      */
     private Context mContext;
-    private EditText et_type;
     private TpmsDeviceData mBleDevice;
     private String mAddress;
     private BleSendCmdUtil mBleSendCmdUtil;
@@ -94,7 +92,6 @@ public class TpmsConnectCmdActivity extends BleBaseActivity implements OnCallbac
         findViewById(R.id.btnVersion).setOnClickListener(this);
         findViewById(R.id.btnBattery).setOnClickListener(this);
         findViewById(R.id.btn_get_did).setOnClickListener(this);
-        et_type = findViewById(R.id.et_type);
 
         cmdBtn();
     }
@@ -134,12 +131,7 @@ public class TpmsConnectCmdActivity extends BleBaseActivity implements OnCallbac
                 sendBleBean.setHex(mBleSendCmdUtil.getDid());
                 mBleDevice.sendData(sendBleBean);
                 break;
-            case R.id.btn1:
-                String cmd = et_type.getText().toString().trim();
-                SendMcuBean sendDataBean = new SendMcuBean();
-                sendDataBean.setHex(type,cmd.getBytes());
-                mBleDevice.sendData(sendDataBean);
-                break;
+
             case R.id.clear:
                 if (mList != null)
                     mList.clear();

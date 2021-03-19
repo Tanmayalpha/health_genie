@@ -27,7 +27,6 @@ import com.pingwang.bluetoothlib.utils.BleStrUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
@@ -108,6 +107,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         Button clear = findViewById(R.id.clear);
         final Button filter = findViewById(R.id.filter);
         filter.setTag(true);
+        filter.setText(getString(R.string.filter)+"true");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +118,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
 
                     } else {
                         if (mFilter)
-                            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER, UUID.fromString("0000FEE7-0000-1000-8000-00805F9B34FB"));
+                            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_AILINK);
                         else
                             mBluetoothService.scanLeDevice(0);
                     }
@@ -181,12 +181,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             }
         });
 
-        findViewById(R.id.跳过).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "跳过", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
@@ -255,7 +249,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         if (!mList.contains(mAddress + "=" + data.getName())) {
             String data1 = BleStrUtils.byte2HexStr(data.getScanRecord());
             String data2 = BleStrUtils.byte2HexStr(data.getManufacturerData());
-            BleLog.i(TAG, "设备地址+广播数据:" + mAddress + "||" + data1 + "||" + data2);
+            BleLog.i(TAG, "MAC=" + mAddress + " ||" + data1 + "||" + data2);
             mList.add(mAddress + "=" + data.getName());
             listAdapter.notifyDataSetChanged();
         }
@@ -272,7 +266,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     @Override
     public void onDisConnected(@NonNull String mac, int code) {
         dismissLoading();
-        Toast.makeText(mContext, "连接断开:" + code, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, getString(R.string.disconnect) + code, Toast.LENGTH_SHORT).show();
 
     }
 
