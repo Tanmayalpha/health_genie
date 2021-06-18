@@ -292,13 +292,13 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.HeightCmdActivity.class);
                 break;
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.WeightScaleBle.class);
+                intent.setClass(ShowBleActivity.this, WeightScaleBleActivity.class);
                 break;
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD:
                 intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.ADWeightScaleCmdActivity.class);
                 break;
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE:
-                intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.WeightScaleWifiBle.class);
+                intent.setClass(ShowBleActivity.this, WeightScaleWifiBleActivity.class);
                 break;
             case BleDeviceConfig.TOOTHBRUSH_WIFI_BLE:
                 intent.setClass(ShowBleActivity.this, aicare.net.cn.sdk.ailinksdkdemoandroid.ToothBrushWifiBleActivity.class);

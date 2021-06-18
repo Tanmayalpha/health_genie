@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleBleConfig;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleDeviceData;
@@ -239,17 +238,17 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
 
     //-----------------通知-------------------
 
-
+    private String mOldData="";
     @Override
-    public void onData(byte[] hex, int type) {
+    public void onData(byte[] dataOriginal,byte[] hex, int type) {
         String data = "";
         if (hex != null)
             data = BleStrUtils.byte2HexStr(hex);
-        if (type == 100) {
-            mList.add(TimeUtils.getTime() + "send->" + data);
-        } else {
-            mList.add(TimeUtils.getTime() + "notify->" + data);
+        if (mOldData.equals(data)){
+            return;
         }
+        mOldData=data;
+        mList.add(TimeUtils.getTime() + "数据ID" + type+" ,||解密数据:"+data+" ,||原始数据:"+ BleStrUtils.byte2HexStr(dataOriginal));
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
@@ -290,8 +289,6 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
                 break;
         }
         String statusStr = "状态=";
-
-
         switch (status) {
 
             case BroadcastScaleBleConfig.GET_WEIGHT_TESTING:
@@ -301,7 +298,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
                 statusStr += "测阻抗中";
                 break;
             case BroadcastScaleBleConfig.GET_IMPEDANCE_SUCCESS:
-                statusStr += "测阻抗成功";
+                statusStr+= "测阻抗成功";
                 break;
             case BroadcastScaleBleConfig.GET_IMPEDANCE_FAIL:
                 statusStr += "测阻抗失败";
@@ -309,11 +306,12 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
             case BroadcastScaleBleConfig.GET_TEST_FINISH:
                 statusStr += "测量完成";
                 break;
+            default:
+                statusStr+=Integer.toHexString(status);
+                break;
 
         }
-
-
-        String weightStr = BleDensityUtil.getInstance().holdDecimals(weight, 1);
+        String weightStr = BleDensityUtil.getInstance().holdDecimals(weight, weightDecimal);
         if (weightNegative == 1) {
             weightStr = "-" + weightStr;
         }
@@ -325,21 +323,28 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
             showData += "\n实时体重=" + weightStr + ";小数位=" + weightDecimal + ";单位=" + weightUnit + ";" + weightUnitStr;
         }
         showData += "\n阻抗=" + adc;
-        if (tempNegative == 1) {
-            showData += "\n温度=" + (-temp / 10F) + tempUnitStr;
+        if (temp == 65535) {
+            //不支持温度
+            showData += "\n温度=暂不支持";
         } else {
-            showData += "\n温度=" + (temp / 10F) + tempUnitStr;
+            if (tempNegative == 1) {
+                showData += "\n温度=" + (-temp / 10F) + tempUnitStr;
+            } else {
+                showData += "\n温度=" + (temp / 10F) + tempUnitStr;
+            }
+            if (mTemp != temp) {
+                mTemp = temp;
+                tv_broadcast_temp.setText((mTemp / 10F) + tempUnitStr);
+            }
         }
+
         showData += "\n算法ID=" + algorithmId;
 
         if (mWeightUnit != weightUnit) {
             mWeightUnit = weightUnit;
             showWeightUnit(mWeightUnit);
         }
-        if (mTemp != temp) {
-            mTemp = temp;
-            tv_broadcast_temp.setText((mTemp / 10F) + tempUnitStr);
-        }
+
 
         mList.add(showData);
         mHandler.sendEmptyMessage(REFRESH_DATA);
@@ -348,8 +353,9 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
     @Override
     public void OnDID(int cid, int vid, int pid) {
         String didStr = "cid:" + cid + "||vid:" + vid + "||pid:" + pid;
-        mList.add(TimeUtils.getTime() + "ID:" + didStr);
-        mHandler.sendEmptyMessage(REFRESH_DATA);
+//        if (tv_broadcast_did!=null){
+//            tv_broadcast_did.setText(didStr);
+//        }
     }
 
 
@@ -367,11 +373,12 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
 
     @Override
     public void onScanRecord(BleValueBean bleValueBean) {
-        if (TextUtils.isEmpty(mAddress)&&bleValueBean.isBroadcastModule()) {
+        if (TextUtils.isEmpty(mAddress) && bleValueBean.isBroadcastModule()) {
             mAddress = bleValueBean.getMac();
             if (tv_broadcast_mac != null) {
                 tv_broadcast_mac.setText(mAddress);
             }
+
         }
         //地址相同,并且是广播秤
         if (mAddress.equalsIgnoreCase(bleValueBean.getMac()) && bleValueBean.isBroadcastModule()) {

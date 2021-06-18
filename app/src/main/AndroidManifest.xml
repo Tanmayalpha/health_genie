@@ -52,8 +52,8 @@
         <activity android:name=".ConnectBleTestActivity" />
         <activity android:name=".ADWeightScaleCmdActivity" />
         <activity android:name=".ADWeightScaleUserActivity" />
-        <activity android:name=".WeightScaleWifiBle" />
-        <activity android:name=".WeightScaleBle"/>
+        <activity android:name=".WeightScaleWifiBleActivity" />
+        <activity android:name=".WeightScaleBleActivity"/>
         <activity android:name=".WifiConfigActivity"/>
         <activity android:name=".EightBodyfatActivity"/>
         <activity android:name=".TestOtaActivity"/>

@@ -1,6 +1,9 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid;
 
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +15,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.elinkthings.bleotalibrary.listener.OnBleOTAListener;
 import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
@@ -19,7 +23,6 @@ import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.AppHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
@@ -34,8 +38,8 @@ import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatDataUtil;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatRecord;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.McuHistoryRecordBean;
 
-public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, BodyFatBleUtilsData.BleBodyFatCallback, BodyFatBleUtilsData.BleBodyFatWiFiCallback {
-    private String TAG = WeightScaleWifiBle.class.getName();
+public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, BodyFatBleUtilsData.BleBodyFatCallback, BodyFatBleUtilsData.BleBodyFatWiFiCallback {
+    private String TAG = WeightScaleWifiBleActivity.class.getName();
     private String mAddress;
     private List<String> mList;
     private ArrayAdapter listAdapter;
@@ -44,10 +48,34 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
     private MHandler mMHandler;
     private EditText mEditText;
     private RadioButton kg, jing, stlb, lb;
+    private byte[] testIp = new byte[]{0x74,
+            0x65, 0x73, 0x74, 0x2e,
+            0x61, 0x69, 0x6c, 0x69,
+            0x6e, 0x6b, 0x2e, 0x72,
+            0x65, 0x76, 0x69, 0x63,
+            0x65, 0x2e, 0x61, 0x69,
+            0x63, 0x61, 0x72, 0x65,
+            0x2e, 0x6e, 0x65, 0x74,
+            0x2e, 0x63, 0x6e};
+
+    private byte[] productIp = new byte[]{
+            0x61, 0x69, 0x6c, 0x69, 0x6e, 0x6b, 0x2e,
+            0x69, 0x6f, 0x74, 0x2e, 0x61, 0x69, 0x63,
+            0x61, 0x72, 0x65, 0x2e, 0x6e, 0x65, 0x74,
+            0x2e, 0x63, 0x6e};
+
+    private byte[] IpUrl = new byte[]{
+            0x2f, 0x64, 0x65, 0x76, 0x69,
+            0x76, 0x63, 0x64, 0x2f, 0x73,
+            0x65, 0x72, 0x76, 0x64, 0x72,
+            0x52, 0x65, 0x64, 0x69, 0x72,
+            0x65, 0x63, 0x74, 0x2f};
+    private boolean isTest = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//禁止横屏
         setContentView(R.layout.activity_weight_scale_wifi_ble);
         findViewById(R.id.wifistatus).setOnClickListener(this);
         findViewById(R.id.sn).setOnClickListener(this);
@@ -57,6 +85,8 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
         findViewById(R.id.setedname).setOnClickListener(this);
         findViewById(R.id.setedpaw).setOnClickListener(this);
         findViewById(R.id.setedmac).setOnClickListener(this);
+//        findViewById(R.id.ota).setOnClickListener(this);
+//        findViewById(R.id.surroundings).setOnClickListener(this);
         mEditText = findViewById(R.id.select_wifi_et);
         kg = findViewById(R.id.kg);
         jing = findViewById(R.id.jin);
@@ -220,6 +250,26 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
     }
 
     @Override
+    public void onOtaCallback(int status) {
+        switch (status) {
+            case 0x00:
+                mList.add(0, "ota状态：" + status + " wifiOTA成功");
+                break;
+            case 0x01:
+                mList.add(0, "ota状态：" + status + " wifiOTA失败");
+                break;
+            case 0x02:
+                mList.add(0, "ota状态：" + status + " 不支持wifiOTA");
+                break;
+            case 0x03:
+                mList.add(0, "ota状态：" + status + " 模块主动开始wifiOTA（MCU收到该指令后不能断电，需要等待OTA成功或者失败）");
+                break;
+
+        }
+        mMHandler.sendEmptyMessage(ToRefreUi);
+    }
+
+    @Override
     public void onAdc(int adc, int algorithmic) {
         mList.add(0, "阻抗：" + adc + " 算法位：" + algorithmic);
         mMHandler.sendEmptyMessage(ToRefreUi);
@@ -278,12 +328,12 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
 
     @Override
     public void requestSynTime() {
-        mList.add(0,"同步时间");
+        mList.add(0, "同步时间");
         bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().synTime());
     }
 
     @Override
-    public void setTimeCallback(int type,int status) {
+    public void setTimeCallback(int type, int status) {
         String msg = "";
         if (type == CmdConfig.SET_SYS_TIME) {
             msg = "设置系统当前时间：";
@@ -401,18 +451,16 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
     private boolean issetMac = false;
 
     /**
-     *
      * @param type
      * @param status {@link BodyFatDataUtil#STATUS_SUCCESS}
-     *
      */
     @Override
     public void OnSetWifiNameOrPwdOrConnectCallback(int type, int status) {
         if (type == BodyFatDataUtil.SET_WIFI_MAC) {
             mList.add(0, "获取到设置的mac地址状态 " + status);
-            if (status == BodyFatDataUtil.STATUS_SUCCESS){
+            if (status == BodyFatDataUtil.STATUS_SUCCESS) {
                 issetMac = true;
-            }else {
+            } else {
 
             }
 
@@ -451,6 +499,41 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
     }
 
     @Override
+    public void onSetIpStatus(int status) {
+        if (status == 0) {
+            if (isTest) {
+                mList.add(0, "设置环境IP为生产环境成功");
+                mList.add(0, "设置环境路径为生产环境");
+            } else {
+                mList.add(0, "设置环境IP为测试环境成功");
+                mList.add(0, "设置环境路径为测试环境");
+            }
+            setIpUrl(IpUrl);
+        } else {
+            mList.add(0, "设置环境IP失败");
+        }
+        listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSetIpUrlStatus(int status) {
+        if (status == 0) {
+            if (isTest) {
+                mList.add(0, "设置环境路径为生产环境成功");
+                isTest = false;
+
+            } else {
+                mList.add(0, "设置环境路径为测试环境成功");
+                isTest = true;
+
+            }
+        } else {
+            mList.add(0, "设置环境路径失败");
+        }
+        listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
@@ -479,7 +562,7 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
                                 if (data.equals("") || data.length() > 8) {
                                     setPaw(data);
                                 } else {
-                                    Toast.makeText(WeightScaleWifiBle.this, "密码格式不对", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(WeightScaleWifiBleActivity.this, "密码格式不对", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -507,8 +590,80 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
             case R.id.disconnect:
                 bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().disconnectWifi());
                 break;
+//            case R.id.ota:
+////                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().ota());
+////                OtaUtil otaUtil=new OtaUtil(this,mBluetoothService.getBleDevice(mAddress));
+//                showFileChooser();
+//                break;
+//            case R.id.surroundings:
+//                if (isTest) {
+//                    setIp(productIp);
+//                    mList.add(0, "设置环境IP为生产环境");
+//
+//                } else {
+//                    setIp(testIp);
+//                    mList.add(0, "设置环境IP为测试环境");
+//
+//
+//                }
+//                listAdapter.notifyDataSetChanged();
+//
+//                break;
 
 
+        }
+
+    }
+
+
+    private void setIp(byte[] ips) {
+        if (ips.length <= 14)
+            bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentIp(0, ips));
+        else {
+            boolean isend = false;
+            int i = 0;
+            byte[] byte1 = ips;
+            while (!isend) {
+                if (byte1.length > 14) {
+                    byte[] bytes = new byte[14];
+                    System.arraycopy(ips, i, bytes, 0, bytes.length);
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentIp(1, bytes));
+                    i = i + 14;
+                    byte1 = Arrays.copyOf(ips, ips.length - i);
+                } else {
+                    isend = true;
+                    byte[] bytes = new byte[ips.length - i];
+                    System.arraycopy(ips, i, bytes, 0, bytes.length);
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentIp(0, bytes));
+                }
+
+            }
+        }
+
+    }
+
+    private void setIpUrl(byte[] setIpUrl) {
+        if (setIpUrl.length <= 14)
+            bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentUrl(0, setIpUrl));
+        else {
+            boolean isend = false;
+            int i = 0;
+            byte[] byte1 = setIpUrl;
+            while (!isend) {
+                if (byte1.length > 14) {
+                    byte[] bytes = new byte[14];
+                    System.arraycopy(setIpUrl, i, bytes, 0, bytes.length);
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentUrl(1, bytes));
+                    i = i + 14;
+                    byte1 = Arrays.copyOf(setIpUrl, setIpUrl.length - i);
+                } else {
+                    isend = true;
+                    byte[] bytes = new byte[setIpUrl.length - i];
+                    System.arraycopy(setIpUrl, i, bytes, 0, bytes.length);
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentUrl(0, bytes));
+                }
+
+            }
         }
 
     }
@@ -579,5 +734,49 @@ public class WeightScaleWifiBle extends BleBaseActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Uri uri = data.getData();
+            String path = uri.getPath();
+            mList.add(0, "ota准备就绪，请勿操作");
+            listAdapter.notifyDataSetChanged();
+            bodyFatBleUtilsData.initOtaUtil(this, uri, new OnBleOTAListener() {
+                @Override
+                public void onOtaSuccess() {
+                    mList.add(0, "ota成功");
+                    listAdapter.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onOtaFailure(int cmd, String err) {
+                    mList.add(0, "失败");
+                    listAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onOtaProgress(float progress, int currentCount, int maxCount) {
+                    mList.add(0, "otaProgress:"+progress);
+                    listAdapter.notifyDataSetChanged();
+                }
+            });
+        } else {
+
+        }
+    }
+    private static final int FILE_SELECT_CODE = 0x1002;
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }

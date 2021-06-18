@@ -122,6 +122,62 @@ public class BleDeviceConfig {
     public final static int SMART_MASK =0x0022;
 
 
+    /**
+     * 百丽达
+     */
+    public final static int BLD_WEIGHT =10086;
 
+    /**
+     * 蓝牙血氧仪
+     */
+    public final static int BLE_BOOLD_OXYGEN =0x21;
+
+    /**
+     * 咖啡秤
+     */
+    public final static int COFFEE_SCALE = 0x24;
+    /**
+     * 电滑板车
+     */
+    public final static int SMART_SCOOTER =0x0025;
+
+    /**
+     * 共享充电器
+     */
+    public final static int SHARE_CHARGER = 0x1003;
+
+    /**
+     * 共享充电器
+     */
+    public final static int SHARE_SOCKET = 0x1005;
+
+    /**
+     * 共享套套机
+     */
+    public final static int SHARE_CONDOM = 0x1007;
+
+
+    /**
+     * 身高体脂秤
+     */
+    public final static int HEIGHT_BODY_FAT = 0x0026;
+
+
+    /**
+     * 寻物器,暂定,待修改
+     */
+    public final static int FIND_DEVICE = -5;
+
+    /**
+     * 食品温度计
+     */
+    public final static int FOOD_TEMP = 0x002b;
+    public final static int TEMP_Humidity = 0x002e;
+
+
+    /**
+     * 验证不握手不加密的id
+     */
+    public final static int CLEAR_SHAKE_HANDS = -6;
 
 }

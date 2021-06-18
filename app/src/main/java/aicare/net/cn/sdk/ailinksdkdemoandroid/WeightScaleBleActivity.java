@@ -1,6 +1,7 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid;
 
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,12 +20,12 @@ import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.SendBleBean;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.AppHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
@@ -33,8 +34,8 @@ import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatRecord;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.McuHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.User;
 
-public class WeightScaleBle extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, BodyFatBleUtilsData.BleBodyFatCallback {
-    private String TAG = WeightScaleBle.class.getName();
+public class WeightScaleBleActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, BodyFatBleUtilsData.BleBodyFatCallback {
+    private String TAG = WeightScaleBleActivity.class.getName();
     private String mAddress;
     private List<String> mlogList;
     private List<String> mUserlogList;
@@ -53,6 +54,7 @@ public class WeightScaleBle extends BleBaseActivity implements View.OnClickListe
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//禁止横屏
         setContentView(R.layout.activity_weight_scale_ble);
         initView();
         setUnitinit();
@@ -314,7 +316,7 @@ public class WeightScaleBle extends BleBaseActivity implements View.OnClickListe
 
     @Override
     public void onError(int code) {
-        mlogList.add(0, "历史记录Mcu：" + code);
+        mlogList.add(0, "错误码：" + code);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
@@ -428,6 +430,21 @@ public class WeightScaleBle extends BleBaseActivity implements View.OnClickListe
             mlogList.add(0, "下发用户信息失败 " + status);
         }
         mMHandler.sendEmptyMessage(ToRefreUi);
+    }
+
+    @Override
+    public void onOtaCallback(int status) {
+
+    }
+
+    @Override
+    public void onSetIpStatus(int status) {
+
+    }
+
+    @Override
+    public void onSetIpUrlStatus(int status) {
+
     }
 
 

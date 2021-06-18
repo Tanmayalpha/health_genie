@@ -20,10 +20,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.elinkthings.bleotalibrary.dialog.DialogOtaManager;
+import com.elinkthings.bleotalibrary.listener.OnBleOTAListener;
 import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnBleDeviceDataListener;
-import com.pingwang.bluetoothlib.listener.OnBleOTAListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
@@ -163,8 +164,8 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
                 String byFileName = FileUtils.getByFileName()+mOTAFileName;
                 mList.add(TimeUtils.getTime() + "OTA已开始,请耐心等待");
                 mHandler.sendEmptyMessage(REFRESH_DATA);
-                mBleDevice.setOnDialogOTAListener(this);
-                mBleDevice.startDialogOta(byFileName);
+                DialogOtaManager build = DialogOtaManager.newBuilder().setOnBleOTAListener(this).setFilePath(byFileName).build(mBleDevice);
+                build.startOta();
                 break;
 
 
@@ -256,9 +257,7 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
         if (mBluetoothService != null) {
             mBleDevice = mBluetoothService.getBleDevice(mAddress);
             mBluetoothService.setOnCallback(this);
-            if (mBleDevice != null) {
-                mBleDevice.setOnDialogOTAListener(this);
-            }
+
         }
     }
 
@@ -347,8 +346,9 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
 
     private int progressOld;
 
+
     @Override
-    public void onOtaProgress(float progress) {
+    public void onOtaProgress(float progress, int currentCount, int maxCount) {
         int progressInt = (int) progress;
         if (progressOld != progressInt) {
             progressOld = progressInt;

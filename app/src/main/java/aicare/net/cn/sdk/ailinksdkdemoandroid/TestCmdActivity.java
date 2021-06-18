@@ -20,13 +20,13 @@ import com.pingwang.bluetoothlib.listener.OnBleDeviceDataListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackDis;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -172,7 +172,7 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         UUID UUID_NOTIFY = UUID.fromString(notify);
         if (bleDevice != null && sendUuidServer != null) {
 //            bleDevice.setNotify(notifyOpen);
-            bleDevice.setOpenNotify(UUID_NOTIFY,sendUuidServer);
+            bleDevice.setNotify(sendUuidServer,UUID_NOTIFY);
 
         }
     }

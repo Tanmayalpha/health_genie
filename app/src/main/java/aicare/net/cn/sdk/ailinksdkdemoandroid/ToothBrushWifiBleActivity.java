@@ -1,5 +1,6 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,6 +42,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//禁止横屏
         setContentView(R.layout.activity_tooth_brush_wifi_ble);
         findViewById(R.id.wifistatus).setOnClickListener(this);
         findViewById(R.id.sn).setOnClickListener(this);
@@ -52,6 +54,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
         findViewById(R.id.default_try_out).setOnClickListener(this);
         findViewById(R.id.default_time_mode).setOnClickListener(this);
         findViewById(R.id.default_mode).setOnClickListener(this);
+//        findViewById(R.id.ota).setOnClickListener(this);
 
         mEditText = findViewById(R.id.select_wifi_et);
         select_gears_et = findViewById(R.id.select_gears_et);
@@ -250,7 +253,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
                     mToothBrushWiFiBleUtilsData.queryBleStatus();
                     break;
                 case R.id.sn:
-                    mToothBrushWiFiBleUtilsData.getDeviceId();
+                    mToothBrushWiFiBleUtilsData.getDevicedid();
                     break;
                 case R.id.scan_wifi:
                     mToothBrushWiFiBleUtilsData.scanWifi();
@@ -270,7 +273,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
 
                                     if (data.equals("") || data.length() > 8) {
                                         dataPaw = data.trim();
-                                        mToothBrushWiFiBleUtilsData.setWifiMac(wifimacMap.get(selectWifi));
+                                        mToothBrushWiFiBleUtilsData.setWifimac(wifimacMap.get(selectWifi));
                                     } else {
                                         Toast.makeText(ToothBrushWifiBleActivity.this, "密码格式不对", Toast.LENGTH_SHORT).show();
                                     }
@@ -333,7 +336,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
                         }
                         if (gears != null) {
                             try {
-                                mToothBrushWiFiBleUtilsData.setTryOut(Integer.parseInt(gears[1]), Integer.parseInt(gears[2]),0,0);
+                                mToothBrushWiFiBleUtilsData.setTryOut(Integer.parseInt(gears[1]), Integer.parseInt(gears[2]), 0, 0);
                             } catch (NumberFormatException e) {
                                 e.printStackTrace();
                                 Toast.makeText(this, "请输入时长,档位,档位级别(数字加符号)", Toast.LENGTH_SHORT).show();
@@ -345,9 +348,15 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
                     break;
                 case R.id.default_time_mode:
 
-                    mToothBrushWiFiBleUtilsData.getDefaultGearAndDuration();
+                    mToothBrushWiFiBleUtilsData.getdefaultGearAndDuration();
                     break;
-        }
+
+//                case R.id.ota:
+//
+//                    mToothBrushWiFiBleUtilsData.setOta();
+//
+//                    break;
+            }
 
     }
 
@@ -437,6 +446,28 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
     @Override
     public void onTwoLevelModeDefault(int mode) {
         mList.add(0, "获取二级档位默认值:" + mode);
+        mMHandler.sendEmptyMessage(ToRefreUi);
+    }
+
+
+    @Override
+    public void onOTA(int status) {
+        String s = " ";
+        switch (status) {
+            case 0x00:
+                s = "wifiOTA 成功";
+                break;
+            case 0x01:
+                s = "wifiOTA 失败";
+                break;
+            case 0x02:
+                s = "不支持 wifiOTA";
+                break;
+            case 0x03:
+                s = "模块主动开始 wifiOTA（MCU 收到该指 令后不能断电，需要等待 OTA 成功或者失败）";
+                break;
+        }
+        mList.add(0, s);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
