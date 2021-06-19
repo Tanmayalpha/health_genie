@@ -1,4 +1,4 @@
-package aicare.net.cn.sdk.ailinksdkdemoandroid;
+package aicare.net.cn.sdk.ailinksdkdemoandroid.base;
 
 import android.content.ComponentName;
 import android.content.Context;

@@ -24,10 +24,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushBleCmd;
 import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushWiFiBleUtilsData;
 
+/**
+ * Wifi+ble 牙刷
+ */
 public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, ToothBrushWiFiBleUtilsData.BleToothBrushWiFiCallback, ToothBrushWiFiBleUtilsData.BleToothBrushCallback {
     private String TAG = ToothBrushWifiBleActivity.class.getName();
     private String mAddress;
@@ -54,7 +58,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
         findViewById(R.id.default_try_out).setOnClickListener(this);
         findViewById(R.id.default_time_mode).setOnClickListener(this);
         findViewById(R.id.default_mode).setOnClickListener(this);
-//        findViewById(R.id.ota).setOnClickListener(this);
+        findViewById(R.id.ota).setOnClickListener(this);
 
         mEditText = findViewById(R.id.select_wifi_et);
         select_gears_et = findViewById(R.id.select_gears_et);
@@ -351,11 +355,11 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
                     mToothBrushWiFiBleUtilsData.getdefaultGearAndDuration();
                     break;
 
-//                case R.id.ota:
-//
-//                    mToothBrushWiFiBleUtilsData.setOta();
-//
-//                    break;
+                case R.id.ota:
+
+                    mToothBrushWiFiBleUtilsData.setOta();
+
+                    break;
             }
 
     }

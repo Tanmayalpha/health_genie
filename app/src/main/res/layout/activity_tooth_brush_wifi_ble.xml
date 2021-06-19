@@ -56,6 +56,15 @@
         android:layout_toEndOf="@+id/sn"
         android:text="断开连接" />
 
+    <Button
+        android:id="@+id/ota"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scan_wifi"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/connect_wifi"
+        android:text="OTA" />
 
     <Button
     android:id="@+id/default_try_out"

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleBleConfig;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleDeviceData;
@@ -45,7 +46,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
     private final int REFRESH_DATA = 3;
 
     private RadioButton mRadioButtonKg, mRadioButtonLb, mRadioButtonLbLb, mRadioButtonG, mRadioButtonOz, mRadioButtonStLb, mRadioButtonJin;
-    private TextView tv_broadcast_temp, tv_broadcast_mac;
+    private TextView tv_broadcast_temp, tv_broadcast_mac,tv_broadcast_did;
 
     private List<String> mList;
     private ArrayAdapter listAdapter;
@@ -104,6 +105,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
         mRadioButtonLbLb = findViewById(R.id.radio_weight_lb_lb);
 
         tv_broadcast_mac = findViewById(R.id.tv_broadcast_mac);
+        tv_broadcast_did = findViewById(R.id.tv_broadcast_did);
 
     }
 
@@ -353,9 +355,9 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
     @Override
     public void OnDID(int cid, int vid, int pid) {
         String didStr = "cid:" + cid + "||vid:" + vid + "||pid:" + pid;
-//        if (tv_broadcast_did!=null){
-//            tv_broadcast_did.setText(didStr);
-//        }
+        if (tv_broadcast_did!=null){
+            tv_broadcast_did.setText(didStr);
+        }
     }
 
 

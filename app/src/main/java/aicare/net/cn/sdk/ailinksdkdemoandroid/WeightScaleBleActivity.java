@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.AddUserDialog;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.AppHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
@@ -34,6 +35,9 @@ import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatRecord;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.McuHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.User;
 
+/**
+ * Ble体脂秤
+ */
 public class WeightScaleBleActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, BodyFatBleUtilsData.BleBodyFatCallback {
     private String TAG = WeightScaleBleActivity.class.getName();
     private String mAddress;

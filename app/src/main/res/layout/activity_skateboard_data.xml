@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/ll_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <Button
+                    android:id="@+id/btn_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空" />
+
+                <Button
+                    android:id="@+id/btn_connect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="连接" />
+
+                <Button
+                    android:id="@+id/btn_disconnect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="断开" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_heartbeat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="心跳" />
+
+                <Button
+                    android:id="@+id/btn_open_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开灯" />
+
+                <Button
+                    android:id="@+id/btn_close_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="关灯" />
+
+                <Button
+                    android:id="@+id/btn_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时间" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_start_boost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="助力" />
+
+                <Button
+                    android:id="@+id/btn_start_no_boost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="非助力" />
+
+                <Button
+                    android:id="@+id/btn_set_unit_km"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="公里" />
+
+                <Button
+                    android:id="@+id/btn_set_unit_mi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="英里" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_zero_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0启动" />
+
+                <Button
+                    android:id="@+id/btn_no_zero_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="非0启动" />
+
+                <Button
+                    android:id="@+id/btn_constant_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="定速" />
+
+                <Button
+                    android:id="@+id/btn_no_constant_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="不定速" />
+
+                <Button
+                    android:id="@+id/btn_reset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="清空所有数据" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_reset_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="恢复出厂设置" />
+
+                <Button
+                    android:id="@+id/btn_reset_mileage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空里程" />
+
+                <Button
+                    android:id="@+id/btn_reset_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空时间" />
+
+                <Button
+                    android:id="@+id/btn_set_auto_shutdown_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="自动关机时间" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_old_pwd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:digits="0123456789"
+                    android:hint="oldPwd"
+                    android:maxLength="6"
+                    android:text="123456" />
+
+                <EditText
+                    android:id="@+id/et_new_pwd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:digits="0123456789"
+                    android:hint="newPwd"
+                    android:maxLength="6"
+                    android:text="123456" />
+
+                <Button
+                    android:id="@+id/btn_setLockCarPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="修改密码" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_read_auto_shutdown_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读自动关机时间" />
+
+                <Button
+                    android:id="@+id/btn_gear_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置档位速度" />
+
+                <Button
+                    android:id="@+id/btn_setMeterBackLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置背光" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_setControllerTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置控制器的实时时间" />
+
+                <Button
+                    android:id="@+id/btn_readControllerTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读取控制器的时间" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_readControllerSingleMileage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读取控制器单次行驶里程" />
+
+                <Button
+                    android:id="@+id/btn_readControllerAllMileage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读取控制器总行驶里程" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_readControllerTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读取控制器温度" />
+
+                <Button
+                    android:id="@+id/btn_readControllerDrivingCurrent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读取控制器行驶电流" />
+
+                <Button
+                    android:id="@+id/btn_readControllerVoltage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读电压" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_readAllPower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读总容量" />
+
+                <Button
+                    android:id="@+id/btn_readLastPower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读剩余容量" />
+
+                <Button
+                    android:id="@+id/btn_readBatteryDischargeNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读充放电次数" />
+
+                <Button
+                    android:id="@+id/btn_readBatteryCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读电池信息" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_readCompanyVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读版本" />
+
+                <Button
+                    android:id="@+id/btn_readMotorPulse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读电机脉冲" />
+
+                <Button
+                    android:id="@+id/btn_readMotorPulseInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读电机脉冲间隔" />
+
+                <Button
+                    android:id="@+id/btn_readMotorParameter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读电机参数" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_readWheelSize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读车轮尺寸" />
+
+                <Button
+                    android:id="@+id/btn_readFlashDataVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读FLASH版本" />
+
+                <Button
+                    android:id="@+id/btn_readBootloaderVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读Boot版本" />
+
+                <Button
+                    android:id="@+id/btn_readMeterBackLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读背光亮度" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_setAutoNightMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="夜间模式" />
+
+                <Button
+                    android:id="@+id/btn_readNightMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读夜间模式" />
+
+                <Button
+                    android:id="@+id/btn_setCallPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="来电" />
+
+                <Button
+                    android:id="@+id/btn_setSMSData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="短信" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_setSoftwareData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空消息" />
+
+                <Button
+                    android:id="@+id/btn_readBlePassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="密码查询" />
+
+                <Button
+                    android:id="@+id/btn_setNavigationMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="导航推送" />
+
+                <Button
+                    android:id="@+id/btn_setResetCmd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="重置指令" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_setLockCar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="锁车/解锁" />
+
+
+                <Button
+                    android:id="@+id/btn_readServicePassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="售后密码" />
+
+                <Button
+                    android:id="@+id/btn_setWeather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="天气信息推送" />
+
+                <Button
+                    android:id="@+id/btn_update_conditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="升级条件" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_setDeviceLanguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置语言" />
+
+                <Button
+                    android:id="@+id/btn_getDeviceImageFontVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读字库版本" />
+
+                <Button
+                    android:id="@+id/btn_getControllerVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读控制器版本" />
+
+                <Button
+                    android:id="@+id/btn_getTpVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读TP版本" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_setPair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="配对" />
+
+                <Button
+                    android:id="@+id/btn_checkPwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="验证密码" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_ota_boot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="表头boot" />
+
+                <Button
+                    android:id="@+id/btn_ota_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="表头APP" />
+
+
+                <Button
+                    android:id="@+id/btn_ota_flash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="表头flash" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_ota_app_controller"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="控制器APP" />
+
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_ota_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="静默升级" />
+
+                <Button
+                    android:id="@+id/btn_ble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BLE_OTA" />
+
+                <Button
+                    android:id="@+id/btn_ble_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ble_V" />
+
+                <EditText
+                    android:id="@+id/et_ble_ota_step"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_get_test_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读测试状态" />
+
+                <Button
+                    android:id="@+id/btn_go_setProductionTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="进入整机测试" />
+
+                <Button
+                    android:id="@+id/btn_exit_setProductionTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="退出整机测试" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ListView
+        android:id="@+id/listviewData"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll">
+
+    </ListView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

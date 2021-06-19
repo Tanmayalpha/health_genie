@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -26,6 +27,7 @@ import com.pingwang.bluetoothlib.listener.OnBleHandshakeListener;
 import com.pingwang.bluetoothlib.listener.OnBleInfoListener;
 import com.pingwang.bluetoothlib.listener.OnBleOtherDataListener;
 import com.pingwang.bluetoothlib.listener.OnBleParameterListener;
+import com.pingwang.bluetoothlib.listener.OnBleRssiListener;
 import com.pingwang.bluetoothlib.listener.OnBleSettingListener;
 import com.pingwang.bluetoothlib.listener.OnBleVersionListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackDis;
@@ -33,12 +35,12 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDataUtils;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -48,14 +50,13 @@ import androidx.annotation.Nullable;
  * 2019/4/25<br>
  * 基础指令信息数据显示
  */
-public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleDeviceDataListener, OnBleVersionListener, OnMcuParameterListener, OnBleErrListener, OnBleInfoListener,
-        OnBleParameterListener, OnBleCompanyListener, OnBleSettingListener, OnBleHandshakeListener, View.OnClickListener, OnBleOtherDataListener {
+public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleDeviceDataListener, OnBleVersionListener, OnMcuParameterListener, OnBleErrListener, OnBleInfoListener, OnBleParameterListener, OnBleCompanyListener, OnBleSettingListener, OnBleHandshakeListener, View.OnClickListener, OnBleOtherDataListener, OnBleRssiListener {
 
     private static String TAG = BleCmdActivity.class.getName();
     private final int REFRESH_DATA = 3;
     private List<String> mList;
     private ArrayAdapter listAdapter;
-    private EditText etName, etMacType, etDid, etBroadcastTime, etMcuType, etSleepTime;
+    private EditText etName, etMacType, etCid, etVid, etPid, etBroadcastTime, etMcuType, etSleepTime;
     private Context mContext;
     private String mAddress;
     private BleSendCmdUtil mBleSendCmdUtil;
@@ -65,7 +66,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
     /**
      * 是否暂停显示数据
      */
-    private boolean mPauseShowCmd=false;
+    private boolean mPauseShowCmd = false;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -120,9 +121,12 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
         findViewById(R.id.btnSleepTimeWrite).setOnClickListener(this);
         findViewById(R.id.btnSleepTimeRead).setOnClickListener(this);
         findViewById(R.id.btn_start_ble).setOnClickListener(this);
+        findViewById(R.id.btnNameRssi).setOnClickListener(this);
         etName = findViewById(R.id.etName);
         etMacType = findViewById(R.id.etMacType);
-        etDid = findViewById(R.id.etDid);
+        etCid = findViewById(R.id.etCid);
+        etVid = findViewById(R.id.etVid);
+        etPid = findViewById(R.id.etPid);
         etBroadcastTime = findViewById(R.id.etBroadcastTime);
         etMcuType = findViewById(R.id.etMcuType);
         etSleepTime = findViewById(R.id.etSleepTime);
@@ -138,16 +142,25 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
                 mHandler.sendEmptyMessage(REFRESH_DATA);
                 break;
             case R.id.btnPause:
-                mPauseShowCmd=!mPauseShowCmd;
+                mPauseShowCmd = !mPauseShowCmd;
                 break;
             case R.id.btnHandshake:
-                if (mBleDevice != null)
-                    mBleDevice.sendHandshake();
+                if (mBleDevice != null) {
+                    mBleDevice.setHandshakeStatus(true);
+//                    mBleDevice.sendHandshake();
+                    mList.add(TimeUtils.getTime() + "发送握手");
+                    mHandler.sendEmptyMessage(REFRESH_DATA);
+                }
                 break;
             case R.id.btnVersion:
-                sendBleBean = new SendBleBean();
-                sendBleBean.setHex(mBleSendCmdUtil.getBleVersion());
-                sendData(sendBleBean);
+//                sendBleBean = new SendBleBean();
+//                sendBleBean.setHex(mBleSendCmdUtil.getBleVersion());
+//                sendData(sendBleBean);
+                if (mBleDevice != null) {
+                    String version = mBleDevice.getVersion();
+                    mList.add(TimeUtils.getTime() + "版本号:" + version);
+                    mHandler.sendEmptyMessage(REFRESH_DATA);
+                }
                 break;
             case R.id.btnBattery:
                 sendBleBean = new SendBleBean();
@@ -204,21 +217,29 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
                 sendData(sendBleBean);
                 break;
             case R.id.btnDidWrite:
-                String didStr = etDid.getText().toString().trim().toLowerCase(Locale.US);
-                if (didStr.contains(",")) {
-                    String[] didStrS = didStr.split(",");
-                    if (didStrS.length > 5) {
-                        int cidS = Integer.parseInt(didStrS[0]);
-                        int vidS = Integer.parseInt(didStrS[1]);
-                        int pidS = Integer.parseInt(didStrS[2]);
-                        int cid = Integer.parseInt(didStrS[3]);
-                        int vid = Integer.parseInt(didStrS[4]);
-                        int pid = Integer.parseInt(didStrS[5]);
-                        byte[] did = bleDataUtils.getDid(cidS, vidS, pidS, cid, vid, pid);
-                        sendBleBean = new SendBleBean();
-                        sendBleBean.setHex(mBleSendCmdUtil.setDid(did));
-                        sendData(sendBleBean);
+                try {
+                    String cidS = etCid.getText().toString().trim().toLowerCase(Locale.US);
+                    String vidS = etVid.getText().toString().trim().toLowerCase(Locale.US);
+                    String pidS = etPid.getText().toString().trim().toLowerCase(Locale.US);
+                    int cid = 0;
+                    int vid = 0;
+                    int pid = 0;
+                    if (!TextUtils.isEmpty(cidS)) {
+                        cid = Integer.parseInt(cidS);
                     }
+                    if (!TextUtils.isEmpty(vidS)) {
+                        vid = Integer.parseInt(vidS);
+                    }
+                    if (!TextUtils.isEmpty(pidS)) {
+                        pid = Integer.parseInt(pidS);
+                    }
+
+                    byte[] did = bleDataUtils.getDid(1, 1, 1, cid, vid, pid);
+                    sendBleBean = new SendBleBean();
+                    sendBleBean.setHex(mBleSendCmdUtil.setDid(did));
+                    sendData(sendBleBean);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
                 }
                 break;
             case R.id.btnDidRead:
@@ -275,6 +296,11 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
                 sendBleBean.setHex(mBleSendCmdUtil.setToWake());
                 sendData(sendBleBean);
                 break;
+            case R.id.btnNameRssi:
+                if (mBleDevice != null) {
+                    mBleDevice.readRssi();
+                }
+                break;
 
 
         }
@@ -300,9 +326,10 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
             if (mBleDevice == null) {
                 finish();
                 BleLog.i(TAG, "mBleDevice==null");
+                return;
             }
             mBleDevice.setOnBleVersionListener(this);
-//            mBleDevice.setOnBleDeviceDataListener(this);
+            mBleDevice.setOnBleDeviceDataListener(this);
             mBleDevice.setOnBleErrListener(this);
             mBleDevice.setOnBleInfoListener(this);
             mBleDevice.setOnMcuParameterListener(this);
@@ -311,6 +338,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
             mBleDevice.setOnBleParameterListener(this);
             mBleDevice.setOnBleHandshakeListener(this);
             mBleDevice.setOnBleOtherDataListener(this);
+            mBleDevice.setOnBleRssiListener(this);
         }
     }
 
@@ -383,7 +411,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
 
     @Override
     public void onNotifyOtherData(byte[] data) {
-        if (mPauseShowCmd){
+        if (mPauseShowCmd) {
             return;
         }
         mList.add(TimeUtils.getTime() + "透传数据:" + BleStrUtils.byte2HexStr(data));
@@ -391,8 +419,13 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
     }
 
     @Override
+    public void onNotifyDataA6(byte[] hex) {
+
+    }
+
+    @Override
     public void onNotifyData(byte[] hex, int type) {
-        if (mPauseShowCmd){
+        if (mPauseShowCmd) {
             return;
         }
         String data = "";
@@ -535,6 +568,16 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackDis, On
     @Override
     public void onBleMode(int mode) {
         mList.add(TimeUtils.getTime() + "模式:" + mode);
+        mHandler.sendEmptyMessage(REFRESH_DATA);
+    }
+
+    @Override
+    public void OnRssi(int rssi) {
+        String name = "";
+        if (mBleDevice != null) {
+            name = mBleDevice.getName();
+        }
+        mList.add(TimeUtils.getTime() + "名称:" + name + " ,||信号:" + rssi);
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 

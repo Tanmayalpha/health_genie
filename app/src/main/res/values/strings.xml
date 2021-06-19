@@ -6,7 +6,6 @@
     <string name="baby_hold">锁定</string>
 
 
-
     <string name="rtk_dfu_progress_state_origin"> ready to upgrade </string>
     <string name="rtk_dfu_state_abort_processing">waiting for cancellation...</string>
     <string name="rtk_dfu_state_aborted"> has been cancelled</string>
@@ -41,6 +40,10 @@
     <string name="success">success</string>
     <string name="failure">failure</string>
     <string name="check_version">version:</string>
+
+    <string name="upgrade_controller">Upgrade controller</string>
+    <string name="upgrade_watch">Upgrade instrument</string>
+
     <string name="sphygmometer">sphygmometer</string>
     <string name="forehead_gun">Forehead gun</string>
     <string name="thermometer">thermometer</string>

@@ -8,6 +8,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.pingwang.bluetoothlib.BleBaseActivity;
@@ -15,6 +16,7 @@ import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
+import com.pingwang.bluetoothlib.device.SendMcuBean;
 import com.pingwang.bluetoothlib.listener.CallbackDisIm;
 import com.pingwang.bluetoothlib.listener.OnBleCompanyListener;
 import com.pingwang.bluetoothlib.listener.OnBleVersionListener;
@@ -48,6 +50,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     private ArrayAdapter listAdapter;
 
     private Context mContext;
+    private EditText et_type;
     private SphyDeviceData mBleDevice;
     private String mAddress;
     private BleSendCmdUtil mBleSendCmdUtil;
@@ -95,10 +98,12 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         });
 
 
+        findViewById(R.id.btn1).setOnClickListener(this);
         findViewById(R.id.btnVersion).setOnClickListener(this);
         findViewById(R.id.btnBattery).setOnClickListener(this);
         findViewById(R.id.btn_get_did).setOnClickListener(this);
         findViewById(R.id.clear).setOnClickListener(this);
+        et_type = findViewById(R.id.et_type);
 
         cmdBtn();
     }
@@ -153,7 +158,12 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
                 sendBleBean.setHex(mBleSendCmdUtil.getDid());
                 mBleDevice.sendData(sendBleBean);
                 break;
-
+            case R.id.btn1:
+                String cmd = et_type.getText().toString().trim();
+                SendMcuBean sendDataBean = new SendMcuBean();
+                sendDataBean.setHex(type,cmd.getBytes());
+                mBleDevice.sendData(sendDataBean);
+                break;
             case R.id.clear:
                 if (mList != null)
                     mList.clear();
@@ -258,7 +268,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
         @Override
         public void getSphyCmd(byte cmd) {
-            mList.add(TimeUtils.getTime() + "cmd:" + cmd);
+            mList.add(TimeUtils.getTime() + "指令:" + cmd);
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
 
@@ -266,7 +276,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         public void sphyDataNow(int dia, int sys, int decimal, int pul, int unit) {
             String diaStr = BleDensityUtil.getInstance().holdDecimals(dia, decimal);
             String sysStr = BleDensityUtil.getInstance().holdDecimals(sys, decimal);
-            mList.add(TimeUtils.getTime() + "current:dia=" + diaStr + " sys=" + sysStr + " pul=" + pul + " unit=" + unit);
+            mList.add(TimeUtils.getTime() + "实时:dia=" + diaStr + "sys=" + sysStr + "pul=" + pul + "unit" + "=" + unit);
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
 
@@ -274,7 +284,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         public void sphyData(int dia, int sys, int decimal, int pul, int unit) {
             String diaStr = BleDensityUtil.getInstance().holdDecimals(dia, decimal);
             String sysStr = BleDensityUtil.getInstance().holdDecimals(sys, decimal);
-            mList.add(TimeUtils.getTime() + "result:dia=" + diaStr + " sys=" + sysStr + " pul=" + pul + " unit=" + unit);
+            mList.add(TimeUtils.getTime() + "稳定:dia=" + diaStr + "sys=" + sysStr + "pul=" + pul + "unit" + "=" + unit);
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
 
@@ -283,31 +293,31 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
             String showData = "";
             switch (unit) {
                 case CmdConfig.SETTING_SUCCESS:
-                    showData = getString(R.string.set_success);
+                    showData = "设置单位成功";
                     break;
                 case CmdConfig.SETTING_FAILURE:
-                    showData = getString(R.string.set_failure);
+                    showData = "设置单位失败";
 
                     break;
                 case CmdConfig.SETTING_ERR:
 
-                    showData = getString(R.string.set_err);
+                    showData = "设置单位错误";
                     break;
             }
-            mList.add(TimeUtils.getTime() + showData+" unit="+SphyCmdActivity.this.unit);
+            mList.add(TimeUtils.getTime() + showData);
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
 
         @Override
         public void getErr(byte status) {
-            mList.add(TimeUtils.getTime() + "Err:" + status);
+            mList.add(TimeUtils.getTime() + "错误:" + status);
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
     }
 
     @Override
     public void onBmVersion(String version) {
-        mList.add(TimeUtils.getTime() + "Version:" + version);
+        mList.add(TimeUtils.getTime() + "版本号:" + version);
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
@@ -320,7 +330,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
     @Override
     public void onMcuBatteryStatus(int status, int battery) {
-        mList.add(TimeUtils.getTime() + getString(R.string.power) + battery + "%");
+        mList.add(TimeUtils.getTime() + "电量:" + battery + "%");
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
@@ -329,7 +339,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         String time =
                 times[0] + "-" + times[1] + "-" + times[2] + "  " + times[3] + ":" + times[4] +
                         ":" + times[5];
-        mList.add(TimeUtils.getTime() + "system Time:" + time);
+        mList.add(TimeUtils.getTime() + "系统时间:" + time);
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 

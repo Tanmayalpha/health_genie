@@ -34,10 +34,9 @@ import androidx.annotation.Nullable;
 /**
  * xing<br>
  * 2019/4/25<br>
- * 显示数据
+ * 测试指令界面
  */
-public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleDeviceDataListener,
-        View.OnClickListener {
+public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleDeviceDataListener, View.OnClickListener {
 
     private static String TAG = TestCmdActivity.class.getName();
     private final int REFRESH_DATA = 3;
@@ -67,8 +66,7 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
                 case SEND_DATA:
 
                     if (sendUuid != null && sendUuidServer != null) {
-                        SendDataBean sendDataBean = new SendDataBean(sendCmd.getBytes(), sendUuid
-                                , BleConfig.WRITE_DATA, sendUuidServer);
+                        SendDataBean sendDataBean = new SendDataBean(sendCmd.getBytes(), sendUuid, BleConfig.WRITE_DATA, sendUuidServer);
                         bleDevice.sendData(sendDataBean);
                         mHandler.sendEmptyMessageDelayed(SEND_DATA, sendTime);
                     }
@@ -135,8 +133,7 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
                 sendUuid = UUID.fromString(uuid);
                 break;
             case R.id.btn_uuid_server:
-                String uuidServer =
-                        et_uuid_server.getText().toString().trim().toUpperCase(Locale.ENGLISH);
+                String uuidServer = et_uuid_server.getText().toString().trim().toUpperCase(Locale.ENGLISH);
                 if (uuidServer.length() == 8) {
                     uuidServer += uuidEnd;
                 }
@@ -172,7 +169,11 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         UUID UUID_NOTIFY = UUID.fromString(notify);
         if (bleDevice != null && sendUuidServer != null) {
 //            bleDevice.setNotify(notifyOpen);
-            bleDevice.setNotify(sendUuidServer,UUID_NOTIFY);
+            if (notifyOpen) {
+                bleDevice.setNotify(sendUuidServer, UUID_NOTIFY);
+            } else {
+                bleDevice.setCloseNotify(sendUuidServer, UUID_NOTIFY);
+            }
 
         }
     }
@@ -261,8 +262,6 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         }
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
-
-
 
 
     @Override

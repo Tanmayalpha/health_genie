@@ -85,7 +85,25 @@
         android:layout_marginStart="9dp"
         android:layout_marginTop="5dp"
         android:text="获取当前连接wifi名称" />
+    <Button
+        android:id="@+id/ota"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setedmac"
+        android:layout_toEndOf="@+id/setedname"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="5dp"
+        android:text="ota" />
 
+    <Button
+        android:id="@+id/surroundings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setedmac"
+        android:layout_toEndOf="@+id/ota"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="5dp"
+        android:text="切换环境" />
 
     <RadioGroup
         android:id="@+id/unit"

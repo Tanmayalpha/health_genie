@@ -24,11 +24,11 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.thermometer.TempDeviceData;
@@ -37,7 +37,7 @@ import cn.net.aicare.modulelibrary.module.thermometer.TempDeviceData;
 /**
  * xing<br>
  * 2019/4/25<br>
- * 显示数据
+ * 体温计
  */
 public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleVersionListener, OnMcuParameterListener, OnBleCompanyListener, View.OnClickListener {
 
@@ -50,6 +50,7 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
      * 服务Intent
      */
     private Context mContext;
+    private EditText et_type;
     private TempDeviceData mBleDevice;
     private String mAddress;
     private BleSendCmdUtil mBleSendCmdUtil;
@@ -91,6 +92,7 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         findViewById(R.id.btnBattery).setOnClickListener(this);
         findViewById(R.id.btn_get_did).setOnClickListener(this);
         findViewById(R.id.clear).setOnClickListener(this);
+        et_type = findViewById(R.id.et_type);
 
         cmdBtn();
     }
@@ -129,7 +131,12 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
                 sendBleBean.setHex(mBleSendCmdUtil.getDid());
                 mBleDevice.sendData(sendBleBean);
                 break;
-
+            case R.id.btn1:
+                String cmd = et_type.getText().toString().trim();
+                SendMcuBean sendDataBean = new SendMcuBean();
+                sendDataBean.setHex(type,cmd.getBytes());
+                mBleDevice.sendData(sendDataBean);
+                break;
             case R.id.clear:
                 if (mList != null)
                     mList.clear();

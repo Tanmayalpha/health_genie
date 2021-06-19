@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/kg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kg"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/jin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="斤"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/st_lb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ST:LB"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/lb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lb"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cm"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cm"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/inch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="inch"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/ft_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ft-in"
+            android:textAllCaps="false" />
+
+
+        <TextView
+            android:layout_gravity="top"
+            android:gravity="top"
+            android:id="@+id/text"
+            android:text="体重单位：kg \n身高单位：cm, \n模式 身高体脂模式"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/deviceStatus"
+            android:text="获取设备状态"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/bodyfat"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="身高体脂模式"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="体重模式"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/baby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="抱婴模式"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/voice_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取声音状态"
+            android:textAllCaps="false" />
+        <Button
+            android:id="@+id/voice_open"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="声音开"
+            android:textAllCaps="false" />
+        <Button
+            android:id="@+id/voice_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="声音关"
+            android:textAllCaps="false" />
+        <Button
+            android:id="@+id/height_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="体重身高模式"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/girl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="女，18岁，165cm"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男，28岁，170cm"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="回复测量完成"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

@@ -7,7 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5">
+        android:layout_weight="0.39">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+             >
 
                 <Button
                     android:id="@+id/clear"
@@ -33,15 +33,25 @@
                     android:layout_height="wrap_content"
                     android:text="获取版本"
                     android:textAllCaps="false" />
-
-
+                <Button
+                    android:id="@+id/get_AIQ"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IAQ数据"
+                    android:textAllCaps="false" />
+                <Button
+                    android:id="@+id/close_power"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="关闭电源"
+                    android:textAllCaps="false" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+               >
 
 
                 <Button
@@ -64,6 +74,27 @@
                     android:layout_height="wrap_content"
                     android:text="风扇控制"
                     android:textAllCaps="false" />
+                <Button
+                    android:id="@+id/set_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测试模式"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               >
+
+
+                <Button
+                    android:id="@+id/set_payload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="显示payload"
+                    android:textAllCaps="false" />
+
 
             </LinearLayout>
 

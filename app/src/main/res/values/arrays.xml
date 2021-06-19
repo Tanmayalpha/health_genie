@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="food_temp_probe">
+        <item>所有探针</item>
+        <item>探针1</item>
+        <item>探针2</item>
+        <item>探针3</item>
+        <item>探针4</item>
+        <item>探针5</item>
+        <item>探针6</item>
+        <item>探针7</item>
+        <item>探针8</item>
+    </string-array>
+
+    <string-array name="share_socket_id">
+        <item>0x00</item>
+        <item>0x01</item>
+    </string-array>
+</resources>

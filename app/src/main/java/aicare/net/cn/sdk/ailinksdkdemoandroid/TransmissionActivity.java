@@ -1,5 +1,6 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,21 +10,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import androidx.annotation.Nullable;
-
 import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
+import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.Transmission.TransmissionDeviceData;
 
+/**
+ * 透传界面
+ */
 public class TransmissionActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, TransmissionDeviceData.MyBleCallback {
     private EditText et, et_cid;
     private Button send, bt_clear, bt_clear_log,bt_cid;
@@ -68,6 +71,7 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//禁止横屏
         setContentView(R.layout.activity_transmission);
         WeakReference weakReference = new WeakReference(new MHandler());
         mMHandler = (MHandler) weakReference.get();
@@ -97,10 +101,6 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
                 byte[] hexStr = BleStrUtils.stringToByte(hex);
                 String cid = et_cid.getText().toString().toUpperCase().trim();
                 int hexStrCid = Integer.parseInt(cid, 16);
-
-
-
-
                 if (mTransmissionDeviceData != null) {
                     mTransmissionDeviceData.setSendData(hexStrCid, hexStr);
                 }
@@ -125,7 +125,7 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
 
     @Override
     public void showdata(String data) {
-        mlogList.add(0, "收 payload数据"+TimeUtils.getTime()+data);
+        mlogList.add(0, "收 payload数据"+ TimeUtils.getTime()+data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 

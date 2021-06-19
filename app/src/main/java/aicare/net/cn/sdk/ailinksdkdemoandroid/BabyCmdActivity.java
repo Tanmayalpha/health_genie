@@ -24,22 +24,21 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.babyscale.BabyBleConfig;
 import cn.net.aicare.modulelibrary.module.babyscale.BabyDeviceData;
 
 
-
 /**
  * xing<br>
  * 2019/4/25<br>
- * 显示数据
+ * 婴儿秤
  */
 public class BabyCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleVersionListener
         , OnMcuParameterListener, OnBleCompanyListener, View.OnClickListener,
@@ -431,6 +430,9 @@ public class BabyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
     @Override
     protected void onDestroy() {
+        if (babyDevice!=null){
+            babyDevice.disconnect();
+        }
         super.onDestroy();
         BleLog.i(TAG, "onDestroy");
     }

@@ -16,6 +16,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,16 +45,16 @@ import androidx.core.app.ActivityCompat;
 /**
  * xing<br>
  * 2019/4/25<br>
- * 显示数据
+ * OTA测试界面
  */
-public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
-        OnBleDeviceDataListener, View.OnClickListener, OnBleOTAListener, ShowListDialogFragment.onDialogListener {
+public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle, OnBleDeviceDataListener, View.OnClickListener, OnBleOTAListener, ShowListDialogFragment.onDialogListener {
 
     private static String TAG = TestOtaActivity.class.getName();
     private final int REFRESH_DATA = 3;
     private final int SEND_DATA = 4;
 
     private TextView mTvVersion;
+    private Button btn_shake_hands;
 
     private List<String> mList;
     private ArrayAdapter listAdapter;
@@ -63,6 +64,7 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
 
     private ArrayList<DialogStringImageAdapter.DialogStringImageBean> mDialogList;
     private String mOTAFileName;
+    private DialogOtaManager mDialogOtaManager;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -98,29 +100,31 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
         ListView listView = findViewById(R.id.listview);
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mList);
         listView.setAdapter(listAdapter);
-
+        mTvVersion = findViewById(R.id.tv_version);
+        btn_shake_hands = findViewById(R.id.btn_shake_hands);
+        btn_shake_hands.setTag(false);
         findViewById(R.id.btn_ota_connect).setOnClickListener(this);
         findViewById(R.id.btn_ota_dis).setOnClickListener(this);
         findViewById(R.id.btn_ota_file).setOnClickListener(this);
-        findViewById(R.id.btn_ota_start).setOnClickListener(this);
-        mTvVersion=findViewById(R.id.tv_version);
+        findViewById(R.id.btn_ota_start_585).setOnClickListener(this);
+        findViewById(R.id.btn_ota_start_531).setOnClickListener(this);
+        findViewById(R.id.btn_ota_start_580).setOnClickListener(this);
+        btn_shake_hands.setOnClickListener(this);
 
         mOTAFileName = SP.getInstance().getOtaFileName();
         if (mOTAFileName.isEmpty())
             mTvVersion.setText("xxxxxxxx");
         else
             mTvVersion.setText(mOTAFileName);
-        mDialogList=new ArrayList<>();
+        mDialogList = new ArrayList<>();
 
     }
-
 
 
     @Override
     public void onItemListener(int position) {
         if (mDialogList.size() > position) {
-            DialogStringImageAdapter.DialogStringImageBean dialogStringImageBean = mDialogList
-                    .get(position);
+            DialogStringImageAdapter.DialogStringImageBean dialogStringImageBean = mDialogList.get(position);
             String name = dialogStringImageBean.getName();
             mOTAFileName = name;
             SP.getInstance().putOtaFileName(name);
@@ -133,15 +137,15 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_ota_connect:
-                if (mBleDevice==null&&!TextUtils.isEmpty(mAddress)){
+                if (mBleDevice == null && !TextUtils.isEmpty(mAddress)) {
                     connectBle(mAddress);
                 }
                 break;
 
             case R.id.btn_ota_dis:
-                if (mBleDevice!=null){
+                if (mBleDevice != null) {
                     mBleDevice.disconnect();
-                    mBleDevice=null;
+                    mBleDevice = null;
                 }
                 break;
             case R.id.btn_ota_file:
@@ -151,25 +155,41 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
                     mDialogList.add(new DialogStringImageAdapter.DialogStringImageBean(s, 0));
                 }
 
-                ShowListDialogFragment.newInstance().setTitle("").setCancel("",0).setCancelBlank(true)
-                        .setBackground(true).setBottom(false).setList(mDialogList).setOnDialogListener(this)
+                ShowListDialogFragment.newInstance().setTitle("").setCancel("", 0).setCancelBlank(true).setBackground(true).setBottom(false).setList(mDialogList).setOnDialogListener(this)
                         .show(getSupportFragmentManager());
                 break;
 
-            case R.id.btn_ota_start:
-                if (mOTAFileName.isEmpty()) {
-                    Toast.makeText(mContext, "请先选择文件", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                String byFileName = FileUtils.getByFileName()+mOTAFileName;
-                mList.add(TimeUtils.getTime() + "OTA已开始,请耐心等待");
-                mHandler.sendEmptyMessage(REFRESH_DATA);
-                DialogOtaManager build = DialogOtaManager.newBuilder().setOnBleOTAListener(this).setFilePath(byFileName).build(mBleDevice);
-                build.startOta();
+            case R.id.btn_ota_start_585:
+                startOta(DialogOtaManager.IC_TYPE_585);
+                break;
+            case R.id.btn_ota_start_531:
+                startOta(DialogOtaManager.IC_TYPE_531);
+                break;
+            case R.id.btn_ota_start_580:
+                startOta(DialogOtaManager.IC_TYPE_580);
+                break;
+            case R.id.btn_shake_hands:
+                boolean status = (boolean) btn_shake_hands.getTag();
+                btn_shake_hands.setTag(!status);
+                btn_shake_hands.setText("握手:" + !status);
                 break;
 
 
         }
+    }
+
+
+    private void startOta(int icType){
+        if (mOTAFileName.isEmpty()) {
+            Toast.makeText(mContext, "请先选择文件", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String byFileName = FileUtils.getByFileName() + mOTAFileName;
+        mList.add(TimeUtils.getTime() + "OTA已开始,请耐心等待");
+        mHandler.sendEmptyMessage(REFRESH_DATA);
+        mDialogOtaManager= DialogOtaManager.newBuilder().setOnBleOTAListener(this).setFilePath(byFileName).setIcType(icType).build(mBleDevice);
+//        mBleDevice.setOnDialogOTAListener(this);
+//        mBleDevice.startDialogOta(byFileName, icType,((Boolean) btn_shake_hands.getTag()));
     }
 
 
@@ -178,16 +198,12 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
      */
     private void initPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ActivityCompat
-                    .requestPermissions(this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                    Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode != 1) {
             return;
@@ -196,19 +212,16 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
                 //权限请求失败，但未选中“不再提示”选项
-                new AlertDialog.Builder(this).setTitle("提示").setMessage("请求使用定位权限搜索蓝牙设备")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //引导用户至设置页手动授权
-                                Intent intent =
-                                        new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package", getApplicationContext()
-                                        .getPackageName(), null);
-                                intent.setData(uri);
-                                startActivity(intent);
-                            }
-                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(this).setTitle("提示").setMessage("请求使用定位权限搜索蓝牙设备").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //引导用户至设置页手动授权
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getApplicationContext().getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (dialog != null) {
@@ -220,19 +233,16 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
             } else {
                 //权限请求失败，选中“不再提示”选项
 //                T.showShort(MainActivity.this, "获取权限失败");
-                new AlertDialog.Builder(this).setTitle("提示").setMessage("请求使用定位权限搜索蓝牙设备")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //引导用户至设置页手动授权
-                                Intent intent =
-                                        new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package", getApplicationContext()
-                                        .getPackageName(), null);
-                                intent.setData(uri);
-                                startActivity(intent);
-                            }
-                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(this).setTitle("提示").setMessage("请求使用定位权限搜索蓝牙设备").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //引导用户至设置页手动授权
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getApplicationContext().getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (dialog != null) {
@@ -257,7 +267,9 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
         if (mBluetoothService != null) {
             mBleDevice = mBluetoothService.getBleDevice(mAddress);
             mBluetoothService.setOnCallback(this);
-
+            if (mDialogOtaManager != null) {
+                mDialogOtaManager.setOnBleOTAListener(this);
+            }
         }
     }
 
@@ -319,7 +331,6 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
     //-----------------通知-------------------
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -336,7 +347,7 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
     }
 
     @Override
-    public void onOtaFailure(int cmd ,String err) {
+    public void onOtaFailure(int cmd, String err) {
         mList.add(TimeUtils.getTime() + "OTA失败:" + err);
         mHandler.sendEmptyMessage(REFRESH_DATA);
         if (mBleDevice != null) {
@@ -346,9 +357,8 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle,
 
     private int progressOld;
 
-
     @Override
-    public void onOtaProgress(float progress, int currentCount, int maxCount) {
+    public void onOtaProgress(float progress,int currentCount,int maxCount) {
         int progressInt = (int) progress;
         if (progressOld != progressInt) {
             progressOld = progressInt;

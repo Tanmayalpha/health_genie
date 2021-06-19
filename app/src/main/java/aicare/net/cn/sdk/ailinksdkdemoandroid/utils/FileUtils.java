@@ -54,11 +54,13 @@ public class FileUtils {
         });
         L.d("Files", "Size: " + file.length);
         ArrayList<String> names = new ArrayList<String>();
-        for (int i = 0; i < file.length; i++) {
-            L.d("Files", "FileName:" + file[i].getName());
-            names.add(file[i].getName());
+        for (File value : file) {
+            L.d("Files", "FileName:" + value.getName());
+            names.add(value.getName());
         }
         return names;
     }
+
+
 
 }

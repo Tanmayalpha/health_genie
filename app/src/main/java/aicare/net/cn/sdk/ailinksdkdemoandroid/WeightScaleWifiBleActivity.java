@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.AppHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
@@ -38,6 +39,9 @@ import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatDataUtil;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatRecord;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.McuHistoryRecordBean;
 
+/**
+ * wifi+ble体脂秤
+ */
 public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, BodyFatBleUtilsData.BleBodyFatCallback, BodyFatBleUtilsData.BleBodyFatWiFiCallback {
     private String TAG = WeightScaleWifiBleActivity.class.getName();
     private String mAddress;
@@ -85,8 +89,8 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
         findViewById(R.id.setedname).setOnClickListener(this);
         findViewById(R.id.setedpaw).setOnClickListener(this);
         findViewById(R.id.setedmac).setOnClickListener(this);
-//        findViewById(R.id.ota).setOnClickListener(this);
-//        findViewById(R.id.surroundings).setOnClickListener(this);
+        findViewById(R.id.ota).setOnClickListener(this);
+        findViewById(R.id.surroundings).setOnClickListener(this);
         mEditText = findViewById(R.id.select_wifi_et);
         kg = findViewById(R.id.kg);
         jing = findViewById(R.id.jin);
@@ -590,25 +594,25 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
             case R.id.disconnect:
                 bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().disconnectWifi());
                 break;
-//            case R.id.ota:
-////                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().ota());
-////                OtaUtil otaUtil=new OtaUtil(this,mBluetoothService.getBleDevice(mAddress));
-//                showFileChooser();
-//                break;
-//            case R.id.surroundings:
-//                if (isTest) {
-//                    setIp(productIp);
-//                    mList.add(0, "设置环境IP为生产环境");
-//
-//                } else {
-//                    setIp(testIp);
-//                    mList.add(0, "设置环境IP为测试环境");
-//
-//
-//                }
-//                listAdapter.notifyDataSetChanged();
-//
-//                break;
+            case R.id.ota:
+//                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().ota());
+//                OtaUtil otaUtil=new OtaUtil(this,mBluetoothService.getBleDevice(mAddress));
+                showFileChooser();
+                break;
+            case R.id.surroundings:
+                if (isTest) {
+                    setIp(productIp);
+                    mList.add(0, "设置环境IP为生产环境");
+
+                } else {
+                    setIp(testIp);
+                    mList.add(0, "设置环境IP为测试环境");
+
+
+                }
+                listAdapter.notifyDataSetChanged();
+
+                break;
 
 
         }

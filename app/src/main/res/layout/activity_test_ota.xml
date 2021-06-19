@@ -47,6 +47,24 @@
                     />
 
                 <Button
+                    android:id="@+id/btn_shake_hands"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="握手:false"
+                    />
+
+
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                >
+
+
+                <Button
                     android:id="@+id/btn_ota_file"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,14 +73,25 @@
 
 
                 <Button
-                    android:id="@+id/btn_ota_start"
+                    android:id="@+id/btn_ota_start_585"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OTA"
+                    android:text="OTA:585"
+                    />
+                <Button
+                    android:id="@+id/btn_ota_start_531"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTA:531"
+                    />
+                <Button
+                    android:id="@+id/btn_ota_start_580"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTA:580"
                     />
 
             </LinearLayout>
-
 
         </LinearLayout>
 

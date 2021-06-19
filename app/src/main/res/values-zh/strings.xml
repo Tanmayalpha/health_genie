@@ -17,7 +17,8 @@
     <string name="data_received">接收到的数据:</string>
     <string name="success">成功</string>
     <string name="failure">失败</string>
-
+    <string name="upgrade_controller">升级控制器</string>
+    <string name="upgrade_watch">升级表盘</string>
 
     <string name="rtk_dfu_progress_state_origin">准备升级</string>
     <string name="rtk_dfu_state_abort_processing">等待取消…</string>

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
@@ -24,11 +25,11 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.babyBodyFat.BabyBodyFatBleConfig;
@@ -57,6 +58,7 @@ public class BabyBodyFatCmdActivity extends BleBaseActivity implements OnCallbac
     private int heightUnit = 0;
     private RadioButton mRadioButtonKg, mRadioButtonLb, mRadioButtonLbLb, mRadioButtonG, mRadioButtonOz, mRadioButtonStLb, mRadioButtonJin;
     private RadioButton mRadioButtonCm, mRadioButtonInch, mRadioButtonFoot;
+    private TextView tv_baby_body_fat_weight,tv_baby_body_fat_height,tv_baby_body_fat_adc;
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -110,6 +112,11 @@ public class BabyBodyFatCmdActivity extends BleBaseActivity implements OnCallbac
         mRadioButtonCm = findViewById(R.id.radio_height_cm);
         mRadioButtonInch = findViewById(R.id.radio_height_inch);
         mRadioButtonFoot = findViewById(R.id.radio_height_foot);
+
+
+        tv_baby_body_fat_weight = findViewById(R.id.tv_baby_body_fat_weight);
+        tv_baby_body_fat_height = findViewById(R.id.tv_baby_body_fat_height);
+        tv_baby_body_fat_adc = findViewById(R.id.tv_baby_body_fat_adc);
 
 
     }
@@ -386,6 +393,8 @@ public class BabyBodyFatCmdActivity extends BleBaseActivity implements OnCallbac
             weightUnit = unit;
             showWeightUnit(weightUnit);
         }
+        tv_baby_body_fat_weight.setText(weightStr+unitStr);
+
         mHandler.sendEmptyMessage(REFRESH_DATA);
 
     }
@@ -415,6 +424,7 @@ public class BabyBodyFatCmdActivity extends BleBaseActivity implements OnCallbac
             heightUnit = unit;
             showHeightUnit(heightUnit);
         }
+        tv_baby_body_fat_height.setText(heightStr+unitStr);
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
@@ -429,6 +439,7 @@ public class BabyBodyFatCmdActivity extends BleBaseActivity implements OnCallbac
     public void onImpedanceSuccess(boolean appAlgorithm,int adc, int algorithmId) {
         BleLog.i(TAG, "测阻抗成功");
         mList.add(TimeUtils.getTime() + "测阻抗成功,阻抗值:" + adc + " ,算法ID:" + algorithmId+" ;"+(appAlgorithm?"使用app算法":"使用秤算法"));
+        tv_baby_body_fat_adc.setText(String.valueOf(adc));
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 

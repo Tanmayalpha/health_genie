@@ -19,6 +19,11 @@ public class SP {
 
     public static String OTA_FILE_NAME = "OTA_FILE_NAME";
 
+    /**
+     * 寻物器mac地址列表
+     */
+    private  final static String FIND_DEVICE_MAC_LIST="FIND_DEVICE_MAC_LIST";
+
 
     //-------------------------------------
 
@@ -51,6 +56,15 @@ public class SP {
     public void putOtaFileName(String name) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putString(OTA_FILE_NAME, name);
+        apply(editor);
+    }
+    public String getFindDeviceMacList() {
+        return sp.getString(FIND_DEVICE_MAC_LIST, STR_DEFAULT);
+    }
+
+    public void putFindDeviceMacList(String name) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(FIND_DEVICE_MAC_LIST, name);
         apply(editor);
     }
 

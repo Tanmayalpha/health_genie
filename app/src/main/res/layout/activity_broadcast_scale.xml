@@ -127,8 +127,16 @@
                     android:id="@+id/tv_broadcast_temp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30℃"
+                    android:text="--℃"
                     android:layout_marginStart="5dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_broadcast_did"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_marginStart="20dp"
                     />
 
             </LinearLayout>

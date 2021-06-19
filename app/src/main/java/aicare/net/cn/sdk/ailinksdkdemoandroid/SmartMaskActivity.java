@@ -20,11 +20,11 @@ import com.pingwang.bluetoothlib.listener.OnCallbackDis;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import butterknife.BindView;
@@ -54,7 +54,14 @@ public class SmartMaskActivity extends BleBaseActivity implements OnCallbackDis,
     ListView mListview;
     @BindView(R.id.get_version)
     Button mGetVersion;
-
+    @BindView(R.id.get_AIQ)
+    Button mGetAIQ;
+    @BindView(R.id.close_power)
+    Button closePower;
+    @BindView(R.id.set_mode)
+    Button setMode;
+    @BindView(R.id.set_payload)
+    Button setPayload;
     private List<String> mList;
     private ArrayAdapter listAdapter;
     private Context mContext;
@@ -63,6 +70,8 @@ public class SmartMaskActivity extends BleBaseActivity implements OnCallbackDis,
     private BleSendCmdUtil mBleSendCmdUtil;
     private int type = SmartMaskBleConfig.SMART_MASK;
     private int mFanStatus = 0;
+    private boolean showPayload;
+
 
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -101,6 +110,11 @@ public class SmartMaskActivity extends BleBaseActivity implements OnCallbackDis,
         mSetFilter.setOnClickListener(this);
         mSetFan.setOnClickListener(this);
         mGetVersion.setOnClickListener(this);
+
+        setPayload.setOnClickListener(this);
+        setMode.setOnClickListener(this);
+        closePower.setOnClickListener(this);
+        mGetAIQ.setOnClickListener(this);
 
 
     }
@@ -141,7 +155,18 @@ public class SmartMaskActivity extends BleBaseActivity implements OnCallbackDis,
                     mDevice.setFanStatus(mFanStatus);
                 }
                 break;
-
+            case R.id.get_AIQ:
+                if (mDevice != null) mDevice.getIAQData();
+                break;
+            case R.id.set_mode:
+                if (mDevice != null) mDevice.setTestMode();
+                break;
+            case R.id.close_power:
+                if (mDevice != null) mDevice.closePower();
+                break;
+            case R.id.set_payload:
+                showPayload = true;
+                break;
         }
     }
 
@@ -233,6 +258,38 @@ public class SmartMaskActivity extends BleBaseActivity implements OnCallbackDis,
 
 
     @Override
+    public void onPayloadData(byte[] data) {
+
+        if (showPayload) {
+            mList.add(BleStrUtils.byte2HexStr(data));
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+
+        }
+    }
+
+    @Override
+    public void onSetStatus(int type,int status) {
+        String data = "";
+        if (type== SmartMaskBleConfig.GET_TEST_MODE){
+            data="进入测试模式:";
+        }else if (type== SmartMaskBleConfig.GET_POWER){
+            data="关机:";
+        }
+        switch (status) {
+            case 0:
+                data += "成功";
+                break;
+            case 1:
+                data += "失败";
+                break;
+
+
+        }
+        mList.add(TimeUtils.getTime() + data);
+        mHandler.sendEmptyMessage(REFRESH_DATA);
+    }
+
+    @Override
     public void onStatus(int airIndex, int fanStatus, int power, int powerStatus, int batteryRemaining, int breathRate, int breathState, int filterDuration) {
 
         String data = "口罩状态:";
@@ -313,6 +370,24 @@ public class SmartMaskActivity extends BleBaseActivity implements OnCallbackDis,
 
     }
 
+
+    @Override
+    public void onIAQData(int status, int eCo2, int TvOc, int hcho) {
+        String data = "";
+        switch (status) {
+            case 0:
+                data = "OK";
+                break;
+            case 1:
+                data = "Heating";
+                break;
+            case 2:
+                data = "Error";
+                break;
+        }
+        mList.add(TimeUtils.getTime() + data + "\n ECO2:" + eCo2 + "\n TVOC:" + TvOc + "\n HCHO:" + hcho);
+        mHandler.sendEmptyMessage(REFRESH_DATA);
+    }
 
     @Override
     public void onBmVersion(String version) {

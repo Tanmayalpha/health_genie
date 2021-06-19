@@ -7,6 +7,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import com.holtek.libHTBodyfat.HTBodyBasicInfo;
+import com.holtek.libHTBodyfat.HTBodyResultAllBody;
 import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -19,6 +21,9 @@ import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyFatBleDeviceData;
 import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyFatUtil;
 
+/**
+ * 八电极秤
+ */
 public class EightBodyfatActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, EightBodyFatBleDeviceData.EightBodyFatCallback {
 
     private List<String> loglist;
@@ -235,6 +240,8 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             case EightBodyFatUtil.MEASUREMENT_END:
                 loglist.add(0, "测量完成");
                 //测量完成
+                if (mEightBodyfatAdc!=null)kaimengJieMi(mEightBodyfatAdc);
+
                 break;
             case EightBodyFatUtil.MUC_CALL_BACK_RESULT:
                 switch (typeState) {
@@ -299,6 +306,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     @Override
     public void onImpedance(int adc, int part, int arithmetic) {
         loglist.add(0, "阻抗:" + adc + "  部位: " + part + "  算法" + arithmetic);
+        kaimeng(part,adc);
     }
 
     @Override
@@ -330,4 +338,108 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     public void showData(String data) {
 //        loglist.add(0, data);
     }
+
+
+    private EightBodyfatAdc mEightBodyfatAdc;
+
+    private void kaimeng(int part, int adc) {
+        if (mEightBodyfatAdc == null) mEightBodyfatAdc = new EightBodyfatAdc();
+
+        switch (part) {
+            case EightBodyFatUtil.IMPEDANCE_FOOT:
+                //双脚阻抗
+                mEightBodyfatAdc.setAdcFoot(adc);
+                break;
+            case EightBodyFatUtil.IMPEDANCE_HAND:
+                //双手阻抗
+                mEightBodyfatAdc.setAdcHand(adc);
+
+                break;
+            case EightBodyFatUtil.IMPEDANCE_BODY:
+                //躯干阻抗
+                mEightBodyfatAdc.setAdcBody(adc);
+
+                break;
+            case EightBodyFatUtil.IMPEDANCE_L_HAND:
+                //"左手阻抗";
+                mEightBodyfatAdc.setAdcLeftHand(adc);
+                break;
+            case EightBodyFatUtil.IMPEDANCE_R_HAND:
+//                adc = adc + "右手阻抗";
+                mEightBodyfatAdc.setAdcRightHand(adc);
+                break;
+            case EightBodyFatUtil.IMPEDANCE_L_FOOT:
+//                adc = adc + "左脚阻抗";
+                mEightBodyfatAdc.setAdcLeftFoot(adc);
+
+                break;
+            case EightBodyFatUtil.IMPEDANCE_R_FOOT:
+//                adc = adc + "右脚阻抗";
+                mEightBodyfatAdc.setAdcRightFoot(adc);
+
+                break;
+            case EightBodyFatUtil.IMPEDANCE_L_BODY:
+//                adc = adc + "左驱干";
+                mEightBodyfatAdc.setAdcLeftBody(adc);
+
+                break;
+            case EightBodyFatUtil.IMPEDANCE_R_BODY:
+//                adc = adc + "右躯干";
+                mEightBodyfatAdc.setAdcRightBody(adc);
+
+                break;
+            case EightBodyFatUtil.IMPEDANCE_R_HAND_L_FOOT:
+//                adc = adc + "右手左脚";
+                mEightBodyfatAdc.setAdcRightHandLeftFoot(adc);
+                break;
+            case EightBodyFatUtil.IMPEDANCE_L_HAND_R_FOOT:
+//                adc = adc + "左手右脚";
+                mEightBodyfatAdc.setAdcLeftHandRightFoot(adc);
+
+                break;
+            default:
+
+
+        }
+
+    }
+
+    private void kaimengJieMi(EightBodyfatAdc mEightBodyfatAdc) {
+        loglist.add(0,mEightBodyfatAdc.toString());
+        HTBodyBasicInfo basicInfo = new HTBodyBasicInfo(1, 170, 65, 25);
+        loglist.add(0, "默认传入用户: 性别:男,身高:170,体重 65kg 年龄25");
+        basicInfo.htZAllBodyImpedance = mEightBodyfatAdc.getAdcRightBody();
+        basicInfo.htZLeftLegImpedance = mEightBodyfatAdc.getAdcLeftFoot();
+        basicInfo.htZRightLegImpedance = mEightBodyfatAdc.getAdcRightFoot();
+        basicInfo.htZLeftArmImpedance = mEightBodyfatAdc.getAdcLeftHand();
+        basicInfo.htZRightArmImpedance = mEightBodyfatAdc.getAdcRightHand();
+        basicInfo.htTwoLegsImpedance = mEightBodyfatAdc.getAdcFoot();
+        basicInfo.htTwoArmsImpedance = mEightBodyfatAdc.getAdcHand();
+        HTBodyResultAllBody resultTwoLegs = new HTBodyResultAllBody();
+        int errorType = resultTwoLegs.getBodyfatWithBasicInfo(basicInfo);
+        if (errorType == HTBodyBasicInfo.ErrorNone) {
+            String jiemi="加密阻抗:" +
+                    " \n双脚=" + (resultTwoLegs.htZLeftLeg + resultTwoLegs.htZRightLeg) +
+                    " \n双手=" + (resultTwoLegs.htZLeftArm + resultTwoLegs.htZRightArm) +
+                    " \n左手=" + resultTwoLegs.htZLeftArm +
+                    " \n右手=" + resultTwoLegs.htZRightArm +
+                    " \n左脚=" + resultTwoLegs.htZLeftLeg +
+                    " \n右脚=" + resultTwoLegs.htZRightLeg +
+                    " \n左躯干=" + (resultTwoLegs.htZAllBody)+
+                    " \n右躯干=" + (resultTwoLegs.htZAllBody)+
+                    " \n右手左脚=" + (resultTwoLegs.htZRightArm + resultTwoLegs.htZLeftLeg)  +
+                    " \n左手右脚=" + (resultTwoLegs.htZLeftArm + resultTwoLegs.htZRightLeg)  +
+                    " \n全身=" + resultTwoLegs.htZAllBody;
+            loglist.add(0, jiemi);
+        } else {
+            loglist.add(0, "解析阻抗:错误码:" + errorType + "\n"
+                    + " ErrorAge = 1 ,ErrorWeight = 2, ErrorHeight = 4, ErrorSex = 8, ErrorImpedance = 16, ErrorImpedanceLeftLeg = 32, ErrorImpedanceRightLeg = 64,ErrorImpedanceLeftArm = 128, ErrorImpedanceRightArm = 256"
+            );
+
+
+        }
+
+    }
+
+
 }

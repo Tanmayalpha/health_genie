@@ -26,7 +26,7 @@ import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleUserData;
 /**
  * xing<br>
  * 2019/11/14<br>
- * java类作用描述
+ * 艾地体脂秤用户管理界面
  */
 public class ADWeightScaleUserActivity extends AppCompatActivity implements View.OnClickListener {
 

@@ -1,4 +1,4 @@
-package aicare.net.cn.sdk.ailinksdkdemoandroid;
+package aicare.net.cn.sdk.ailinksdkdemoandroid.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;

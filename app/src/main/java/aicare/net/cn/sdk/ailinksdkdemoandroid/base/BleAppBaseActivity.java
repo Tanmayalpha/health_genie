@@ -1,7 +1,6 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid.base;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -12,17 +11,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.pingwang.bluetoothlib.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.AppStart;
 
 import java.lang.ref.WeakReference;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.AppStart;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -53,7 +50,7 @@ public abstract class BleAppBaseActivity extends BleBaseActivity {
     /**
      * 需要申请的权限
      */
-    private String[] LOCATION_PERMISSION = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
+    private String[] LOCATION_PERMISSION = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     /**
      * 权限请求返回

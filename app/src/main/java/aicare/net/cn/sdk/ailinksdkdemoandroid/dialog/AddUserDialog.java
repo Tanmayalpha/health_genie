@@ -1,8 +1,7 @@
-package aicare.net.cn.sdk.ailinksdkdemoandroid;
+package aicare.net.cn.sdk.ailinksdkdemoandroid.dialog;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,13 +11,11 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-
-import java.net.IDN;
-
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatDataUtil;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.User;
 

@@ -1,8 +1,10 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -38,6 +40,9 @@ import androidx.core.content.ContextCompat;
 import cn.net.aicare.modulelibrary.module.wifi.WifiConfig;
 import cn.net.aicare.modulelibrary.module.wifi.WifiUtils;
 
+/**
+ * wifi配置界面
+ */
 public class WifiConfigActivity extends AppCompatActivity implements View.OnClickListener, WifiUtils.OnWifiEventListener {
     private String TAG = WifiConfigActivity.class.getName();
     private EditText ssid, paw, key, sn, devicename;
@@ -58,9 +63,11 @@ public class WifiConfigActivity extends AppCompatActivity implements View.OnClic
     private RadioButton kg, jing, stlb, lb;
     private String mDeviceName;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//禁止横屏
         setContentView(R.layout.activity_wifi_config);
         ssid = findViewById(R.id.ssid);
         paw = findViewById(R.id.password);
