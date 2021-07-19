@@ -7,8 +7,6 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
-import com.holtek.libHTBodyfat.HTBodyBasicInfo;
-import com.holtek.libHTBodyfat.HTBodyResultAllBody;
 import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -74,6 +72,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             }
         });
         stlb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -406,40 +405,12 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
 
     private void kaimengJieMi(EightBodyfatAdc mEightBodyfatAdc) {
         loglist.add(0,mEightBodyfatAdc.toString());
-        HTBodyBasicInfo basicInfo = new HTBodyBasicInfo(1, 170, 65, 25);
         loglist.add(0, "默认传入用户: 性别:男,身高:170,体重 65kg 年龄25");
-        basicInfo.htZAllBodyImpedance = mEightBodyfatAdc.getAdcRightBody();
-        basicInfo.htZLeftLegImpedance = mEightBodyfatAdc.getAdcLeftFoot();
-        basicInfo.htZRightLegImpedance = mEightBodyfatAdc.getAdcRightFoot();
-        basicInfo.htZLeftArmImpedance = mEightBodyfatAdc.getAdcLeftHand();
-        basicInfo.htZRightArmImpedance = mEightBodyfatAdc.getAdcRightHand();
-        basicInfo.htTwoLegsImpedance = mEightBodyfatAdc.getAdcFoot();
-        basicInfo.htTwoArmsImpedance = mEightBodyfatAdc.getAdcHand();
-        HTBodyResultAllBody resultTwoLegs = new HTBodyResultAllBody();
-        int errorType = resultTwoLegs.getBodyfatWithBasicInfo(basicInfo);
-        if (errorType == HTBodyBasicInfo.ErrorNone) {
-            String jiemi="加密阻抗:" +
-                    " \n双脚=" + (resultTwoLegs.htZLeftLeg + resultTwoLegs.htZRightLeg) +
-                    " \n双手=" + (resultTwoLegs.htZLeftArm + resultTwoLegs.htZRightArm) +
-                    " \n左手=" + resultTwoLegs.htZLeftArm +
-                    " \n右手=" + resultTwoLegs.htZRightArm +
-                    " \n左脚=" + resultTwoLegs.htZLeftLeg +
-                    " \n右脚=" + resultTwoLegs.htZRightLeg +
-                    " \n左躯干=" + (resultTwoLegs.htZAllBody)+
-                    " \n右躯干=" + (resultTwoLegs.htZAllBody)+
-                    " \n右手左脚=" + (resultTwoLegs.htZRightArm + resultTwoLegs.htZLeftLeg)  +
-                    " \n左手右脚=" + (resultTwoLegs.htZLeftArm + resultTwoLegs.htZRightLeg)  +
-                    " \n全身=" + resultTwoLegs.htZAllBody;
-            loglist.add(0, jiemi);
-        } else {
-            loglist.add(0, "解析阻抗:错误码:" + errorType + "\n"
-                    + " ErrorAge = 1 ,ErrorWeight = 2, ErrorHeight = 4, ErrorSex = 8, ErrorImpedance = 16, ErrorImpedanceLeftLeg = 32, ErrorImpedanceRightLeg = 64,ErrorImpedanceLeftArm = 128, ErrorImpedanceRightArm = 256"
-            );
-
-
-        }
+        EightBodyFatBean algorithmsData = EightBodyFatAlgorithms.getInstance().getAlgorithmsData(1, 1, 170, 65, 25, mEightBodyfatAdc);
+        loglist.add(0, algorithmsData.toString());
 
     }
+
 
 
 }

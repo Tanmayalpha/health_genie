@@ -187,7 +187,7 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle, O
         String byFileName = FileUtils.getByFileName() + mOTAFileName;
         mList.add(TimeUtils.getTime() + "OTA已开始,请耐心等待");
         mHandler.sendEmptyMessage(REFRESH_DATA);
-        mDialogOtaManager= DialogOtaManager.newBuilder().setOnBleOTAListener(this).setFilePath(byFileName).setIcType(icType).build(mBleDevice);
+        mDialogOtaManager= DialogOtaManager.newBuilder().setOnBleOTAListener(this).setFile(byFileName).setIcType(icType).build(mBleDevice);
 //        mBleDevice.setOnDialogOTAListener(this);
 //        mBleDevice.startDialogOta(byFileName, icType,((Boolean) btn_shake_hands.getTag()));
     }

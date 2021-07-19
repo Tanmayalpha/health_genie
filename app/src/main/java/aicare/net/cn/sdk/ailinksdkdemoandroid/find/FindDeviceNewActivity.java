@@ -117,7 +117,7 @@ public class FindDeviceNewActivity extends BleAppBaseActivity implements View.On
 
     @Override
     protected void initView() {
-        AILinkSDK.getInstance().init(this);//sdk
+        AILinkSDK.getInstance().init(getApplication());//sdk
         btn_clear = findViewById(R.id.btn_clear);
         tv_status = findViewById(R.id.tv_status);
         list_view = findViewById(R.id.list_view);

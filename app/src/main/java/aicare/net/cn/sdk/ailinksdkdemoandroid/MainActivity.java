@@ -144,7 +144,7 @@ public class MainActivity extends BleAppBaseActivity {
         BleLog.init("", "", BuildConfig.DEBUG);
         String version = getString(R.string.version) + ":" + BuildConfig.VERSION_NAME;
         ((TextView) findViewById(R.id.tv_app_version)).setText(version);
-        AILinkSDK.getInstance().init(this);//sdk
+        AILinkSDK.getInstance().init(getApplication());//sdk
         SP.init(this);
     }
 
