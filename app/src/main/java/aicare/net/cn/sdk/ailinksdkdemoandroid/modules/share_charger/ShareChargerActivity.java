@@ -9,7 +9,6 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.device.BleDevice;
 
 import java.text.SimpleDateFormat;
@@ -18,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ShareCharger.ShareChargerData;
 

@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.device.BleDevice;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.findDevice.FindConnectDeviceInfoBean;
 import cn.net.aicare.modulelibrary.module.findDevice.FindDeviceData;

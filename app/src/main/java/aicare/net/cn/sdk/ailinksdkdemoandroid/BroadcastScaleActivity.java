@@ -13,7 +13,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleBleConfig;

@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -24,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushBleCmd;

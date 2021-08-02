@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
@@ -29,6 +28,7 @@ import com.pingwang.bluetoothlib.utils.BleStrUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 
 import java.lang.ref.WeakReference;
 

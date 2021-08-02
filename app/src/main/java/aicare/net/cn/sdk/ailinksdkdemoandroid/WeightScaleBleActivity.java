@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -25,6 +24,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.AddUserDialog;
 import androidx.annotation.Nullable;

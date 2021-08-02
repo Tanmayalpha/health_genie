@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
@@ -20,6 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.Transmission.TransmissionDeviceData;

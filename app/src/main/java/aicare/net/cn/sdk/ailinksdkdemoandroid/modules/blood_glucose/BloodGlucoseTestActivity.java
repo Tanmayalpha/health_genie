@@ -5,7 +5,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnBleCompanyListener;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BloodGlucose.BloodGlucoseBleDeviceData;
 import cn.net.aicare.modulelibrary.module.BloodGlucose.BloodGlucoseUtil;

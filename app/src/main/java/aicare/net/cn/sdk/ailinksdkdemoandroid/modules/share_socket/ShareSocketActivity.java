@@ -13,7 +13,6 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
@@ -27,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ShareSocket.ShareSocketData;

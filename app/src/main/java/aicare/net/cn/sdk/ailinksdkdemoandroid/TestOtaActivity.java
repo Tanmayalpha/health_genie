@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.elinkthings.bleotalibrary.dialog.DialogOtaManager;
 import com.elinkthings.bleotalibrary.listener.OnBleOTAListener;
-import com.pingwang.bluetoothlib.BleBaseActivity;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnBleDeviceDataListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
@@ -32,6 +31,7 @@ import com.pingwang.bluetoothlib.utils.BleLog;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.DialogStringImageAdapter;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.ShowListDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.FileUtils;
