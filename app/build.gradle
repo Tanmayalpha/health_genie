@@ -37,7 +37,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.elinkthings:AILinkSDKRepositoryAndroid:1.8.0'//蓝牙核心库
     implementation 'com.github.elinkthings:AILinkSDKOtaLibraryAndroid:1.0.3'//OTA库,需要依赖核心库
-    implementation 'com.github.elinkthings:AILinkSDKParsingLibraryAndroid:1.5.7'//解析库,需要依赖核心库
+    implementation 'com.github.elinkthings:AILinkSDKParsingLibraryAndroid:1.6.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
