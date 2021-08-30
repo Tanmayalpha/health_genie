@@ -64,6 +64,12 @@
         <activity android:name=".BroadcastBloodOxygenActivity" />
         <activity android:name=".SmartMaskActivity" />
         <activity android:name=".ToothBrushWifiBleActivity" />
+        <activity android:name=".TempHumidityActivity" />
+        <activity android:name=".SkateboardDataActivity" />
+        <activity android:name=".HeightWeightScaleActivity" />
+        <activity android:name=".ClearShakeHandsActivity" />
+        <activity android:name=".BloodSugar4GActivity" />
+        <activity android:name=".BloodOxygenActivity" />
 
         <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer"/>
     </application>

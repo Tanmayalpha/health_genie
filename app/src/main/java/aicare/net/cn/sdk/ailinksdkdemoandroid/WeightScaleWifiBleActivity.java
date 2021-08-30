@@ -460,7 +460,7 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
      */
     @Override
     public void OnSetWifiNameOrPwdOrConnectCallback(int type, int status) {
-        if (type == BodyFatDataUtil.SET_WIFI_MAC) {
+        if (type == CmdConfig.SET_WIFI_MAC) {
             mList.add(0, "获取到设置的mac地址状态 " + status);
             if (status == BodyFatDataUtil.STATUS_SUCCESS) {
                 issetMac = true;
@@ -469,14 +469,14 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
             }
 
         }
-        if (type == BodyFatDataUtil.SET_WIFI_PAW) {
+        if (type == CmdConfig.SET_WIFI_PAW) {
             mList.add(0, "获取到设置的密码状态 " + status);
 
             if (status == BodyFatDataUtil.STATUS_SUCCESS && issetMac) {
                 mMHandler.sendEmptyMessage(ConnectWifi);
             }
         }
-        if (type == BodyFatDataUtil.DIS_OR_CON_WIFI) {
+        if (type == CmdConfig.DIS_OR_CON_WIFI) {
             mList.add(0, "发起连接 " + status);
             mMHandler.sendEmptyMessage(ToRefreUi);
         }
@@ -520,6 +520,11 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
     }
 
     @Override
+    public void onSetPortStatus(int status) {
+
+    }
+
+    @Override
     public void onSetIpUrlStatus(int status) {
         if (status == 0) {
             if (isTest) {
@@ -535,6 +540,21 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
             mList.add(0, "设置环境路径失败");
         }
         listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onIpData(String ip) {
+
+    }
+
+    @Override
+    public void onPortData(int port) {
+
+    }
+
+    @Override
+    public void onUrlData(String url) {
+
     }
 
     @Override
