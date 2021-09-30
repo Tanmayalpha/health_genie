@@ -158,6 +158,12 @@ public class BleDeviceConfig {
 
 
     /**
+     * 跳绳
+     */
+    public final static int ROPE_SKIPPING = 0x002f;
+
+
+    /**
      * 身高体脂秤
      */
     public final static int HEIGHT_BODY_FAT = 0x0026;

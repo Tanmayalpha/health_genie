@@ -118,6 +118,7 @@ public class MainActivity extends BleAppBaseActivity {
         mList.add(findViewById(R.id.btn_food_temp));
         mList.add(findViewById(R.id.btn_temp_humidity));
         mList.add(findViewById(R.id.btn_share_condom));
+        mList.add(findViewById(R.id.btn_rope_skip));
         for (View view : mList) {
             view.setOnClickListener(listener);
         }
@@ -285,6 +286,9 @@ public class MainActivity extends BleAppBaseActivity {
                     break;
                 case R.id.btn_temp_humidity:
                     type= BleDeviceConfig.TEMP_Humidity;
+                    break;
+                case R.id.btn_rope_skip:
+                    type=BleDeviceConfig.ROPE_SKIPPING;
                     break;
 
             }

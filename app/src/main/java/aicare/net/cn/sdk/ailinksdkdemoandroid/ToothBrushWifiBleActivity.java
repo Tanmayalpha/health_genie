@@ -221,7 +221,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
                 mMHandler.sendEmptyMessage(ConnectWifi);
             }
         }
-        if (type == CmdConfig.DISORCONNECTWIFI) {
+        if (type == CmdConfig.DISCONNECT_WIFI) {
             mList.add(0, "发起连接 " + status);
             mMHandler.sendEmptyMessage(ToRefreUi);
         }

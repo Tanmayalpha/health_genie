@@ -447,7 +447,27 @@ public class WeightScaleBleActivity extends BleBaseActivity implements View.OnCl
     }
 
     @Override
+    public void onSetPortStatus(int status) {
+
+    }
+
+    @Override
     public void onSetIpUrlStatus(int status) {
+
+    }
+
+    @Override
+    public void onIpData(String ip) {
+
+    }
+
+    @Override
+    public void onPortData(int port) {
+
+    }
+
+    @Override
+    public void onUrlData(String url) {
 
     }
 

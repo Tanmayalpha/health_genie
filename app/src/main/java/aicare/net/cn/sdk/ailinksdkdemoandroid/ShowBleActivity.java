@@ -410,6 +410,11 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.TEMP_Humidity:
                 intent.setClass(ShowBleActivity.this, TempHumidityActivity.class);
                 break;
+
+            case BleDeviceConfig.ROPE_SKIPPING:
+                intent.setClass(ShowBleActivity.this, RopeSkippingActivity.class);
+
+                break;
 //            case BleDeviceConfig.BLD_WEIGHT:
 //                intent.setClass(ShowBleActivity.this, BLDWeightScaleBle.class);
 //                break;
