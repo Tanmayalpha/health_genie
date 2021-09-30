@@ -103,10 +103,15 @@ public class BloodSugar4GActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
+
     }
 
     public void login() throws Throwable {
-        String mUrl=url + "/api/user/login?key=inet_elink&username=dhls@qq.com&password=dc483e80a7a0bd9ef71d8cf973673924";
+        //以下登录信息为服务器key和用户账号密码,仅供测试使用上线使用会导致只有一个用户可用
+        String key = "inet_elink";//key
+        String username = "dhls@qq.com";//用户账号
+        String password = "dc483e80a7a0bd9ef71d8cf973673924";//用户密码
+        String mUrl = url + "/api/user/login?key=" + key + "&username=" + username + "&password=" + password;
         URL uri = new URL(mUrl);
         HttpURLConnection httpURLConnection = (HttpURLConnection) uri.openConnection();
         // Post请求必须设置允许输出

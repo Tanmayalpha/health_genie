@@ -7,8 +7,8 @@ android {
         applicationId "aicare.net.cn.sdk.ailinksdkdemoandroid"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 5
-        versionName "1.5.5"
+        versionCode 7
+        versionName "1.5.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -46,5 +46,3 @@ dependencies {
 
 
 }
-
-

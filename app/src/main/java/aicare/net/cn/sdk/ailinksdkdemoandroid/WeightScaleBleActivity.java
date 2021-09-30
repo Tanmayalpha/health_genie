@@ -66,9 +66,6 @@ public class WeightScaleBleActivity extends BleBaseActivity implements View.OnCl
 
 
 
-
-
-
     }
 
     private void initView(){
