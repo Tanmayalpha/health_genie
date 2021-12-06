@@ -10,20 +10,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.pingwang.bluetoothlib.device.BleDevice;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ShareCharger.ShareChargerData;
 
-/**
- * 共享充电器
- */
 public class ShareChargerActivity extends BleBaseActivity implements View.OnClickListener, ShareChargerData.ShareChargerCallback {
 
     private Button btn_set;

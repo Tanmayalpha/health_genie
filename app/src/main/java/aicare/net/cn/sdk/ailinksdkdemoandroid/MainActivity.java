@@ -5,7 +5,9 @@ import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
+import com.pingwang.bluetoothlib.AILinkBleManager;
 import com.pingwang.bluetoothlib.AILinkSDK;
+import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.config.AppConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.find.FindDeviceNewActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.broadcast_height.BroadcastHeightActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.broadcast_nutrition.BroadNutritionActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
 
 
@@ -88,7 +91,7 @@ public class MainActivity extends BleAppBaseActivity {
         mList.add(findViewById(R.id.btn_baby));
         mList.add(findViewById(R.id.btn_height));
         mList.add(findViewById(R.id.btn_ble));
-        mList.add(findViewById(R.id.btn_lock));
+//        mList.add(findViewById(R.id.btn_lock));
         mList.add(findViewById(R.id.btn_ble_test));
         mList.add(findViewById(R.id.btnConnectTest));
         mList.add(findViewById(R.id.btn_ad_weight));
@@ -118,6 +121,9 @@ public class MainActivity extends BleAppBaseActivity {
         mList.add(findViewById(R.id.btn_food_temp));
         mList.add(findViewById(R.id.btn_temp_humidity));
         mList.add(findViewById(R.id.btn_share_condom));
+        mList.add(findViewById(R.id.btn_rope_skip));
+        mList.add(findViewById(R.id.btn_broadcast_nutrition));
+        mList.add(findViewById(R.id.btn_ble_nutrition));
         for (View view : mList) {
             view.setOnClickListener(listener);
         }
@@ -131,12 +137,40 @@ public class MainActivity extends BleAppBaseActivity {
             }
         }
 
+//        AILinkBleManager.getInstance().init(mContext, new AILinkBleManager.onInitListener() {
+//            @Override
+//            public void onInitSuccess() {
+//                L.i("初始化成功");
+//                AILinkBleManager.getInstance().startScan(1000);
+//                AILinkBleManager.getInstance().setOnCallbackBle(new OnCallbackBle() {
+//                    @Override
+//                    public void onScanning(BleValueBean data) {
+//                        L.i("当前搜索到的设备:"+data.getName()+" mac="+data.getMac());
+//                        AILinkBleManager.getInstance().stopScan();
+//                        AILinkBleManager.getInstance().connectDevice(data);
+//                    }
+//
+//                    @Override
+//                    public void onServicesDiscovered(String mac) {
+//                        L.i("连接成功:"+mac);
+//                    }
+//                });
+//
+//            }
+//
+//            @Override
+//            public void onInitFailure() {
+//                L.i("初始化失败");
+//            }
+//        });
 
     }
 
     @Override
     protected void initData() {
         initPermissions();
+
+
     }
 
     @Override
@@ -144,7 +178,18 @@ public class MainActivity extends BleAppBaseActivity {
         BleLog.init("", "", BuildConfig.DEBUG);
         String version = getString(R.string.version) + ":" + BuildConfig.VERSION_NAME;
         ((TextView) findViewById(R.id.tv_app_version)).setText(version);
-        AILinkSDK.getInstance().init(getApplication());//sdk
+        AILinkSDK.getInstance().init(getApplication(), new AILinkBleManager.onInitListener() {
+            @Override
+            public void onInitSuccess() {
+
+            }
+
+            @Override
+            public void onInitFailure() {
+
+            }
+        });//sdk
+        BleConfig.addVendorID(0xac05);
         SP.init(this);
     }
 
@@ -159,7 +204,7 @@ public class MainActivity extends BleAppBaseActivity {
             switch (v.getId()) {
 
                 case R.id.btn_clear_shake_hands:
-                    type= BleDeviceConfig.CLEAR_SHAKE_HANDS;
+                    type=BleDeviceConfig.CLEAR_SHAKE_HANDS;
                     break;
 
                 case R.id.btn_sphy:
@@ -256,7 +301,7 @@ public class MainActivity extends BleAppBaseActivity {
                     type = BleDeviceConfig.SHARE_SOCKET;
                     break;
                 case R.id.btn_share_condom:
-                    // 共享套套机
+                    // 共享插座
                     type = BleDeviceConfig.SHARE_CONDOM;
                     break;
                 case R.id.btn_find:
@@ -286,16 +331,27 @@ public class MainActivity extends BleAppBaseActivity {
                 case R.id.btn_temp_humidity:
                     type= BleDeviceConfig.TEMP_Humidity;
                     break;
-
+                case R.id.btn_rope_skip:
+                    type=BleDeviceConfig.ROPE_SKIPPING;
+                    break;
+                case R.id.btn_broadcast_nutrition:
+                    // 广播营养秤
+                    Intent broadcastNutritionIntent = new Intent(MainActivity.this, BroadNutritionActivity.class);
+                    startActivity(broadcastNutritionIntent);
+                    return;
+                case R.id.btn_ble_nutrition:
+                    // 蓝牙营养秤
+                    type = BleDeviceConfig.BLE_NUTRITION_SCALE;
+                    break;
             }
             startActivity(type);
         }
     }
 
 
-    private void startActivity(int tyep) {
+    private void startActivity(int type) {
         Intent intent = new Intent(this, ShowBleActivity.class);
-        intent.putExtra("type", tyep);
+        intent.putExtra("type", type);
         startActivity(intent);
     }
 

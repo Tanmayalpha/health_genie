@@ -28,12 +28,12 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleBleConfig;
@@ -43,10 +43,11 @@ import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleDeviceData;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleUserData;
 
 
+
 /**
  * xing<br>
  * 2019/7/12<br>
- * 艾地体脂秤
+ * 显示数据
  */
 public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallbackBle, OnBleVersionListener, OnMcuParameterListener, OnBleCompanyListener, OnBleSettingListener,
         ADWeightScaleDeviceData.onNotifyData, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
@@ -627,7 +628,7 @@ public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallb
     }
 
     @Override
-    public void OnSettingReturn(byte cmdType, byte cmdData) {
+    public void OnSettingReturn(int cmdType, int cmdData) {
         String msg = "";
         switch (cmdType) {
             case CmdConfig.SET_SYS_TIME://设置系统当前时间返回

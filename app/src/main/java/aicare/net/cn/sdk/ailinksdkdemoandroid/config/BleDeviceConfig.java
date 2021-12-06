@@ -109,6 +109,11 @@ public class BleDeviceConfig {
      */
     public final static int SPORTS_WATCH_BLE = 0x1D;
 
+    /**
+     * 蓝牙营养秤
+     */
+    public final static int BLE_NUTRITION_SCALE = 0x0034;
+
 
     /**
      * 广播秤
@@ -140,6 +145,7 @@ public class BleDeviceConfig {
      * 电滑板车
      */
     public final static int SMART_SCOOTER =0x0025;
+    public final static int SMART_SCOOTER_CM02 =0x0033;
 
     /**
      * 共享充电器
@@ -179,5 +185,15 @@ public class BleDeviceConfig {
      * 验证不握手不加密的id
      */
     public final static int CLEAR_SHAKE_HANDS = -6;
+
+    /**
+     * 跳绳
+     */
+    public final static int ROPE_SKIPPING = 0x002f;
+
+    /**
+     * 广播营养秤
+     */
+    public final static int BROADCAST_NUTRITION = 0x10003;
 
 }

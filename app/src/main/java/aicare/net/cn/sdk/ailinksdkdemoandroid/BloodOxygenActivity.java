@@ -8,17 +8,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSeekBar;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatSeekBar;
 import cn.net.aicare.modulelibrary.module.BloodOxygen.BleBloodOxygenBleConfig;
 import cn.net.aicare.modulelibrary.module.BloodOxygen.BleBloodOxygenDeviceData;
 

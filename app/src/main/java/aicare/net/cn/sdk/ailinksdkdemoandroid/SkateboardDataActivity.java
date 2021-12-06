@@ -14,15 +14,6 @@ import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnBleHandshakeListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
-import com.realsil.sdk.core.RtkConfigure;
-import com.realsil.sdk.core.RtkCore;
-import com.realsil.sdk.core.logger.ZLogger;
-import com.realsil.sdk.dfu.DfuConstants;
-import com.realsil.sdk.dfu.RtkDfu;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.DialogStringImageAdapter;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.ShowListDialogFragment;
@@ -30,6 +21,10 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.FileUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.MyBleStrUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import cn.net.aicare.modulelibrary.module.scooter.BleWeatherBean;
 import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
@@ -38,7 +33,7 @@ import cn.net.aicare.modulelibrary.module.scooter.SkateboardDevice;
 /**
  * xing<br>
  * 2020/6/28<br>
- * 滑板车
+ * 滑板车界面
  */
 public class SkateboardDataActivity extends BleAppBaseActivity implements OnCallbackBle, View.OnClickListener, SkateboardDevice.onNotifyData,
         RtkOtaManager.OnRtkOtaInfoListener, ShowListDialogFragment.onDialogListener, OnBleHandshakeListener {
@@ -218,7 +213,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
      * rtk升级方式
      * 默认静默升级
      */
-    private int mRtkOtaType = DfuConstants.OTA_MODE_SILENT_FUNCTION;
+    private int mRtkOtaType = RtkOtaManager.OTA_MODE_SILENT_FUNCTION;
     /**
      * ota作用域
      */
@@ -830,8 +825,8 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
             //OTA类型
             case R.id.btn_ota_type:
                 List<DialogStringImageAdapter.DialogStringImageBean> list = new ArrayList<>();
-                list.add(new DialogStringImageAdapter.DialogStringImageBean("静默升级", DfuConstants.OTA_MODE_SILENT_FUNCTION));
-                list.add(new DialogStringImageAdapter.DialogStringImageBean("普通升级", DfuConstants.OTA_MODE_NORMAL_FUNCTION));
+                list.add(new DialogStringImageAdapter.DialogStringImageBean("静默升级", RtkOtaManager.OTA_MODE_SILENT_FUNCTION));
+                list.add(new DialogStringImageAdapter.DialogStringImageBean("普通升级", RtkOtaManager.OTA_MODE_NORMAL_FUNCTION));
                 ShowListDialogFragment.newInstance().setTitle("").setCancel("", 0).setCancelBlank(true).setBackground(true).setBottom(false)
                         .setList(list).setOnDialogListener(new ShowListDialogFragment.onDialogListener() {
                     @Override
@@ -1026,10 +1021,10 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
         mListviewData.setAdapter(listAdapter);
         FileUtils.init();
         mDialogList = new ArrayList<>();
-        RtkConfigure configure = new RtkConfigure.Builder().debugEnabled(BuildConfig.DEBUG).printLog(true).logTag("OTA").build();
-        RtkCore.initialize(this, configure);
-        RtkDfu.initialize(this, BuildConfig.DEBUG);
-        ZLogger.initialize("AILink", BuildConfig.DEBUG);
+//        RtkConfigure configure = new RtkConfigure.Builder().debugEnabled(BuildConfig.DEBUG).printLog(true).logTag("OTA").build();
+//        RtkCore.initialize(this, configure);
+//        RtkDfu.initialize(this, BuildConfig.DEBUG);
+//        ZLogger.initialize("AILink", BuildConfig.DEBUG);
     }
 
     @Override

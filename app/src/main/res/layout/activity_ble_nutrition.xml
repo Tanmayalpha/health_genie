@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_set_zero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="去皮指令" />
+
+                <Button
+                    android:id="@+id/btn_set_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置单位" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_g"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="g" />
+
+                <RadioButton
+                    android:id="@+id/rb_ml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ml" />
+
+                <RadioButton
+                    android:id="@+id/rb_lb_oz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="lb:oz" />
+
+                <RadioButton
+                    android:id="@+id/rb_oz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="oz" />
+
+                <RadioButton
+                    android:id="@+id/rb_kg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kg" />
+
+                <RadioButton
+                    android:id="@+id/rb_jin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="斤" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_milk_ml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="牛奶ml" />
+
+                <RadioButton
+                    android:id="@+id/rb_water_ml"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="水ml" />
+
+                <RadioButton
+                    android:id="@+id/rb_milk_fl_oz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="牛奶floz" />
+
+                <RadioButton
+                    android:id="@+id/rb_water_fl_oz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="水floz" />
+
+                <RadioButton
+                    android:id="@+id/rb_lb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="lb" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

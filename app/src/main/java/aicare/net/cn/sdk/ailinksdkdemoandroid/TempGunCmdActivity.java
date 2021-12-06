@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
@@ -24,15 +27,14 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.foreheadgun.TempGunDeviceData;
+
 
 
 /**
@@ -40,7 +42,8 @@ import cn.net.aicare.modulelibrary.module.foreheadgun.TempGunDeviceData;
  * 2019/4/25<br>
  * 额温枪
  */
-public class TempGunCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleVersionListener, TempGunDeviceData.onNotifyData , OnBleCompanyListener, OnMcuParameterListener, View.OnClickListener {
+public class TempGunCmdActivity extends BleBaseActivity implements OnCallbackDis,
+        OnBleVersionListener, TempGunDeviceData.onNotifyData , OnBleCompanyListener, OnMcuParameterListener, View.OnClickListener {
 
     private static String TAG = TempGunCmdActivity.class.getName();
     private final int REFRESH_DATA = 3;

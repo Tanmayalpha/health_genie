@@ -36,7 +36,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="暂停" />
-
+                <Button
+                    android:id="@+id/btnDis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="断开" />
+                <Button
+                    android:id="@+id/btnConnect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="连接" />
 
             </LinearLayout>
 
@@ -296,6 +305,33 @@
                     android:digits="0987654321,"
                     android:hint="标记,时间,操作,广播时间"
                     android:text="1,60,1,1000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/et_set_device"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:digits="0123456789abcdefABCDEF, "
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/btn_set_device"
+                    android:text="设置设备信息"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/btn_get_device"
+                    android:text="读取设备信息"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
         </LinearLayout>

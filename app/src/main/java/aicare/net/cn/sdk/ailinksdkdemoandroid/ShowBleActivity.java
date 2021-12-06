@@ -40,9 +40,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.AppConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.find.FindDeviceNewActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.ble_nutrition.BleNutritionActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.blood_glucose.BloodGlucoseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.coffee_scale.CoffeeScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.food_temp.FoodTempActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_charger.ShareChargerActivity;
@@ -52,6 +55,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import cn.net.aicare.modulelibrary.module.RopeSkipping.RopeSkippingBleData;
 import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
 
 
@@ -212,6 +216,11 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                     } else if (mCid == 0) {
                         //CID=0不需要握手
                         BleConfig.setHandshakeStatus(mac, false);
+                    } else if (mCid == BleDeviceConfig.ROPE_SKIPPING) {
+                        //要加密要握手。别人家的东西
+                        if (mVid == 0x0027 && mPid == 0x0001) {
+                            BleConfig.setHandshakeStatus(RopeSkippingBleData.LongXiang, mac, true);
+                        }
                     }
                     if (mBluetoothService != null) {
                         mBluetoothService.stopScan();
@@ -327,6 +336,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             bleDevice.setA7Encryption(false);
             mNoEncryptionMac = "";
 
+
         }
         dismissLoading();
         Intent intent = new Intent();
@@ -410,6 +420,13 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.TEMP_Humidity:
                 intent.setClass(ShowBleActivity.this, TempHumidityActivity.class);
                 break;
+            case BleDeviceConfig.ROPE_SKIPPING:
+                intent.setClass(ShowBleActivity.this, RopeSkippingActivity.class);
+                break;
+            case BleDeviceConfig.BLE_NUTRITION_SCALE:
+                // 蓝牙营养秤
+                intent.setClass(ShowBleActivity.this, BleNutritionActivity.class);
+                break;
 //            case BleDeviceConfig.BLD_WEIGHT:
 //                intent.setClass(ShowBleActivity.this, BLDWeightScaleBle.class);
 //                break;
@@ -425,7 +442,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case -4:
                 intent.setClass(ShowBleActivity.this, TransmissionActivity.class);
                 break;
-            case 65536:
+            case BleDeviceConfig.CLEAR_SHAKE_HANDS:
                 //验证不握手不加密的界面
                 intent.setClass(ShowBleActivity.this, ClearShakeHandsActivity.class);
                 break;

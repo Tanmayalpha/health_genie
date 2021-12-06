@@ -79,6 +79,7 @@
                     android:id="@+id/btn_lock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="电子锁" />
 
 
@@ -313,6 +314,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="共享套套机" />
+
+                <Button
+                    android:id="@+id/btn_rope_skip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跳绳" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_broadcast_nutrition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="广播营养秤" />
+
+                <Button
+                    android:id="@+id/btn_ble_nutrition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="蓝牙营养秤" />
 
             </LinearLayout>
 

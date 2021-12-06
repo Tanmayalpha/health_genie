@@ -12,11 +12,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 
 public class WifiDialog extends DialogFragment implements View.OnClickListener {
 

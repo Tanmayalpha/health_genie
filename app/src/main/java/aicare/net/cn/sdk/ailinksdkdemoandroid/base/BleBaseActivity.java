@@ -49,7 +49,7 @@ public abstract class BleBaseActivity extends AppCompatActivity {
      */
     protected void startScanBle(long timeOut){
         if (mBluetoothService!=null){
-            mBluetoothService.scanLeDevice(timeOut, BleConfig.UUID_SERVER_AILINK);
+            mBluetoothService.scanLeDevice(timeOut,BleConfig.UUID_SERVER_AILINK);
         }
     }
 

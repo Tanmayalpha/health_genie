@@ -19,6 +19,8 @@ import com.pingwang.bluetoothlib.listener.OnCallbackDis;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
 import com.pinwang.ailinkble.AiLinkPwdUtil;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -26,16 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleBleConfig;
 
-/**
- * 广播身高仪
- */
 public class BroadcastHeightActivity extends BleBaseActivity implements OnCallbackDis, OnScanFilterListener {
 
     private Context mContext;

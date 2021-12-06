@@ -15,12 +15,11 @@ import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BloodGlucose.BloodGlucoseBleDeviceData;
 import cn.net.aicare.modulelibrary.module.BloodGlucose.BloodGlucoseUtil;
 
-public class BloodGlucoseActivity extends BleBaseActivity implements OnCallbackBle ,BloodGlucoseBleDeviceData.BloodGlucoseCallback{
+public class BloodGlucoseActivity extends aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity implements OnCallbackBle ,BloodGlucoseBleDeviceData.BloodGlucoseCallback{
 
     private Button support_unit, quest_status,showdata;
     private RadioButton mmol, mg;

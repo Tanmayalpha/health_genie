@@ -16,15 +16,15 @@ import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import aicare.net.cn.sdk.ailinksdkdemoandroid.BuildConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

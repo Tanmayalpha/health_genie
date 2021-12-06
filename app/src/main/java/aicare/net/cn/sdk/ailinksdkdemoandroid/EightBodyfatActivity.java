@@ -10,11 +10,13 @@ import android.widget.RadioButton;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.EightBodyFatAlgorithms;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.EightBodyFatBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyFatBleDeviceData;
 import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyFatUtil;
@@ -72,7 +74,6 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
             }
         });
         stlb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -147,12 +148,12 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     @Override
     public void onState(int type, int typeState, int result) {
         switch (type) {
-//            case EightBodyFatUtil.WEIGHING:
+//            case EightBodyfatUtil.WEIGHING:
 //                switch (typeState) {
-//                    case EightBodyFatUtil.WEIGHT_REAL_TIME_WEIGH:
+//                    case EightBodyfatUtil.WEIGHT_REAL_TIME_WEIGH:
 //                        loglist.add(0, "实时体重");
 //                        break;
-//                    case EightBodyFatUtil.WEIGHT_STABILIZATION_WEIGHT:
+//                    case EightBodyfatUtil.WEIGHT_STABILIZATION_WEIGHT:
 //                        loglist.add(0, "稳定体重");
 //                }
 //                break;

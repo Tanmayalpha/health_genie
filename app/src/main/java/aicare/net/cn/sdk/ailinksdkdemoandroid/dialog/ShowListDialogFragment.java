@@ -15,12 +15,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -19,14 +19,15 @@ import com.pingwang.bluetoothlib.listener.OnCallbackDis;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.net.aicare.modulelibrary.module.SmartMask.SmartMaskBleConfig;
@@ -270,9 +271,9 @@ public class SmartMaskActivity extends BleBaseActivity implements OnCallbackDis,
     @Override
     public void onSetStatus(int type,int status) {
         String data = "";
-        if (type== SmartMaskBleConfig.GET_TEST_MODE){
+        if (type==SmartMaskBleConfig.GET_TEST_MODE){
             data="进入测试模式:";
-        }else if (type== SmartMaskBleConfig.GET_POWER){
+        }else if (type==SmartMaskBleConfig.GET_POWER){
             data="关机:";
         }
         switch (status) {

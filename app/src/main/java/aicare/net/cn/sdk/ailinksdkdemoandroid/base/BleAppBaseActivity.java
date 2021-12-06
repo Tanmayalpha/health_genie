@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-
 import java.lang.ref.WeakReference;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;

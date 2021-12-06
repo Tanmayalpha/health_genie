@@ -14,13 +14,13 @@ import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.Transmission.TransmissionDeviceData;
 
@@ -97,7 +97,7 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
         int id = v.getId();
         if (id == R.id.send) {
             if (!et.getText().toString().isEmpty() && !et_cid.getText().toString().isEmpty()) {
-                String hex=et.getText().toString().toUpperCase().trim();
+                String hex = et.getText().toString().toUpperCase().trim();
                 byte[] hexStr = BleStrUtils.stringToByte(hex);
                 String cid = et_cid.getText().toString().toUpperCase().trim();
                 int hexStrCid = Integer.parseInt(cid, 16);
@@ -110,7 +110,7 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
         } else if (id == R.id.bt_clear_log) {
             mlogList.clear();
             mMHandler.sendEmptyMessage(ToRefreUi);
-        }else if (id==R.id.bt_cid){
+        } else if (id == R.id.bt_cid) {
 
             if (mTransmissionDeviceData != null) {
                 mTransmissionDeviceData.getCid();
@@ -123,11 +123,9 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
 
     }
 
-
-
     @Override
     public void showdata(String data, int type) {
-        mlogList.add(0, "收 payload数据"+ TimeUtils.getTime()+data);
+        mlogList.add(0, "收 payload数据" +  TimeUtils.getTime() +"cid=" + type + "\n" + data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
@@ -138,19 +136,19 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
 
     @Override
     public void onCid(int cid, int vid, int pid) {
-        mlogList.add(0, "收"+TimeUtils.getTime() + "cid:" + cid + "||vid:" + vid + "||pid:" + pid);
+        mlogList.add(0, "收" + TimeUtils.getTime() + "cid:" + cid + "||vid:" + vid + "||pid:" + pid);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
     @Override
     public void otherdata(String data) {
-        mlogList.add(0, "收 透传数据"+TimeUtils.getTime()+data);
+        mlogList.add(0, "收 透传数据" + TimeUtils.getTime() + data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
     @Override
     public void sendData(String data) {
-        mlogList.add(0, "发 "+TimeUtils.getTime()+data);
+        mlogList.add(0, "发 " + TimeUtils.getTime() + data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
@@ -167,6 +165,14 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
                     break;
 
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBluetoothService!=null) {
+            mBluetoothService.disconnectAll();
         }
     }
 }

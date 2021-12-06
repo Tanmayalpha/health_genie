@@ -53,7 +53,12 @@
                     android:text="握手:false"
                     />
 
-
+                <Button
+                    android:id="@+id/btn_start_ota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开始OTA"
+                    />
 
 
             </LinearLayout>
@@ -90,6 +95,24 @@
                     android:layout_height="wrap_content"
                     android:text="OTA:580"
                     />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                >
+
+                <Button
+                    android:id="@+id/btn_ota_bk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTA:BK"
+                    />
+
+
+
 
             </LinearLayout>
 

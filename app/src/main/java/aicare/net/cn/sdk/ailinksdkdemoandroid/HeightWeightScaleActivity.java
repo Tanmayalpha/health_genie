@@ -8,23 +8,24 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.HeightWeightScale.HeightBodyFatBleData;
 import cn.net.aicare.modulelibrary.module.HeightWeightScale.HeightBodyFatBleUntils;
 
 /**
- * 身高体重秤
+ * 身高体脂秤
  */
 public class HeightWeightScaleActivity extends BleBaseActivity implements OnCallbackBle, HeightBodyFatBleData.OnHeightBodyFatDataCallback, View.OnClickListener {
     private String mAddress = "";

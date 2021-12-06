@@ -17,6 +17,8 @@ import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,15 +27,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ShareSocket.ShareSocketData;
 
-/**
- * 共享插座
- */
 public class ShareSocketActivity extends BleBaseActivity implements View.OnClickListener, ShareSocketData.ShareSocketCallback, OnCallbackBle, OnScanFilterListener {
 
     private static final int MSG_TEST_START_SCAN = 100;

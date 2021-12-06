@@ -22,6 +22,9 @@ import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -29,9 +32,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.AppHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
@@ -52,28 +52,15 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
     private MHandler mMHandler;
     private EditText mEditText;
     private RadioButton kg, jing, stlb, lb;
-    private byte[] testIp = new byte[]{0x74,
-            0x65, 0x73, 0x74, 0x2e,
-            0x61, 0x69, 0x6c, 0x69,
-            0x6e, 0x6b, 0x2e, 0x72,
-            0x65, 0x76, 0x69, 0x63,
-            0x65, 0x2e, 0x61, 0x69,
-            0x63, 0x61, 0x72, 0x65,
-            0x2e, 0x6e, 0x65, 0x74,
-            0x2e, 0x63, 0x6e};
 
-    private byte[] productIp = new byte[]{
-            0x61, 0x69, 0x6c, 0x69, 0x6e, 0x6b, 0x2e,
-            0x69, 0x6f, 0x74, 0x2e, 0x61, 0x69, 0x63,
-            0x61, 0x72, 0x65, 0x2e, 0x6e, 0x65, 0x74,
-            0x2e, 0x63, 0x6e};
+    private EditText et_ip, et_url, et_port;
 
-    private byte[] IpUrl = new byte[]{
-            0x2f, 0x64, 0x65, 0x76, 0x69,
-            0x76, 0x63, 0x64, 0x2f, 0x73,
-            0x65, 0x72, 0x76, 0x64, 0x72,
-            0x52, 0x65, 0x64, 0x69, 0x72,
-            0x65, 0x63, 0x74, 0x2f};
+    private byte[] testIp = new byte[]{0x74, 0x65, 0x73, 0x74, 0x2e, 0x61, 0x69, 0x6c, 0x69, 0x6e, 0x6b, 0x2e, 0x72, 0x65, 0x76, 0x69, 0x63, 0x65, 0x2e, 0x61, 0x69, 0x63, 0x61, 0x72, 0x65, 0x2e,
+            0x6e, 0x65, 0x74, 0x2e, 0x63, 0x6e};
+
+    private byte[] productIp = new byte[]{0x61, 0x69, 0x6c, 0x69, 0x6e, 0x6b, 0x2e, 0x69, 0x6f, 0x74, 0x2e, 0x61, 0x69, 0x63, 0x61, 0x72, 0x65, 0x2e, 0x6e, 0x65, 0x74, 0x2e, 0x63, 0x6e};
+
+    private byte[] IpUrl = new byte[]{0x2f, 0x64, 0x65, 0x76, 0x69, 0x76, 0x63, 0x64, 0x2f, 0x73, 0x65, 0x72, 0x76, 0x64, 0x72, 0x52, 0x65, 0x64, 0x69, 0x72, 0x65, 0x63, 0x74, 0x2f};
     private boolean isTest = false;
 
     @Override
@@ -91,6 +78,13 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
         findViewById(R.id.setedmac).setOnClickListener(this);
         findViewById(R.id.ota).setOnClickListener(this);
         findViewById(R.id.surroundings).setOnClickListener(this);
+        findViewById(R.id.check_ip).setOnClickListener(this);
+        findViewById(R.id.check_port).setOnClickListener(this);
+        findViewById(R.id.check_url).setOnClickListener(this);
+
+        et_ip = findViewById(R.id.et_ip);
+        et_port = findViewById(R.id.et_port);
+        et_url = findViewById(R.id.et_url);
         mEditText = findViewById(R.id.select_wifi_et);
         kg = findViewById(R.id.kg);
         jing = findViewById(R.id.jin);
@@ -136,6 +130,7 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                 }
             }
         });
+
 
     }
 
@@ -504,15 +499,24 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
 
     @Override
     public void onSetIpStatus(int status) {
+//        if (status == 0) {
+//            if (isTest) {
+//                mList.add(0, "设置环境IP为生产环境成功");
+//                mList.add(0, "设置环境路径为生产环境");
+//            } else {
+//                mList.add(0, "设置环境IP为测试环境成功");
+//                mList.add(0, "设置环境路径为测试环境");
+//            }
+//            setIpUrl(IpUrl);
+//        } else {
+//            mList.add(0, "设置环境IP失败");
+//        }
+//        listAdapter.notifyDataSetChanged();
         if (status == 0) {
-            if (isTest) {
-                mList.add(0, "设置环境IP为生产环境成功");
-                mList.add(0, "设置环境路径为生产环境");
-            } else {
-                mList.add(0, "设置环境IP为测试环境成功");
-                mList.add(0, "设置环境路径为测试环境");
-            }
-            setIpUrl(IpUrl);
+            mList.add(0, "设置环境IP成功");
+            int port = Integer.parseInt(et_port.getText().toString());
+            mList.add(0, "设置环境端口为：" + port);
+            setPort(port);
         } else {
             mList.add(0, "设置环境IP失败");
         }
@@ -521,40 +525,57 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
 
     @Override
     public void onSetPortStatus(int status) {
-
+        if (status == 0) {
+            mList.add(0, "设置环境端口成功");
+            String ipUrlStr = et_url.getText().toString();
+            mList.add(0, "设置环境url为：" + ipUrlStr);
+            setIpUrl(convertToASCII(ipUrlStr));
+        } else {
+            mList.add(0, "设置环境端口失败");
+        }
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onSetIpUrlStatus(int status) {
+//        if (status == 0) {
+//            if (isTest) {
+//                mList.add(0, "设置环境路径为生产环境成功");
+//                isTest = false;
+//
+//            } else {
+//                mList.add(0, "设置环境路径为测试环境成功");
+//                isTest = true;
+//
+//            }
+//        } else {
+//            mList.add(0, "设置环境路径失败");
+//        }
+//        listAdapter.notifyDataSetChanged();
         if (status == 0) {
-            if (isTest) {
-                mList.add(0, "设置环境路径为生产环境成功");
-                isTest = false;
-
-            } else {
-                mList.add(0, "设置环境路径为测试环境成功");
-                isTest = true;
-
-            }
+            mList.add(0, "设置环境url成功");
         } else {
-            mList.add(0, "设置环境路径失败");
+            mList.add(0, "设置环境url失败");
         }
         listAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onIpData(String ip) {
-
+        mList.add(0, "环境ip：" + ip);
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onPortData(int port) {
-
+        mList.add(0, "环境端口：" + port);
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onUrlData(String url) {
-
+        mList.add(0, "环境url：" + url);
+        listAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -583,7 +604,7 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                             @Override
                             public void tvSucceedListener(View v, String data) {
                                 bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().setWifiMac(wifimacMap.get(selectWifi)));
-                                if (data.equals("") || data.length() > 8) {
+                                if (data.equals("") || data.length() >= 8) {
                                     setPaw(data);
                                 } else {
                                     Toast.makeText(WeightScaleWifiBleActivity.this, "密码格式不对", Toast.LENGTH_SHORT).show();
@@ -620,23 +641,48 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                 showFileChooser();
                 break;
             case R.id.surroundings:
-                if (isTest) {
-                    setIp(productIp);
-                    mList.add(0, "设置环境IP为生产环境");
-
-                } else {
-                    setIp(testIp);
-                    mList.add(0, "设置环境IP为测试环境");
-
-
-                }
+//                if (isTest) {
+//                    setIp(productIp);
+//                    mList.add(0, "设置环境IP为生产环境");
+//
+//                } else {
+//                    setIp(testIp);
+//                    mList.add(0, "设置环境IP为测试环境");
+//
+//
+//                }
+                String ipStr = et_ip.getText().toString();
+                setIp(convertToASCII(ipStr));
+                mList.add(0, "设置环境IP为：" + ipStr);
                 listAdapter.notifyDataSetChanged();
-
                 break;
-
+            case R.id.check_ip:
+                mList.add(0, "查看环境ip");
+                listAdapter.notifyDataSetChanged();
+                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().checkIp());
+                break;
+            case R.id.check_port:
+                mList.add(0, "查看环境端口");
+                listAdapter.notifyDataSetChanged();
+                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().checkPort());
+                break;
+            case R.id.check_url:
+                mList.add(0, "查看环境url");
+                listAdapter.notifyDataSetChanged();
+                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().checkUrl());
+                break;
 
         }
 
+    }
+
+    private byte[] convertToASCII(String string) {
+        char[] ch = string.toCharArray();
+        byte[] tmp = new byte[ch.length];
+        for (int i = 0; i < ch.length; i++) {
+            tmp[i] = (byte) Integer.valueOf(ch[i]).intValue();
+        }
+        return tmp;
     }
 
 
@@ -664,6 +710,10 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
             }
         }
 
+    }
+
+    private void setPort(int port) {
+        bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentPort(port));
     }
 
     private void setIpUrl(byte[] setIpUrl) {
@@ -780,17 +830,24 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                     listAdapter.notifyDataSetChanged();
                 }
 
+                private int mOldProgress = -1;
+
                 @Override
                 public void onOtaProgress(float progress, int currentCount, int maxCount) {
-                    mList.add(0, "otaProgress:"+progress);
-                    listAdapter.notifyDataSetChanged();
+                    if (mOldProgress != progress) {
+                        mOldProgress = (int) progress;
+                        mList.add(0, "otaProgress:" + progress);
+                        listAdapter.notifyDataSetChanged();
+                    }
                 }
             });
         } else {
 
         }
     }
+
     private static final int FILE_SELECT_CODE = 0x1002;
+
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");

@@ -10,6 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,10 +27,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * 4G血糖仪
@@ -103,15 +104,10 @@ public class BloodSugar4GActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
-
     }
 
     public void login() throws Throwable {
-        //以下登录信息为服务器key和用户账号密码,仅供测试使用上线使用会导致只有一个用户可用
-        String key = "inet_elink";//key
-        String username = "dhls@qq.com";//用户账号
-        String password = "dc483e80a7a0bd9ef71d8cf973673924";//用户密码
-        String mUrl = url + "/api/user/login?key=" + key + "&username=" + username + "&password=" + password;
+        String mUrl=url + "/api/user/login?key=inet_elink&username=dhls@qq.com&password=dc483e80a7a0bd9ef71d8cf973673924";
         URL uri = new URL(mUrl);
         HttpURLConnection httpURLConnection = (HttpURLConnection) uri.openConnection();
         // Post请求必须设置允许输出

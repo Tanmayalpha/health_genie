@@ -21,13 +21,13 @@ import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleBleConfig;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleDeviceData;
@@ -250,7 +250,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
             return;
         }
         mOldData=data;
-        mList.add(TimeUtils.getTime() + "数据ID" + type+" ,||解密数据:"+data+" ,||原始数据:"+ BleStrUtils.byte2HexStr(dataOriginal));
+        mList.add(TimeUtils.getTime() + "数据ID" + type+" ,||解密数据:"+data+" ,||原始数据:"+BleStrUtils.byte2HexStr(dataOriginal));
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
