@@ -213,7 +213,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
      * rtk升级方式
      * 默认静默升级
      */
-    private int mRtkOtaType = RtkOtaManager.OTA_MODE_SILENT_FUNCTION;
+//    private int mRtkOtaType = RtkOtaManager.OTA_MODE_SILENT_FUNCTION;
     /**
      * ota作用域
      */
@@ -825,14 +825,14 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
             //OTA类型
             case R.id.btn_ota_type:
                 List<DialogStringImageAdapter.DialogStringImageBean> list = new ArrayList<>();
-                list.add(new DialogStringImageAdapter.DialogStringImageBean("静默升级", RtkOtaManager.OTA_MODE_SILENT_FUNCTION));
-                list.add(new DialogStringImageAdapter.DialogStringImageBean("普通升级", RtkOtaManager.OTA_MODE_NORMAL_FUNCTION));
+//                list.add(new DialogStringImageAdapter.DialogStringImageBean("静默升级", RtkOtaManager.OTA_MODE_SILENT_FUNCTION));
+//                list.add(new DialogStringImageAdapter.DialogStringImageBean("普通升级", RtkOtaManager.OTA_MODE_NORMAL_FUNCTION));
                 ShowListDialogFragment.newInstance().setTitle("").setCancel("", 0).setCancelBlank(true).setBackground(true).setBottom(false)
                         .setList(list).setOnDialogListener(new ShowListDialogFragment.onDialogListener() {
                     @Override
                     public void onItemListener(int position) {
                         DialogStringImageAdapter.DialogStringImageBean dialogStringImageBean = list.get(position);
-                        mRtkOtaType = (int) dialogStringImageBean.getType();
+//                        mRtkOtaType = (int) dialogStringImageBean.getType();
                         btn_ota_type.setText(dialogStringImageBean.getName());
                     }
                 }).show(getSupportFragmentManager());
@@ -1003,7 +1003,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
                 mList.add("OTA包中包含:" + stepSize + "个小包\n现在升级" + ((step >= 0) ? step + "包" : "全部包"));
                 mHandler.sendEmptyMessage(REFRESH_DATA);
 
-                mRtkOtaManager.startOta(mRtkOtaType, step);
+//                mRtkOtaManager.startOta(mRtkOtaType, step);
             } else if (mDevice != null) {
 
                 mDevice.setOnBleOTAListener(SkateboardDataActivity.this);

@@ -193,11 +193,6 @@ public class BleDeviceConfig {
     public final static int CLEAR_SHAKE_HANDS = -6;
 
     /**
-     * 跳绳
-     */
-    public final static int ROPE_SKIPPING = 0x002f;
-
-    /**
      * 广播营养秤
      */
     public final static int BROADCAST_NUTRITION = 0x10003;
