@@ -671,9 +671,9 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                 listAdapter.notifyDataSetChanged();
                 bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().checkUrl());
                 break;
-
-
         }
+
+    }
 
     private byte[] convertToASCII(String string) {
         char[] ch = string.toCharArray();
