@@ -71,6 +71,17 @@
         <activity android:name=".BloodSugar4GActivity" />
         <activity android:name=".BloodOxygenActivity" />
         <activity android:name=".RopeSkippingActivity" />
+        <activity android:name=".modules.broadcast_nutrition.BroadNutritionActivity" />
+        <activity android:name=".modules.coffee_scale.CoffeeScaleActivity" />
+        <activity android:name=".modules.food_temp.FoodTempActivity" />
+        <activity android:name=".modules.share_charger.ShareChargerActivity" />
+        <activity android:name=".modules.share_condom.ShareCondomActivity" />
+        <activity android:name=".modules.share_socket.ShareSocketActivity" />
+        <activity android:name=".modules.broadcast_height.BroadcastHeightActivity" />
+        <activity android:name=".modules.blood_glucose.BloodGlucoseActivity" />
+        <activity android:name=".modules.blood_glucose.BloodGlucoseTestActivity" />
+        <activity android:name=".modules.ble_nutrition.BleNutritionActivity" />
+        <activity android:name=".BLDWeightScaleBleActivity" />
 
         <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer"/>
     </application>
