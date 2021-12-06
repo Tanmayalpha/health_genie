@@ -70,6 +70,7 @@
         <activity android:name=".ClearShakeHandsActivity" />
         <activity android:name=".BloodSugar4GActivity" />
         <activity android:name=".BloodOxygenActivity" />
+        <activity android:name=".RopeSkippingActivity" />
 
         <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer"/>
     </application>

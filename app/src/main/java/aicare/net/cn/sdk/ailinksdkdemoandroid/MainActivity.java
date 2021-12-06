@@ -5,9 +5,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pingwang.bluetoothlib.AILinkBleManager;
 import com.pingwang.bluetoothlib.AILinkSDK;
-import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.config.AppConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.find.FindDeviceNewActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.broadcast_height.BroadcastHeightActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.broadcast_nutrition.BroadNutritionActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
 
 

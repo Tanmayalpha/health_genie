@@ -27,6 +27,7 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
 
 
     private String mAddress;
+    private boolean isPauseLog = false;
 
     @Override
     public void onServiceSuccess() {
@@ -47,16 +48,14 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
     @Override
     public void onServiceErr() {
         if (mArrayAdapter != null && logList != null) {
-            logList.add("绑定服务失败");
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("绑定服务失败");
         }
     }
 
     @Override
     public void unbindServices() {
         if (mArrayAdapter != null && logList != null) {
-            logList.add("解除绑定服务");
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("解除绑定服务");
         }
 
     }
@@ -92,87 +91,95 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_syn_time) {
-            logList.add("同步时间搓");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().synTime(System.currentTimeMillis());
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("同步时间搓");
 
         } else if (v.getId() == R.id.btn_free_jump) {
-            logList.add("启动自由跳绳");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().startOrStopMode(1, 1);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("启动自由跳绳");
         } else if (v.getId() == R.id.btn_time_jump) {
-            logList.add("启动倒计时跳绳");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().startOrStopMode(2, 1);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("启动倒计时跳绳");
 
         } else if (v.getId() == R.id.btn_num_jump) {
-            logList.add("启动倒计数跳绳绳");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().startOrStopMode(3, 1);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("启动倒计数跳绳绳");
         } else if (v.getId() == R.id.btn_clear_log) {
-            logList.clear();
-            mArrayAdapter.notifyDataSetChanged();
+            if (!isPauseLog) {
+                isPauseLog = true;
+            } else {
+                isPauseLog = false;
+            }
+
         } else if (v.getId() == R.id.btn_stop_free_jump) {
-            logList.add("结束自由跳绳");
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().startOrStopMode(1, 0);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("结束自由跳绳");
         } else if (v.getId() == R.id.btn_stop_time_jump) {
-            logList.add("结束倒计时跳绳");
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().startOrStopMode(2, 0);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("结束倒计时跳绳");
 
         } else if (v.getId() == R.id.btn_stop_num_jump) {
-            logList.add("结束倒计数跳绳绳");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().startOrStopMode(3, 0);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("结束倒计数跳绳绳");
         } else if (v.getId() == R.id.btn_default_num) {
-            logList.add("默认倒计数100");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().setCountDownNum(50);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("默认倒计数100");
         } else if (v.getId() == R.id.btn_default_timer) {
-            logList.add("默认倒计时60");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().setTimerNum(120);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("默认倒计时60");
         } else if (v.getId() == R.id.btn_get_history) {
-            logList.add("获取离线记录");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().offlineHistory(1);
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("获取离线记录");
 
         } else if (v.getId() == R.id.btn_bind) {
-            logList.add("请按确认按钮");
+
             if (RopeSkippingBleData.getInstance() != null) {
                 RopeSkippingBleData.getInstance().questBind();
             }
-            mArrayAdapter.notifyDataSetChanged();
+            refreshLog("请按确认按钮");
         }
     }
 
 
+    private void refreshLog(String content) {
+        if (!isPauseLog) {
+            logList.add(content);
+            mArrayAdapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onFinish(RopeSkipRecord ropeSkipBean) {
-        logList.add("跳绳结束");
-        logList.add(ropeSkipBean.toString() + " \n绊绳=" + new Gson().toJson(ropeSkipBean.getStopDetail()));
-        mArrayAdapter.notifyDataSetChanged();
+
+        refreshLog("跳绳结束" + "\n" + ropeSkipBean.toString() + " \n绊绳=" + new Gson().toJson(ropeSkipBean.getStopDetail()));
     }
 
     @Override
@@ -182,45 +189,49 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
 
     @Override
     public void onCurrentData(int status, int mode, int defaultValue, int currentJumpNum, int currentJumpTime, int batter) {
-        logList.add("实时数据 \n" + "状态: " + status + " ( 0：准备 1：进行中 2：完成) \n" + "模式: "
+        refreshLog("实时数据 \n" + "状态: " + status + " ( 0：准备 1：进行中 2：完成) \n" + "模式: "
                 + mode + " (1：自由 2：倒计时 3：倒计数) \n"
                 + "默认值: " + defaultValue + "  电量 " + batter + "\n 当前个数: " + currentJumpNum + " 时间 " + currentJumpTime);
-        mArrayAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onResultTimerAndCountDownNum(int mode, int timer) {
         if (mode == 2) {
-            logList.add("设置默认时间：" + timer);
+            refreshLog("设置默认时间：" + timer);
+
         } else if (mode == 3) {
-            logList.add("设置默认个数：" + timer);
+            refreshLog("设置默认个数：" + timer);
 
         }
-        mArrayAdapter.notifyDataSetChanged();
+
     }
 
     @Override
     public void onResultStatus(int mode, int result) {
-        logList.add("模式: " + mode + " (1：自由 2：倒计时 3：倒计数)" + "结果: " + result + "0:成功 1:失败 2：不支持");
-        mArrayAdapter.notifyDataSetChanged();
+        refreshLog("模式: " + mode + " (1：自由 2：倒计时 3：倒计数)" + "结果: " + result + "0:成功 1:失败 2：不支持");
 
 
     }
 
     @Override
     public void onBindResult(int result) {
-        logList.add("确认绑定结果: " + result + "  0 : 成功 1 ：失败 2 不支持");
-        mArrayAdapter.notifyDataSetChanged();
+        refreshLog("确认绑定结果: " + result + "  0 : 成功 1 ：失败 2 不支持");
     }
 
     @Override
     public void onFinishOffHistory(List<RopeSkipRecord> list) {
-        if (list==null){
-            logList.add("没有离线记录");
-        }else {
-            logList.add("离线记录：");
-            logList.add(new Gson().toJson(list));
-            mArrayAdapter.notifyDataSetChanged();
+        if (list == null) {
+            refreshLog("没有离线记录");
+        } else {
+
+            refreshLog("离线记录：\n" + new Gson().toJson(list));
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (mBluetoothService != null)
+            mBluetoothService.disconnectAll();
     }
 }

@@ -22,9 +22,6 @@ import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -32,6 +29,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.AppHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
@@ -672,9 +672,8 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                 bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().checkUrl());
                 break;
 
-        }
 
-    }
+        }
 
     private byte[] convertToASCII(String string) {
         char[] ch = string.toCharArray();

@@ -40,12 +40,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.config.AppConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.find.FindDeviceNewActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.ble_nutrition.BleNutritionActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.blood_glucose.BloodGlucoseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.coffee_scale.CoffeeScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.food_temp.FoodTempActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_charger.ShareChargerActivity;
@@ -55,7 +52,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import cn.net.aicare.modulelibrary.module.RopeSkipping.RopeSkippingBleData;
 import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
 
 
@@ -335,7 +331,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             BleDevice bleDevice = mBluetoothService.getBleDevice(mac);
             bleDevice.setA7Encryption(false);
             mNoEncryptionMac = "";
-
 
         }
         dismissLoading();

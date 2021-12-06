@@ -129,6 +129,8 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
+
+
     @Override
     public void onSupportUnit(List<SupportUnitBean> list) {
 
