@@ -5,7 +5,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.TextView;
 
-import com.pingwang.bluetoothlib.AILinkBleManager;
 import com.pingwang.bluetoothlib.AILinkSDK;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.utils.BleLog;
@@ -178,17 +177,8 @@ public class MainActivity extends BleAppBaseActivity {
         BleLog.init("", "", BuildConfig.DEBUG);
         String version = getString(R.string.version) + ":" + BuildConfig.VERSION_NAME;
         ((TextView) findViewById(R.id.tv_app_version)).setText(version);
-        AILinkSDK.getInstance().init(getApplication(), new AILinkBleManager.onInitListener() {
-            @Override
-            public void onInitSuccess() {
-
-            }
-
-            @Override
-            public void onInitFailure() {
-
-            }
-        });//sdk
+        AILinkSDK.getInstance().init(getApplication());//sdk
+//        AILinkBleManager.getInstance().init(getApplication());
         BleConfig.addVendorID(0xac05);
         SP.init(this);
     }
