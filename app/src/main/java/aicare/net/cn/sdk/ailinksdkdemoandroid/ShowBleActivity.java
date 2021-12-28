@@ -43,7 +43,6 @@ import java.util.UUID;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.find.FindDeviceNewActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.ble_nutrition.BleNutritionActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.coffee_scale.CoffeeScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.food_temp.FoodTempActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_charger.ShareChargerActivity;
@@ -423,7 +422,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 break;
             case BleDeviceConfig.BLE_NUTRITION_SCALE:
                 // 蓝牙营养秤
-                intent.setClass(ShowBleActivity.this, BleNutritionActivity.class);
+//                intent.setClass(ShowBleActivity.this, BleNutritionActivity.class);
                 break;
 //            case BleDeviceConfig.BLD_WEIGHT:
 //                intent.setClass(ShowBleActivity.this, BLDWeightScaleBle.class);

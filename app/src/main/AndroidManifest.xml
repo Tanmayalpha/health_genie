@@ -80,7 +80,6 @@
         <activity android:name=".modules.broadcast_height.BroadcastHeightActivity" />
         <activity android:name=".modules.blood_glucose.BloodGlucoseActivity" />
         <activity android:name=".modules.blood_glucose.BloodGlucoseTestActivity" />
-        <activity android:name=".modules.ble_nutrition.BleNutritionActivity" />
         <activity android:name=".BLDWeightScaleBleActivity" />
 
         <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer"/>
