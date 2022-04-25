@@ -11,9 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
@@ -26,12 +23,14 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.thermometer.TempDeviceData;
 
 
@@ -221,6 +220,37 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     //-----------------通知-------------------
 
     private class NotifyData implements TempDeviceData.onNotifyData {
+
+        @Override
+        public void mcuHistory(int maxSize, int curSize, List<TempDeviceData.HistoryBean> list) {
+
+        }
+
+        @Override
+        public void mcuGetMode(int mode) {
+
+        }
+
+        @Override
+        public void mcuSetMode(int status) {
+
+        }
+
+        @Override
+        public void mcuGetTemp(int temp, int unit, int decimal) {
+
+        }
+
+        @Override
+        public void mcuSetTemp(int status) {
+
+        }
+
+        @Override
+        public void mcuSetUnixStamp(int status) {
+
+        }
+
         @Override
         public void onData(byte[] status,int type) {
             String data = "";

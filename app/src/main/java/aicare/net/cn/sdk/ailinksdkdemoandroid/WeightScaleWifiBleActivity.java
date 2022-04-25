@@ -627,7 +627,7 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                 bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().getSelectWifiMac());
                 break;
             case R.id.setedpaw:
-                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().getSelectWifiPwd());
+                bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().getConnectWifiPwd());
                 break;
             case R.id.setedname:
                 bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().getConnectWifiName());

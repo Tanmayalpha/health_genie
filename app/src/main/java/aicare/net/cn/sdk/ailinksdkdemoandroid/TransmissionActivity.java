@@ -124,7 +124,8 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
     }
 
     @Override
-    public void showdata(String data, int type) {
+    public void showData(String data, int type) {
+
         mlogList.add(0, "收 payload数据" +  TimeUtils.getTime() +"cid=" + type + "\n" + data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
@@ -143,7 +144,8 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
     }
 
     @Override
-    public void otherdata(String data) {
+    public void otherData(byte[] hex, String data) {
+
         mlogList.add(0, "收 透传数据" + TimeUtils.getTime() + data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }

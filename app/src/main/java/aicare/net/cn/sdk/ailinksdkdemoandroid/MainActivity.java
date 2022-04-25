@@ -2,11 +2,12 @@ package aicare.net.cn.sdk.ailinksdkdemoandroid;
 
 import android.content.Intent;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.besthealth.bhBodyComposition120.BhBodyComposition;
 import com.pingwang.bluetoothlib.AILinkSDK;
-import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
 import java.util.ArrayList;
@@ -179,7 +180,6 @@ public class MainActivity extends BleAppBaseActivity {
         ((TextView) findViewById(R.id.tv_app_version)).setText(version);
         AILinkSDK.getInstance().init(getApplication());//sdk
 //        AILinkBleManager.getInstance().init(getApplication());
-        BleConfig.addVendorID(0xac05);
         SP.init(this);
     }
 
