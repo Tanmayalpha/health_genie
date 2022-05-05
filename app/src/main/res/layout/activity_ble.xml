@@ -154,36 +154,7 @@
                 android:orientation="horizontal"
                 android:padding="5dp">
 
-                <EditText
-                    android:id="@+id/etCid"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:digits="0123456789"
-                    android:hint="cid"
-                    android:text="0" />
 
-                <EditText
-                    android:id="@+id/etVid"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:digits="0123456789"
-                    android:hint="vid"
-                    android:text="0" />
-
-                <EditText
-                    android:id="@+id/etPid"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:digits="0123456789"
-                    android:hint="pid"
-                    android:text="0" />
-
-
-                <Button
-                    android:id="@+id/btnDidWrite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="写DID" />
 
                 <Button
                     android:id="@+id/btnDidRead"

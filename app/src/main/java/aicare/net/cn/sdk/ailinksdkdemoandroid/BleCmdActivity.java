@@ -34,13 +34,13 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDataUtils;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -57,7 +57,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
     private final int REFRESH_DATA = 3;
     private List<String> mList;
     private ArrayAdapter listAdapter;
-    private EditText etName, etMacType, etCid, etVid, etPid, etBroadcastTime, etMcuType, etSleepTime, et_set_device;
+    private EditText etName, etMacType,  etBroadcastTime, etMcuType, etSleepTime, et_set_device;
     private Context mContext;
     private String mAddress;
     private BleSendCmdUtil mBleSendCmdUtil;
@@ -111,7 +111,6 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
         findViewById(R.id.btnMacTypeRead).setOnClickListener(this);
         findViewById(R.id.btnNameWrite).setOnClickListener(this);
         findViewById(R.id.btnMacTypeWrite).setOnClickListener(this);
-        findViewById(R.id.btnDidWrite).setOnClickListener(this);
         findViewById(R.id.btnDidRead).setOnClickListener(this);
         findViewById(R.id.btnBroadcastTimeWrite).setOnClickListener(this);
         findViewById(R.id.btnBroadcastTimeRead).setOnClickListener(this);
@@ -129,9 +128,6 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
         findViewById(R.id.btnConnect).setOnClickListener(this);
         etName = findViewById(R.id.etName);
         etMacType = findViewById(R.id.etMacType);
-        etCid = findViewById(R.id.etCid);
-        etVid = findViewById(R.id.etVid);
-        etPid = findViewById(R.id.etPid);
         etBroadcastTime = findViewById(R.id.etBroadcastTime);
         etMcuType = findViewById(R.id.etMcuType);
         etSleepTime = findViewById(R.id.etSleepTime);
@@ -240,32 +236,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
                 sendBleBean.setHex(mBleSendCmdUtil.setBleBroadcastTime(broadcastTime));
                 sendData(sendBleBean);
                 break;
-            case R.id.btnDidWrite:
-                try {
-                    String cidS = etCid.getText().toString().trim().toLowerCase(Locale.US);
-                    String vidS = etVid.getText().toString().trim().toLowerCase(Locale.US);
-                    String pidS = etPid.getText().toString().trim().toLowerCase(Locale.US);
-                    int cid = 0;
-                    int vid = 0;
-                    int pid = 0;
-                    if (!TextUtils.isEmpty(cidS)) {
-                        cid = Integer.parseInt(cidS);
-                    }
-                    if (!TextUtils.isEmpty(vidS)) {
-                        vid = Integer.parseInt(vidS);
-                    }
-                    if (!TextUtils.isEmpty(pidS)) {
-                        pid = Integer.parseInt(pidS);
-                    }
 
-                    byte[] did = bleDataUtils.getDid(1, 1, 1, cid, vid, pid);
-                    sendBleBean = new SendBleBean();
-                    sendBleBean.setHex(mBleSendCmdUtil.setDid(did));
-                    sendData(sendBleBean);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-                break;
             case R.id.btnDidRead:
                 sendBleBean = new SendBleBean();
                 sendBleBean.setHex(mBleSendCmdUtil.getDid());
