@@ -72,6 +72,11 @@ public class BleDeviceConfig {
     public final static int TOOTHBRUSH_WIFI_BLE=0x12;
 
     /**
+     * 蓝牙牙刷
+     */
+    public final static int TOOTHBRUSH_BLE = 0x2D;
+
+    /**
      * 八电极体脂秤
      */
     public final static int EIGHT_BODY_FAT_SCALE =0x13;
@@ -196,5 +201,6 @@ public class BleDeviceConfig {
      * 广播营养秤
      */
     public final static int BROADCAST_NUTRITION = 0x10003;
+
 
 }

@@ -2,11 +2,9 @@ package aicare.net.cn.sdk.ailinksdkdemoandroid;
 
 import android.content.Intent;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.besthealth.bhBodyComposition120.BhBodyComposition;
 import com.pingwang.bluetoothlib.AILinkSDK;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
@@ -124,6 +122,7 @@ public class MainActivity extends BleAppBaseActivity {
         mList.add(findViewById(R.id.btn_rope_skip));
         mList.add(findViewById(R.id.btn_broadcast_nutrition));
         mList.add(findViewById(R.id.btn_ble_nutrition));
+        mList.add(findViewById(R.id.btn_toothbrush_ble));
         for (View view : mList) {
             view.setOnClickListener(listener);
         }
@@ -223,6 +222,9 @@ public class MainActivity extends BleAppBaseActivity {
                     break;
                 case R.id.btn_wifi_ble_tooth:
                     type = BleDeviceConfig.TOOTHBRUSH_WIFI_BLE;
+                    break;
+                case R.id.btn_toothbrush_ble:
+                    type = BleDeviceConfig.TOOTHBRUSH_BLE;
                     break;
                 case R.id.btn_ble_weight:
                     type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE;

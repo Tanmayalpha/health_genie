@@ -94,7 +94,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="口罩" />
-
+                <Button
+                    android:id="@+id/btn_toothbrush_ble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="蓝牙牙刷" />
 
             </LinearLayout>
 
