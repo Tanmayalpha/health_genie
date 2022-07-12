@@ -7,8 +7,8 @@ android {
         applicationId "aicare.net.cn.sdk.ailinksdkdemoandroid"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 10
-        versionName "1.9.2"
+        versionCode 11
+        versionName "1.9.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -35,7 +35,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.github.elinkthings:AILinkSDKRepositoryAndroid:1.9.4'//蓝牙核心库
+    implementation 'com.github.elinkthings:AILinkSDKRepositoryAndroid:1.9.8'//蓝牙核心库
     implementation 'com.github.elinkthings:AILinkSDKOtaLibraryAndroid:1.0.3'//OTA库,需要依赖核心库
     implementation 'com.github.elinkthings:AILinkSDKParsingLibraryAndroid:1.6.6'//蓝牙解析库
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
