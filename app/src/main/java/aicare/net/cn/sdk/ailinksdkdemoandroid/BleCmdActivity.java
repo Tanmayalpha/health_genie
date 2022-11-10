@@ -160,7 +160,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
                 break;
             case R.id.btnHandshake:
                 if (mBleDevice != null) {
-                    mBleDevice.setHandshakeStatus(true);
+                    mBleDevice.setHandshake(true);
 //                    mBleDevice.sendHandshake();
                     mList.add(TimeUtils.getTime() + "发送握手");
                     mHandler.sendEmptyMessage(REFRESH_DATA);
@@ -469,8 +469,9 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
             return;
         }
         String data = "";
-        if (hex != null)
+        if (hex != null) {
             data = BleStrUtils.byte2HexStr(hex);
+        }
         if (type == 100) {
             mList.add(TimeUtils.getTime() + "cid=" + type + "\nsend->" + data);
         } else {
