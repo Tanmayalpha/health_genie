@@ -48,6 +48,7 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.food_temp.FoodTempActivity
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_charger.ShareChargerActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_condom.ShareCondomActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_socket.ShareSocketActivity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -193,14 +194,23 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                         showLoading();
                     }
                 } else if (BleDeviceConfig.TOOTHBRUSH_WIFI_BLE == mType) {
+                    mBluetoothService.stopScan();
                     Intent intent = new Intent();
                     intent.setClass(ShowBleActivity.this, ToothBrushWifiBleActivity.class);
-                    intent.putExtra("type", mType);
+                    intent.putExtra("type", mCid);
                     intent.putExtra("mac", mac);
                     startActivity(intent);
                     finish();
 
-                } else {
+                } else if (BleDeviceConfig.TOOTHBRUSH_BLE==mType){
+                    mBluetoothService.stopScan();
+                    Intent intent = new Intent();
+                    intent.setClass(ShowBleActivity.this, ToothBrushBleActivity.class);
+                    intent.putExtra("type", mCid);
+                    intent.putExtra("mac", mac);
+                    startActivity(intent);
+                    finish();
+                }else {
                     if (mCid == BleDeviceConfig.BLE_BOOLD_OXYGEN && mVid == 0x0012) {
                         //vid=12的不用握手校验,不加密
                         mNoEncryptionMac = mac;
@@ -365,7 +375,11 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 intent.setClass(ShowBleActivity.this, WeightScaleWifiBleActivity.class);
                 break;
             case BleDeviceConfig.TOOTHBRUSH_WIFI_BLE:
+
                 intent.setClass(ShowBleActivity.this, ToothBrushWifiBleActivity.class);
+                break;
+            case BleDeviceConfig.TOOTHBRUSH_BLE:
+                intent.setClass(ShowBleActivity.this, ToothBrushBleActivity.class);
                 break;
             case BleDeviceConfig.EIGHT_BODY_FAT_SCALE:
                 intent.setClass(ShowBleActivity.this, EightBodyfatActivity.class);
@@ -420,6 +434,11 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.ROPE_SKIPPING:
                 intent.setClass(ShowBleActivity.this, RopeSkippingActivity.class);
                 break;
+//            case BleDeviceConfig.TOOTHBRUSH_TEST:
+//                // 牙刷测试
+//                intent.setClass(ShowBleActivity.this, ToothbrushTestActivity.class);
+//                break;
+
             case BleDeviceConfig.BLE_NUTRITION_SCALE:
                 // 蓝牙营养秤
 //                intent.setClass(ShowBleActivity.this, BleNutritionActivity.class);
@@ -487,6 +506,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             }
             return false;
         } else {
+
             return mType == cid;
         }
 

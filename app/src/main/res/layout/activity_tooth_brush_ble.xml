@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+             xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+
+    <Button
+    android:id="@+id/default_try_out"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+
+    android:layout_marginTop="5dp"
+    android:text="试用" />
+
+    <Button
+    android:id="@+id/default_mode"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/sn"
+    android:layout_toEndOf="@id/default_try_out"
+    android:layout_marginStart="9dp"
+    android:layout_marginTop="5dp"
+    android:text="默认档位" />
+
+    <EditText
+        android:id="@+id/select_gears_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_alignTop="@id/default_mode"
+        android:layout_toEndOf="@id/default_mode"
+        android:hint="时长(s),档位,档位级别"
+
+        android:textSize="14dp" />
+
+
+
+    <Button
+        android:id="@+id/support_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/default_mode"
+        android:layout_marginTop="5dp"
+        android:text="获取支持档位" />
+    <Button
+        android:id="@+id/default_time_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/support_unit"
+        android:layout_below="@+id/default_mode"
+        android:layout_marginTop="5dp"
+        android:text="获取时长和档位" />
+    <ListView
+        android:id="@+id/log_list"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/default_time_mode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+</RelativeLayout>

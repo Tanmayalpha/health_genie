@@ -81,6 +81,8 @@
         <activity android:name=".modules.blood_glucose.BloodGlucoseActivity" />
         <activity android:name=".modules.blood_glucose.BloodGlucoseTestActivity" />
         <activity android:name=".BLDWeightScaleBleActivity" />
+        <activity android:name=".ToothBrushBleActivity"/>
+
 
         <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer"/>
     </application>
