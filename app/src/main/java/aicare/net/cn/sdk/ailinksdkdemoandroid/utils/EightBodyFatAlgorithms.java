@@ -1,10 +1,15 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid.utils;
 
+import com.besthealth.bhBodyComposition120.BhBodyComposition;
+import com.besthealth.bhBodyComposition120.BhErrorType;
+import com.besthealth.bhBodyComposition120.BhPeopleType;
+import com.besthealth.bhBodyComposition120.BhSex;
 import com.holtek.libHTBodyfat.HTBodyBasicInfo;
 import com.holtek.libHTBodyfat.HTBodyResultAllBody;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.EightBodyfatAdc;
 
 import java.util.Locale;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.EightBodyfatAdc;
 
 
 public class EightBodyFatAlgorithms {
@@ -24,10 +29,36 @@ public class EightBodyFatAlgorithms {
     }
 
 
+
     public EightBodyFatBean getAlgorithmsData(int algorithms, int sex, int height, float weight_kg, int age, EightBodyfatAdc eightBodyfatAdc) {
         EightBodyFatBean eightBodyFatBean = new EightBodyFatBean();
         switch (algorithms) {
-            //和泰算法
+
+            case 2:
+                BhBodyComposition bhBodyComposition = new BhBodyComposition();
+                bhBodyComposition.bhSex = sex == 1 ? BhSex.MALE.ordinal() : BhSex.FEMALE.ordinal();
+                bhBodyComposition.bhPeopleType= BhPeopleType.NORMAL.ordinal();
+                bhBodyComposition.bhWeightKg = weight_kg;
+                bhBodyComposition.bhAge = age;
+                bhBodyComposition.bhHeightCm = height;
+                bhBodyComposition.bhZLeftBodyEnCode = eightBodyfatAdc.getAdcRightBody();
+                bhBodyComposition.bhZLeftArmEnCode = eightBodyfatAdc.getAdcLeftHand();
+                bhBodyComposition.bhZRightArmEnCode = eightBodyfatAdc.getAdcRightHand();
+                bhBodyComposition.bhZLeftLegEnCode = eightBodyfatAdc.getAdcLeftFoot();
+                bhBodyComposition.bhZRightLegEnCode = eightBodyfatAdc.getAdcRightFoot();
+
+                BhErrorType bhErrorType = BhErrorType.values()[bhBodyComposition.getBodyComposition()];
+
+                if (bhErrorType == BhErrorType.NONE) {
+                    eightBodyFatBean.setBhSkeletalMuscleKg(bhBodyComposition.bhSkeletalMuscleKg + "");
+                    eightBodyFatBean.setBhSkeletalMuscleKgLevel(bhBodyComposition.bhSkeletalMuscleKgLevel + "");
+                    eightBodyFatBean.setBhSkeletalMuscleKgListStandardOrExcellent(bhBodyComposition.bhMuscleKgListStandardOrExcellent + "");
+                    eightBodyFatBean.setBhSkeletalMuscleKgListUnderOrStandard(bhBodyComposition.bhSkeletalMuscleKgListUnderOrStandard + "");
+                }
+
+                break;
+
+
             case 1:
             default:
 
@@ -63,6 +94,8 @@ public class EightBodyFatAlgorithms {
                     eightBodyFatBean.setMuscleMassLeftBottom(String.valueOf(resultTwoLegs.htMuscleKgLeftLeg));
                     eightBodyFatBean.setMuscleMassRightTop(String.valueOf(resultTwoLegs.htMuscleKgRightArm));
                     eightBodyFatBean.setMuscleMassRightBottom(String.valueOf(resultTwoLegs.htMuscleKgRightLeg));
+
+
 //                    eightBodyFatBean.setMusleMass(resultTwoLegs.htMuscleKg);
 //                    eightBodyFatBean.setStandardWeight(resultTwoLegs.htIdealWeightKg);
 //                    eightBodyFatBean.setWeightWithoutFat(resultTwoLegs.htBodyfatFreeMass);

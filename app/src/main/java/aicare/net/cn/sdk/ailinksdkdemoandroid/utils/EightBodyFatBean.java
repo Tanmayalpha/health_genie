@@ -22,8 +22,17 @@ public class EightBodyFatBean {
     private double adcRightBody;
     private double adcRightHandLeftFoot;
     private double adcLeftHandRightFoot;
+    /**
+     * adc身体
+     */
     private double adcBody;
+    /**
+     * 算术
+     */
     private int arithmetic;
+    /**
+     * 心率
+     */
     private int heartRate;
     private String fatMassRightTop;     //体脂-右上
     private String fatMassRightBottom;     //体脂-右下
@@ -39,10 +48,55 @@ public class EightBodyFatBean {
 
     private String testAdc;
 
+    /**
+     * 骨骼肌公斤
+     */
+    private String bhSkeletalMuscleKg;
+    /**
+     * 骨骼肌公斤级别
+     */
+    private String bhSkeletalMuscleKgLevel;
+    /**
+     * 骨骼肌公斤列表或标准
+     */
+    private String bhSkeletalMuscleKgListUnderOrStandard;
+    /**
+     * 骨骼肌公斤标准或优秀列表
+     */
+    private String bhSkeletalMuscleKgListStandardOrExcellent;
 
 
+    public void setBhSkeletalMuscleKg(String bhSkeletalMuscleKg) {
+        this.bhSkeletalMuscleKg = bhSkeletalMuscleKg;
+    }
 
+    public void setBhSkeletalMuscleKgLevel(String bhSkeletalMuscleKgLevel) {
+        this.bhSkeletalMuscleKgLevel = bhSkeletalMuscleKgLevel;
+    }
 
+    public void setBhSkeletalMuscleKgListUnderOrStandard(String bhSkeletalMuscleKgListUnderOrStandard) {
+        this.bhSkeletalMuscleKgListUnderOrStandard = bhSkeletalMuscleKgListUnderOrStandard;
+    }
+
+    public void setBhSkeletalMuscleKgListStandardOrExcellent(String bhSkeletalMuscleKgListStandardOrExcellent) {
+        this.bhSkeletalMuscleKgListStandardOrExcellent = bhSkeletalMuscleKgListStandardOrExcellent;
+    }
+
+    public String getBhSkeletalMuscleKg() {
+        return bhSkeletalMuscleKg;
+    }
+
+    public String getBhSkeletalMuscleKgLevel() {
+        return bhSkeletalMuscleKgLevel;
+    }
+
+    public String getBhSkeletalMuscleKgListUnderOrStandard() {
+        return bhSkeletalMuscleKgListUnderOrStandard;
+    }
+
+    public String getBhSkeletalMuscleKgListStandardOrExcellent() {
+        return bhSkeletalMuscleKgListStandardOrExcellent;
+    }
 
     public String getTestAdc() {
         return testAdc;
@@ -332,4 +386,5 @@ public class EightBodyFatBean {
                 "vwc=" + vwc + ", bodyAge=" + bodyAge + ", pp=" + pp + ", adcFoot=" + adcFoot + ", adcHand=" + adcHand + ", adcLeftHand=" + adcLeftHand + ", adcRightHand=" + adcRightHand + ", " +
                 "adcLeftFoot=" + adcLeftFoot + ", adcRightFoot=" + adcRightFoot + ", adcLeftBody=" + adcLeftBody + ", adcRightBody=" + adcRightBody + ", adcRightHandLeftFoot=" + adcRightHandLeftFoot + ", adcLeftHandRightFoot=" + adcLeftHandRightFoot + ", adcBody=" + adcBody + ", arithmetic=" + arithmetic + ", heartRate=" + heartRate + ", fatMassRightTop='" + fatMassRightTop + '\'' + ", fatMassRightBottom='" + fatMassRightBottom + '\'' + ", fatMassLeftTop='" + fatMassLeftTop + '\'' + ", fatMassLeftBottom='" + fatMassLeftBottom + '\'' + ", fatMassBody='" + fatMassBody + '\'' + ", muscleMassRightTop='" + muscleMassRightTop + '\'' + ", muscleMassRightBottom='" + muscleMassRightBottom + '\'' + ", muscleMassLeftTop='" + muscleMassLeftTop + '\'' + ", muscleMassLeftBottom='" + muscleMassLeftBottom + '\'' + ", muscleMassBody='" + muscleMassBody + '\'' + ", testAdc='" + testAdc + '\'' + '}';
     }
+
 }
