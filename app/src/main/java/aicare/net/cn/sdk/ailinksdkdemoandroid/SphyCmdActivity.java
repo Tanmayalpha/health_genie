@@ -24,12 +24,12 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.sphygmomanometer.SphyBleConfig;
@@ -256,8 +256,9 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         @Override
         public void onData(byte[] status, int type) {
             String data = "";
-            if (status != null)
+            if (status != null) {
                 data = BleStrUtils.byte2HexStr(status);
+            }
             if (type == 100) {
                 mList.add(TimeUtils.getTime() + "send->" + data);
             } else {
@@ -270,6 +271,11 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         public void getSphyCmd(byte cmd) {
             mList.add(TimeUtils.getTime() + "指令:" + cmd);
             mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void getSphyVoice(byte cmd) {
+
         }
 
         @Override

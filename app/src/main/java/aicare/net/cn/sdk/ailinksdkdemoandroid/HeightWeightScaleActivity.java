@@ -8,19 +8,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.HeightWeightScale.HeightBodyFatBleData;
 import cn.net.aicare.modulelibrary.module.HeightWeightScale.HeightBodyFatBleUntils;
 
@@ -302,14 +301,15 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
     }
 
     @Override
-    public void onAdc(int workMode, int status, int adcType, int adc, int arithmetic) {
+    public void onAdc(int workMode, int status, int adcType, long adc, int arithmetic) {
         mMHandler.removeMessages(ADC);
         logList.add(0, "阻抗数据 模式:" + workMode + " 测量状态: " + status + "\n 阻抗类型: " + adcType
                 + "  阻抗: " + adc + " 算法位: " + arithmetic);
         listAdapter.notifyDataSetChanged();
 
-
     }
+
+
 
     @Override
     public void onHeart(int workMode, int status, int heart) {

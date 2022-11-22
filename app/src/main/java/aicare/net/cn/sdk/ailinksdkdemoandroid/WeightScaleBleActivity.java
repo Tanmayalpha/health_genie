@@ -13,22 +13,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
-import androidx.annotation.Nullable;
-
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.SendBleBean;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.AddUserDialog;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.AddUserDialog;
+import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.AppHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatDataUtil;
@@ -361,8 +360,9 @@ public class WeightScaleBleActivity extends BleBaseActivity implements View.OnCl
     @Override
     public void requestSynTime() {
         mlogList.add(0, "同步时间");
-        if (bodyFatBleUtilsData != null)
+        if (bodyFatBleUtilsData != null) {
             bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().synTime());
+        }
     }
 
     @Override
@@ -377,7 +377,7 @@ public class WeightScaleBleActivity extends BleBaseActivity implements View.OnCl
             msg = msg + status + " 成功";
         } else if (status == BodyFatDataUtil.STATUS_FAIL) {
             msg = msg + status + " 失败";
-        } else if (status == BodyFatDataUtil.STATUS_NOSUPORT) {
+        } else if (status == BodyFatDataUtil.STATUS_NOT_SUPPORT) {
             msg = msg + status + " 不支持";
         }
         mlogList.add(0, msg);

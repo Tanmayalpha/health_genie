@@ -252,6 +252,26 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         }
 
         @Override
+        public void onHistoryNum(long allNum, long sendNum) {
+
+        }
+
+        @Override
+        public void onHistory(long time, byte[] value) {
+
+        }
+
+        @Override
+        public void onHistoryLast(long time) {
+
+        }
+
+        @Override
+        public void onDelHistory(int result) {
+
+        }
+
+        @Override
         public void onData(byte[] status,int type) {
             String data = "";
             if (status != null)

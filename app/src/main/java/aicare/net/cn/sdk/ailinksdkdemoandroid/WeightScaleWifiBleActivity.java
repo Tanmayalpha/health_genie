@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.elinkthings.bleotalibrary.listener.OnBleOTAListener;
+import com.elinkthings.bleotalibrary.netstrap.OPLOtaManager;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -343,7 +344,7 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
             msg = msg + status + " 成功";
         } else if (status == BodyFatDataUtil.STATUS_FAIL) {
             msg = msg + status + " 失败";
-        } else if (status == BodyFatDataUtil.STATUS_NOSUPORT) {
+        } else if (status == BodyFatDataUtil.STATUS_NOT_SUPPORT) {
             msg = msg + status + " 不支持";
         }
         mList.add(0, msg);
@@ -815,7 +816,7 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
             String path = uri.getPath();
             mList.add(0, "ota准备就绪，请勿操作");
             listAdapter.notifyDataSetChanged();
-            bodyFatBleUtilsData.initOtaUtil(this, uri, new OnBleOTAListener() {
+            OPLOtaManager build = OPLOtaManager.newBuilder(this).setFilePath(uri).setOnBleOTAListener(new OnBleOTAListener() {
                 @Override
                 public void onOtaSuccess() {
                     mList.add(0, "ota成功");
@@ -839,9 +840,8 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                         listAdapter.notifyDataSetChanged();
                     }
                 }
-            });
-        } else {
-
+            }).build(bodyFatBleUtilsData.getBleDevice());
+            build.startOta();
         }
     }
 

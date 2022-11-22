@@ -14,6 +14,10 @@ import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnBleHandshakeListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.DialogStringImageAdapter;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.ShowListDialogFragment;
@@ -21,12 +25,9 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.FileUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.MyBleStrUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import cn.net.aicare.modulelibrary.module.scooter.BleWeatherBean;
+import cn.net.aicare.modulelibrary.module.scooter.OnScooterBleOTAListener;
 import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
 import cn.net.aicare.modulelibrary.module.scooter.SkateboardDevice;
 
@@ -36,7 +37,7 @@ import cn.net.aicare.modulelibrary.module.scooter.SkateboardDevice;
  * 滑板车界面
  */
 public class SkateboardDataActivity extends BleAppBaseActivity implements OnCallbackBle, View.OnClickListener, SkateboardDevice.onNotifyData,
-        RtkOtaManager.OnRtkOtaInfoListener, ShowListDialogFragment.onDialogListener, OnBleHandshakeListener {
+        RtkOtaManager.OnRtkOtaInfoListener, ShowListDialogFragment.onDialogListener, OnBleHandshakeListener , OnScooterBleOTAListener {
 
     private final int REFRESH_DATA = 1;
 
@@ -1006,7 +1007,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
 //                mRtkOtaManager.startOta(mRtkOtaType, step);
             } else if (mDevice != null) {
 
-                mDevice.setOnBleOTAListener(SkateboardDataActivity.this);
+                mDevice.setOnScooterBleOTAListener(SkateboardDataActivity.this);
                 mDevice.setUpdateData(byFileName, mOTAType, mOTAScope);
             }
         }
