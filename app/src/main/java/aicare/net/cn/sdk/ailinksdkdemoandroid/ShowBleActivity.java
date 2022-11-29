@@ -1,20 +1,9 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid;
 
-import android.Manifest;
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Looper;
 import android.os.Message;
-import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +19,6 @@ import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.CallbackDisIm;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
-import com.pingwang.bluetoothlib.server.ELinkBleServer;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
 
@@ -40,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.find.FindDeviceNewActivity;
@@ -48,12 +37,8 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.food_temp.FoodTempActivity
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_charger.ShareChargerActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_condom.ShareCondomActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_socket.ShareSocketActivity;
-
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.CheckPermissionUtils;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import cn.net.aicare.modulelibrary.module.RopeSkipping.RopeSkippingBleData;
 import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
 
@@ -63,9 +48,8 @@ import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
  * 2019/3/6<br>
  * java类作用描述
  */
-public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle, OnScanFilterListener {
+public class ShowBleActivity extends BleAppBaseActivity implements OnCallbackBle, OnScanFilterListener {
 
-    public static final int REQUEST_PERMISSION_CODE = 1500;
 
     private static String TAG = ShowBleActivity.class.getName();
 
@@ -74,12 +58,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     private final int REFRESH_DATA = 3;
     private List<String> mList;
     private ArrayAdapter listAdapter;
-    private ELinkBleServer mBluetoothService;
-    /**
-     * 服务Intent
-     */
-    private Intent bindIntent;
-    private Context mContext;
     private int mType;
     private String mNoEncryptionMac = "";
     private String mFilterName = "";
@@ -87,46 +65,36 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     private int mCid;
     private int mVid;
     private int mPid;
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-
-                case BIND_SERVER_OK:
-
-                    break;
-
-                case REFRESH_DATA:
-                    listAdapter.notifyDataSetChanged();
-                    break;
-            }
-        }
-    };
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_ble);
-        Intent mUserService = new Intent(this.getApplicationContext(), ELinkBleServer.class);
-        //核心用户服务
-        startService(mUserService);
-        mContext = this;
+    protected void uiHandlerMessage(Message msg) {
+        switch (msg.what) {
+
+            case BIND_SERVER_OK:
+
+                break;
+
+            case REFRESH_DATA:
+                listAdapter.notifyDataSetChanged();
+                break;
+        }
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_show_ble;
+    }
+
+    @Override
+    protected void initData() {
         mType = getIntent().getIntExtra("type", 0);
         if (0 == mType) {
             finish();
-            return;
         }
-        init();
-        initData();
     }
 
-    private void initData() {
-        bindService();
-
-    }
-
-    private void init() {
-
+    @Override
+    protected void initView() {
         mList = new ArrayList<>();
         ListView listView = findViewById(R.id.listview);
         Button btn = findViewById(R.id.btn);
@@ -147,8 +115,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                         mBluetoothService.scanLeDevice(0, map, BleConfig.UUID_SERVER_AILINK, SkateboardBleConfig.UUID_BROADCAST);
                     } else {
                         //0000FEE7=手表
-                        mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_AILINK, UUID
-                                .fromString("0000FEE7-0000-1000-8000-00805F9B34FB"), SkateboardBleConfig.UUID_BROADCAST);
+                        mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_AILINK, UUID.fromString("0000FEE7-0000-1000-8000-00805F9B34FB"), SkateboardBleConfig.UUID_BROADCAST);
                     }
                     mList.clear();
                     listAdapter.notifyDataSetChanged();
@@ -202,7 +169,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                     startActivity(intent);
                     finish();
 
-                } else if (BleDeviceConfig.TOOTHBRUSH_BLE==mType){
+                } else if (BleDeviceConfig.TOOTHBRUSH_BLE == mType) {
                     mBluetoothService.stopScan();
                     Intent intent = new Intent();
                     intent.setClass(ShowBleActivity.this, ToothBrushBleActivity.class);
@@ -210,7 +177,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                     intent.putExtra("mac", mac);
                     startActivity(intent);
                     finish();
-                }else {
+                } else {
                     if (mCid == BleDeviceConfig.BLE_BOOLD_OXYGEN && mVid == 0x0012) {
                         //vid=12的不用握手校验,不加密
                         mNoEncryptionMac = mac;
@@ -251,56 +218,33 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     }
 
 
+    @Override
+    protected void initListener() {
+
+    }
+
+
     //---------------------------------服务---------------------------------------------------
 
-    private void bindService() {
-        BleLog.i(TAG, "绑定服务");
-        if (bindIntent == null) {
-            bindIntent = new Intent(mContext, ELinkBleServer.class);
-            if (mFhrSCon != null)
-                this.bindService(bindIntent, mFhrSCon, Context.BIND_AUTO_CREATE);
+    @Override
+    public void onServiceSuccess() {
+        if (mBluetoothService!=null) {
+            mBluetoothService.setOnCallback(ShowBleActivity.this);
+            mBluetoothService.setOnScanFilterListener(ShowBleActivity.this);
+            mHandler.sendEmptyMessage(BIND_SERVER_OK);
         }
+        CallbackDisIm.getInstance().addListListener(this);
     }
 
+    @Override
+    public void onServiceErr() {
 
-    private void unbindService() {
-        if (mBluetoothService != null)
-            mBluetoothService.stopForeground();//停止前台服务
+    }
+
+    @Override
+    public void unbindServices() {
         CallbackDisIm.getInstance().removeListener(this);
-        if (mFhrSCon != null) {
-            BleLog.i(TAG, "解绑服务");
-            this.unbindService(mFhrSCon);
-        }
-        bindIntent = null;
     }
-
-
-    /**
-     * 服务连接与界面的连接
-     */
-    private ServiceConnection mFhrSCon = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            BleLog.i(TAG, "服务与界面建立连接成功");
-            //与服务建立连接
-            mBluetoothService = ((ELinkBleServer.BluetoothBinder) service).getService();
-            if (mBluetoothService != null) {
-                mBluetoothService.setOnCallback(ShowBleActivity.this);
-                mBluetoothService.setOnScanFilterListener(ShowBleActivity.this);
-                mBluetoothService.initForegroundService(1, R.mipmap.ic_launcher, "前台服务", MainActivity.class);
-                mBluetoothService.startForeground();//启动前台服务
-
-                mHandler.sendEmptyMessage(BIND_SERVER_OK);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            BleLog.i(TAG, "服务与界面连接断开");
-            //与服务断开连接
-            mBluetoothService = null;
-        }
-    };
 
 
     @Override
@@ -517,13 +461,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         //TODO 过滤后的设备
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PERMISSION_CODE) {
-            checkPermission();
-        }
-    }
 
     //--------------------------start Loading--------------------------
     private LoadingIosDialogFragment mDialogFragment;
@@ -532,8 +469,9 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
      * 显示加载
      */
     private void showLoading() {
-        if (mDialogFragment == null)
+        if (mDialogFragment == null) {
             mDialogFragment = new LoadingIosDialogFragment();
+        }
         mDialogFragment.show(getSupportFragmentManager());
     }
 
@@ -541,8 +479,9 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
      * 关闭加载
      */
     private void dismissLoading() {
-        if (mDialogFragment != null)
+        if (mDialogFragment != null) {
             mDialogFragment.dismiss();
+        }
     }
 
     //--------------------------end Loading--------------------------
@@ -563,7 +502,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         if (mBluetoothService != null) {
             mBluetoothService.stopScan();
         }
-        unbindService();
     }
 
 
@@ -578,28 +516,13 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             requestBluetooth();
             return;
         }
-        // 没有定位权限就请求定位权限
-        if (!hasLocationPermission()) {
-            requestLocationPermission(this);
-            return;
-        }
-        // 没有定位服务就请求定位服务
-        if (!hasLocationService()) {
-            requestLocationService();
-            return;
-        }
-        // 都有了，OK
-        Toast.makeText(mContext, "权限都有，可以开始搜索", Toast.LENGTH_SHORT).show();
+        new CheckPermissionUtils(this).checkPermissions(() -> {
+            // 都有了，OK
+            Toast.makeText(mContext, "权限都有，可以开始搜索", Toast.LENGTH_SHORT).show();
+
+        });
     }
 
-    /**
-     * 是否有定位权限
-     *
-     * @return boolean
-     */
-    private boolean hasLocationPermission() {
-        return ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
 
     /**
      * 蓝牙是否打开
@@ -610,39 +533,15 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         return BluetoothAdapter.getDefaultAdapter().isEnabled();
     }
 
-    /**
-     * 定位服务是否打开
-     *
-     * @return boolean
-     */
-    private boolean hasLocationService() {
-        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager == null) {
-            return false;
-        }
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
-    /**
-     * 申请定位权限
-     */
-    private void requestLocationPermission(Activity activity) {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_PERMISSION_CODE);
-    }
 
     /**
      * 申请打开蓝牙
      */
+    @SuppressLint("MissingPermission")
     private void requestBluetooth() {
         Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-        startActivityForResult(intent, REQUEST_PERMISSION_CODE);
+        startActivity(intent);
     }
 
-    /**
-     * 申请打开定位服务
-     */
-    private void requestLocationService() {
-        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivityForResult(intent, REQUEST_PERMISSION_CODE);
-    }
+
 }

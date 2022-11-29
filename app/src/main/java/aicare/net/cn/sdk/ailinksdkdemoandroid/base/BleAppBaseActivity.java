@@ -1,10 +1,7 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid.base;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,13 +13,9 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.AppStart;
-import androidx.annotation.NonNull;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.CheckPermissionUtils;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -44,22 +37,7 @@ public abstract class BleAppBaseActivity extends BleBaseActivity {
     @Nullable
     protected Toolbar mToolbar;
     private Unbinder bind;
-    //--------------ble---------------
-    /**
-     * 需要申请的权限
-     */
-    private String[] LOCATION_PERMISSION = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    /**
-     * 权限请求返回
-     */
-    private final int PERMISSION = 101;
-    /**
-     * 定位服务返回
-     */
-    protected final int LOCATION_SERVER = 102;
-
-    private HintDataDialogFragment mHintDataDialog = null;
 
 
     @Override
@@ -162,79 +140,12 @@ public abstract class BleAppBaseActivity extends BleBaseActivity {
 
 
     protected void initPermissions() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            onPermissionsOk();
-            return;
-        }
-        if (ContextCompat.checkSelfPermission(this, LOCATION_PERMISSION[0]) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, LOCATION_PERMISSION, PERMISSION);
-        } else {
-            boolean bleStatus = AppStart.isLocServiceEnable(mContext);
-            if (!bleStatus) {
-                //没有开启定位服务
-                mHintDataDialog = HintDataDialogFragment.newInstance()
-                        .setTitle("提示", 0)
-                        .setCancel("取消",0)
-                        .setOk("确定",0)
-                        .setContent("请求开启定位服务", true)
-                        .setDialogListener(new HintDataDialogFragment.DialogListener() {
-                            @Override
-                            public void tvSucceedListener(View v) {
-                                startLocationActivity();
-                            }
-                        });
-                mHintDataDialog.show(getSupportFragmentManager());
-
-
-            } else {
-                onPermissionsOk();
+        new CheckPermissionUtils(this).checkPermissions(new CheckPermissionUtils.OnPermissionListener() {
+            @Override
+            public void onPermissionsOk() {
+                BleAppBaseActivity.this.onPermissionsOk();
             }
-        }
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        //请求权限被拒绝
-        if (requestCode != PERMISSION)
-            return;
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            initPermissions();
-        } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(BleAppBaseActivity.this,
-                    LOCATION_PERMISSION[0])) {
-                //权限请求失败，但未选中“不再提示”选项,再次请求
-                ActivityCompat.requestPermissions(this, LOCATION_PERMISSION, PERMISSION);
-            } else {
-                //权限请求失败，选中“不再提示”选项
-                mHintDataDialog = HintDataDialogFragment.newInstance()
-                        .setTitle("提示", 0)
-                        .setCancel("取消",0)
-                        .setOk("确定",0)
-                        .setContent("请求开启定位权限", true)
-                        .setDialogListener(new HintDataDialogFragment.DialogListener() {
-                            @Override
-                            public void tvSucceedListener(View v) {
-                                AppStart.startUseSetActivity(mContext);
-                            }
-                        });
-                mHintDataDialog.show(getSupportFragmentManager());
-
-            }
-
-        }
-    }
-
-
-    /**
-     * 启动去设置定位服务
-     */
-    protected void startLocationActivity() {
-
-        AppStart.startLocationActivity(BleAppBaseActivity.this, LOCATION_SERVER);
+        });
 
     }
 
@@ -246,14 +157,6 @@ public abstract class BleAppBaseActivity extends BleBaseActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LOCATION_SERVER) {
-            //定位服务页面返回
-            initPermissions();
-        }
-    }
 
     /**
      * 初始化事件
@@ -350,7 +253,8 @@ public abstract class BleAppBaseActivity extends BleBaseActivity {
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
-        if (bind != null)
+        if (bind != null) {
             bind.unbind();
+        }
     }
 }

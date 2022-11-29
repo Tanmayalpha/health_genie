@@ -687,9 +687,9 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
 
 
     private void setIp(byte[] ips) {
-        if (ips.length <= 14)
+        if (ips.length <= 14) {
             bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentIp(0, ips));
-        else {
+        } else {
             boolean isend = false;
             int i = 0;
             byte[] byte1 = ips;
@@ -717,9 +717,9 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
     }
 
     private void setIpUrl(byte[] setIpUrl) {
-        if (setIpUrl.length <= 14)
+        if (setIpUrl.length <= 14) {
             bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().environmentUrl(0, setIpUrl));
-        else {
+        } else {
             boolean isend = false;
             int i = 0;
             byte[] byte1 = setIpUrl;
@@ -778,9 +778,9 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
         } else {
             byte[] password = BleStrUtils.stringToBytes(paw);
             if (password != null) {
-                if (password.length < 14)
+                if (password.length < 14) {
                     bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().setWifiPwd(0, password));
-                else {
+                } else {
                     boolean isend = false;
                     int i = 0;
                     byte[] byte1 = password;
