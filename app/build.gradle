@@ -6,8 +6,8 @@ android {
         applicationId "aicare.net.cn.sdk.ailinksdkdemoandroid"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 16
-        versionName "1.10.3"
+        versionCode 17
+        versionName "1.10.59"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
