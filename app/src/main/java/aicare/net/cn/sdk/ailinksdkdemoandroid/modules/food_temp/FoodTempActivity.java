@@ -8,10 +8,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.pingwang.bluetoothlib.device.BleDevice;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
+import com.pingwang.bluetoothlib.device.SendBleBean;
+import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.FoodTemp.FoodTempData;
 
@@ -30,6 +34,7 @@ public class FoodTempActivity extends BleBaseActivity implements View.OnClickLis
     private static final String TAG = "Tag1";
 
     private Button btn_clear;
+    private TextView tv_device_battery;
     private Button btn_get_device;
     private Button btn_set_temp_unit;
     private RadioButton rb_set_c;
@@ -105,6 +110,7 @@ public class FoodTempActivity extends BleBaseActivity implements View.OnClickLis
         rb_open_probe = findViewById(R.id.rb_open_probe);
         rb_close_probe = findViewById(R.id.rb_close_probe);
         list_view = findViewById(R.id.list_view);
+        tv_device_battery = findViewById(R.id.tv_device_battery);
 
         btn_clear.setOnClickListener(this);
         btn_get_device.setOnClickListener(this);
@@ -164,6 +170,20 @@ public class FoodTempActivity extends BleBaseActivity implements View.OnClickLis
         }
     }
 
+
+    public void getBattery(View view) {
+        if (mBleDevice != null) {
+            byte[] blePower = BleSendCmdUtil.getInstance().getMcuBatteryStatus();
+            SendBleBean sendBleBean = new SendBleBean();
+            sendBleBean.setHex(blePower);
+            mBleDevice.sendData(sendBleBean);
+        }
+    }
+
+    public void onStopLog(View view) {
+        mRefreshLog = !mRefreshLog;
+    }
+
     @Override
     protected void onDestroy() {
         if (mBluetoothService != null) {
@@ -178,6 +198,14 @@ public class FoodTempActivity extends BleBaseActivity implements View.OnClickLis
         if (mBleDevice != null) {
             mFoodTempData = new FoodTempData(mBleDevice);
             mFoodTempData.setFoodTempCallback(this);
+            mBleDevice.setOnMcuParameterListener(new OnMcuParameterListener() {
+                @Override
+                public void onMcuBatteryStatus(int status, int battery) {
+                    if (tv_device_battery != null) {
+                        tv_device_battery.setText("电量:" + battery + "%");
+                    }
+                }
+            });
         }
     }
 
@@ -193,12 +221,14 @@ public class FoodTempActivity extends BleBaseActivity implements View.OnClickLis
 
     @Override
     public void mcuDevice(int probeNum, int chargerState, int battery, int tempUnit, int alertType) {
-        addText("MCU上发设备信息：探针数量：" + probeNum + "，充电状态：" + chargerState + "，电量：" + battery + "，温度单位：" + tempUnit + "，警报类型：" + alertType);
+        addText("MCU上发设备信息：探针数量：" + probeNum + "，充电状态：" + chargerState + "，电量：" + battery + "，温度单位：" + (tempUnit == 0 ? "C" : "F") + "，警报类型：" + alertType);
     }
 
     @Override
-    public void mcuResult(int id, int inDevice, int curTemp, int curTempUnit, int ambienceTemp, int ambienceTempUnit, int targetTemp, int targetTempUnit, int inMeat, int enableAlert, int mode, int timing, int alertType) {
-        addText("MCU上发数据：探针编号：" + id + "，探针插入设备状态：" + inDevice + "，当前温度：" + curTemp + "，当前温度单位：" + curTempUnit + "，环境温度：" + ambienceTemp + "，环境温度单位：" + ambienceTempUnit + "，目标温度：" + targetTemp + "，目标温度单位：" + targetTempUnit + "，探针插入肉状态：" + inMeat + "，警报启动状态：" + enableAlert + "，模式：" + mode + "，定时：" + timing + "，警报类型：" + alertType);
+    public void mcuResult(int id, int inDevice, int curTemp, int curTempUnit, int ambienceTemp, int ambienceTempUnit, int targetTemp, int targetTempUnit, int inMeat, int enableAlert, int mode,
+                          int timing, int alertType) {
+        addText("MCU上发数据：探针编号：" + id + "，探针插入设备状态：" + inDevice + "，当前温度：" + curTemp + "，当前温度单位：" + (curTempUnit == 0 ? "C" : "F") + "，环境温度：" + ambienceTemp + "，环境温度单位：" + (ambienceTempUnit == 0 ?
+                "C" : "F") + "，目标温度：" + targetTemp + "，目标温度单位：" + (targetTempUnit == 0 ? "C" : "F") + "，探针插入肉状态：" + inMeat + "，警报启动状态：" + enableAlert + "，模式：" + mode + "，定时：" + timing + "，警报类型：" + alertType);
     }
 
     @Override
@@ -341,10 +371,15 @@ public class FoodTempActivity extends BleBaseActivity implements View.OnClickLis
         addText("APP开关探针：编号：" + id + "，" + isOpen);
     }
 
+    private boolean mRefreshLog = true;
+
     SimpleDateFormat sdf;
 
     // 添加一条文本
     private void addText(String text) {
+        if (!mRefreshLog) {
+            return;
+        }
         if (sdf == null) {
             sdf = new SimpleDateFormat("HH:mm:ss", Locale.US);
         }

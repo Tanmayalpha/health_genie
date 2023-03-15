@@ -154,15 +154,16 @@
                 android:orientation="horizontal"
                 android:padding="5dp">
 
-
-
                 <Button
                     android:id="@+id/btnDidRead"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="读DID" />
-
-
+                <Button
+                    android:id="@+id/btnSnRead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="读SN" />
 
             </LinearLayout>
 

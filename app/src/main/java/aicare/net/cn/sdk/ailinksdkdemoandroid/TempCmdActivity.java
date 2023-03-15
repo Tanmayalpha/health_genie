@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
@@ -24,8 +26,10 @@ import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
@@ -45,6 +49,19 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     private final int REFRESH_DATA = 3;
     private List<String> mList;
     private ArrayAdapter listAdapter;
+
+    private Button btn_get_history;
+    private Button btn_del_history;
+    private Button btn_get_mode;
+    private Button btn_get_temp;
+    private Button btn_set_mode;
+    private Button btn_set_temp;
+    private RadioButton rb_single;
+    private RadioButton rb_c;
+    private EditText et_temp;
+    private EditText et_history;
+
+    private int stamp = 0;// 历史记录最新一条的时间戳
 
     /**
      * 服务Intent
@@ -73,12 +90,13 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_temp_gun);
+        setContentView(R.layout.activity_temp);
         mContext = this;
         mAddress = getIntent().getStringExtra("mac");
         type = getIntent().getIntExtra("type", -1);
         mBleSendCmdUtil = BleSendCmdUtil.getInstance();
         init();
+
     }
 
     private void init() {
@@ -94,6 +112,24 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         findViewById(R.id.clear).setOnClickListener(this);
         et_type = findViewById(R.id.et_type);
 
+        btn_get_history = findViewById(R.id.btn_get_history);
+        btn_get_mode = findViewById(R.id.btn_get_mode);
+        btn_get_temp = findViewById(R.id.btn_get_temp);
+        btn_set_mode = findViewById(R.id.btn_set_mode);
+        btn_set_temp = findViewById(R.id.btn_set_temp);
+        rb_single = findViewById(R.id.rb_single);
+        rb_c = findViewById(R.id.rb_c);
+        et_temp = findViewById(R.id.et_temp);
+        et_history = findViewById(R.id.et_history);
+        btn_del_history = findViewById(R.id.btn_del_history);
+
+        btn_get_history.setOnClickListener(this);
+        btn_del_history.setOnClickListener(this);
+        btn_get_mode.setOnClickListener(this);
+        btn_get_temp.setOnClickListener(this);
+        btn_set_mode.setOnClickListener(this);
+        btn_set_temp.setOnClickListener(this);
+
         cmdBtn();
     }
 
@@ -104,10 +140,10 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
             @Override
             public void onClick(View v) {
                 if (unit == 0) {
-                    unit=1;
+                    unit = 1;
                     mBleDevice.setUnit((byte) 1);
                 } else {
-                    unit=0;
+                    unit = 0;
                     mBleDevice.setUnit((byte) 0);
                 }
             }
@@ -118,7 +154,7 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     @Override
     public void onClick(View v) {
         SendBleBean sendBleBean = new SendBleBean();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btnVersion:
                 sendBleBean.setHex(mBleSendCmdUtil.getBleVersion());
                 mBleDevice.sendData(sendBleBean);
@@ -134,13 +170,61 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
             case R.id.btn1:
                 String cmd = et_type.getText().toString().trim();
                 SendMcuBean sendDataBean = new SendMcuBean();
-                sendDataBean.setHex(type,cmd.getBytes());
+                sendDataBean.setHex(type, cmd.getBytes());
                 mBleDevice.sendData(sendDataBean);
                 break;
             case R.id.clear:
                 if (mList != null)
                     mList.clear();
                 mHandler.sendEmptyMessage(REFRESH_DATA);
+                break;
+            case R.id.btn_get_history:
+                // 读取历史记录
+//                try {
+//                    int size = Integer.parseInt(et_history.getText().toString());
+//                    mBleDevice.getHistory(size, stamp);
+//                } catch (Exception ignored) {}
+                try {
+                    String time = et_history.getText().toString();
+                    if (time.isEmpty()) {
+                        mBleDevice.getHistoryNew(0);
+                    } else {
+                        mBleDevice.getHistoryNew(Long.parseLong(time));
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(this, "请按规则来", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+            case R.id.btn_get_mode:
+                // 获取设备测温模式
+                mBleDevice.getMode();
+                break;
+            case R.id.btn_get_temp:
+                // 获取高温报警值
+                mBleDevice.getTemp();
+                break;
+            case R.id.btn_set_mode:
+                // 设置设备测温模式
+                if (rb_single.isChecked()) {
+                    mBleDevice.setMode(0);
+                } else {
+                    mBleDevice.setMode(1);
+                }
+                break;
+            case R.id.btn_set_temp:
+                // 设置高温报警值
+                String tempStr = et_temp.getText().toString();
+                if (!tempStr.isEmpty()) {
+                    if (rb_c.isChecked()) {
+                        mBleDevice.setTemp(tempStr, 0);
+                    } else {
+                        mBleDevice.setTemp(tempStr, 1);
+                    }
+                }
+                break;
+            case R.id.btn_del_history:
+                mBleDevice.delHistoryNew();
                 break;
         }
     }
@@ -160,6 +244,16 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
                 mBleDevice.setOnBleVersionListener(TempCmdActivity.this);
                 mBleDevice.setOnMcuParameterListener(TempCmdActivity.this);
                 mBleDevice.setOnCompanyListener(TempCmdActivity.this);
+
+                mHandler.postDelayed(() -> {
+                    if (isDestroyed() || isFinishing()) {
+                        return;
+                    }
+                    int stamp = (int) (System.currentTimeMillis() / 1000);
+                    mList.add("同步Unix时间戳：" + stamp);
+                    mHandler.sendEmptyMessage(REFRESH_DATA);
+                    mBleDevice.setUnixStampNew(stamp);
+                }, 200);
             }
         }
     }
@@ -174,10 +268,10 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     @Override
     public void unbindServices() {
         CallbackDisIm.getInstance().removeListener(this);
-        if (mBleDevice!=null){
+        if (mBleDevice != null) {
             mBleDevice.disconnect();
             mBleDevice.clear();
-            mBleDevice=null;
+            mBleDevice = null;
         }
     }
 
@@ -219,60 +313,11 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
     //-----------------通知-------------------
 
+    private long lastTime;
+
     private class NotifyData implements TempDeviceData.onNotifyData {
-
         @Override
-        public void mcuHistory(int maxSize, int curSize, List<TempDeviceData.HistoryBean> list) {
-
-        }
-
-        @Override
-        public void mcuGetMode(int mode) {
-
-        }
-
-        @Override
-        public void mcuSetMode(int status) {
-
-        }
-
-        @Override
-        public void mcuGetTemp(int temp, int unit, int decimal) {
-
-        }
-
-        @Override
-        public void mcuSetTemp(int status) {
-
-        }
-
-        @Override
-        public void mcuSetUnixStamp(int status) {
-
-        }
-
-        @Override
-        public void onHistoryNum(long allNum, long sendNum) {
-
-        }
-
-        @Override
-        public void onHistory(long time, byte[] value) {
-
-        }
-
-        @Override
-        public void onHistoryLast(long time) {
-
-        }
-
-        @Override
-        public void onDelHistory(int result) {
-
-        }
-
-        @Override
-        public void onData(byte[] status,int type) {
+        public void onData(byte[] status, int type) {
             String data = "";
             if (status != null)
                 data = BleStrUtils.byte2HexStr(status);
@@ -286,16 +331,16 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
         @Override
         public void temp(int temp, int decimal, byte tempUnit) {
-            String tempStr= BleDensityUtil.getInstance().holdDecimals(temp,decimal);
-            mList.add(TimeUtils.getTime() + "稳定:TEMP=" + tempStr + "tempUnit=" + tempUnit);
+            String tempStr = BleDensityUtil.getInstance().holdDecimals(temp, decimal);
+            mList.add(TimeUtils.getTime() + "稳定:TEMP=" + tempStr + "，tempUnit=" + tempUnit);
             mHandler.sendEmptyMessage(REFRESH_DATA);
 
         }
 
         @Override
         public void tempNow(int temp, int decimal, byte tempUnit) {
-            String tempStr= BleDensityUtil.getInstance().holdDecimals(temp,decimal);
-            mList.add(TimeUtils.getTime() + "实时:TEMP=" + tempStr + "tempUnit=" + tempUnit);
+            String tempStr = BleDensityUtil.getInstance().holdDecimals(temp, decimal);
+            mList.add(TimeUtils.getTime() + "实时:TEMP=" + tempStr + "，tempUnit=" + tempUnit);
             mHandler.sendEmptyMessage(REFRESH_DATA);
 
         }
@@ -309,6 +354,94 @@ public class TempCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         @Override
         public void getErr(byte status) {
             mList.add(TimeUtils.getTime() + "错误:" + status);
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void mcuHistory(int maxSize, int curSize, List<TempDeviceData.HistoryBean> list) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            String str = "MCU上发历史记录：\n总条数：" + maxSize + "；此次发送：" + curSize;
+            for (int i = 0; i < list.size(); i++) {
+                TempDeviceData.HistoryBean bean = list.get(i);
+                str += "\n";
+                str += i + "：" + sdf.format(bean.getStamp());
+                str += "\n温度值：" + bean.getTemp() + "；单位：" + bean.getUnit() + "；小数点：" + bean.getDecimal();
+
+                // 把最新的一条时间戳保存起来
+                if (i == list.size() - 1) {
+                    stamp = bean.getStamp();
+                }
+            }
+            mList.add(str);
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void mcuGetMode(int mode) {
+            String str = "MCU回复当前测温模式：" + mode;
+            mList.add(str);
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void mcuSetMode(int status) {
+            String str = "MCU回复设置当前测温模式结果：" + status;
+            mList.add(str);
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void mcuGetTemp(int temp, int unit, int decimal) {
+            String str = "MCU回复高温报警值：";
+            str += "\n温度值：" + temp + "；单位：" + unit + "；小数点：" + decimal;
+            mList.add(str);
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void mcuSetTemp(int status) {
+            String str = "MCU回复设置高温报警值结果：" + status;
+            mList.add(str);
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void mcuSetUnixStamp(int status) {
+            String str = "MCU回复设置Unix时间戳结果：" + status;
+            mList.add(str);
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+
+        @Override
+        public void onHistoryNum(long allNum, long sendNum) {
+            if (allNum == sendNum) {
+                //这里在前那一次数据
+                mList.add(TimeUtils.getTime() + "历史记录获取完成");
+            } else {
+                mList.add(TimeUtils.getTime() + "历史记录获取未完成: 下次获取时间: " + lastTime);
+                mBleDevice.getHistoryNew(lastTime);
+            }
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void onHistory(long time, byte[] value) {
+            mList.add(TimeUtils.getTime() + "历史记录: " + TimeUtils.getTime(time*1000) + "  数据: " + BleStrUtils.byte2HexStr(value));
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void onHistoryLast(long time) {
+            lastTime = time;
+            mList.add(TimeUtils.getTime() + "最新一条历史记录: 时间" + time);
+            et_history.setText(lastTime+"");
+            mHandler.sendEmptyMessage(REFRESH_DATA);
+        }
+
+        @Override
+        public void onDelHistory(int result) {
+            mList.add(TimeUtils.getTime() + "删除历史记录结果: " + (result == 0 ? "成功" : "失败"));
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
     }

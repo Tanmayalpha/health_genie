@@ -10,18 +10,17 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
-import androidx.annotation.Nullable;
-
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BLDBodyfatScale.BLDBodyFatBleUtilsData;
 import cn.net.aicare.modulelibrary.module.BLDBodyfatScale.BLDBodyFatDataUtil;
 import cn.net.aicare.modulelibrary.module.BLDBodyfatScale.BLDUser;

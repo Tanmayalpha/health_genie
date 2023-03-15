@@ -17,8 +17,6 @@ import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -26,6 +24,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushBleCmd;
 import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushWiFiBleUtilsData;
@@ -361,7 +361,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
                     break;
                 case R.id.default_time_mode:
 
-                    mToothBrushWiFiBleUtilsData.getdefaultGearAndDuration();
+                    mToothBrushWiFiBleUtilsData.getDefaultGearAndDuration();
                     break;
 
                 case R.id.ota:

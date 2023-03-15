@@ -1,52 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-
-
-    <EditText
-        android:id="@+id/et"
-        android:hint="输入payload数据"
-        android:digits="0123456789ABCDEFabcdef"
+    <TextView
+        android:id="@+id/tv_device_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <LinearLayout
+        android:layout_height="wrap_content"
+        />
 
-        android:orientation="horizontal"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CID:" />
+
         <EditText
             android:id="@+id/et_cid"
-            android:digits="0123456789ABCDEFabcdef"
             android:layout_width="120dp"
-            android:hint="填入cid 16进制数"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/send"
-            android:text="发送"
+            android:layout_height="wrap_content"
+            android:digits="0123456789ABCDEFabcdef"
+            android:hint="填入cid 16进制数" />
+
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/bt_clear"
-            android:text="清空"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/bt_clear_log"
-            android:text="清空log"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="A6,A7发送数据只需要填payLoad数据\n自定义发送需要填完整的指令"
+            android:textColor="@color/colorAccent" />
 
     </LinearLayout>
-    <Button
-        android:id="@+id/bt_cid"
-        android:text="读cid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:digits="0123456789ABCDEFabcdef"
+            android:hint="输入payload数据" />
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A7发送" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/et_a6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:digits="0123456789ABCDEFabcdef"
+            android:hint="输入payload数据" />
+
+        <Button
+            android:id="@+id/send_a6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="A6发送" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <EditText
+            android:id="@+id/et_customize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:digits="0123456789ABCDEFabcdef"
+            android:hint="输入完整的指令"
+            android:textColorHint="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/send_customize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自定义发送" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="输入设备名称"
+            android:textColorHint="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/send_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置名称" />
+
+        <Button
+            android:id="@+id/bt_cid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="读cid" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/bt_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清空" />
+
+        <Button
+            android:id="@+id/bt_clear_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清空log" />
+
+
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

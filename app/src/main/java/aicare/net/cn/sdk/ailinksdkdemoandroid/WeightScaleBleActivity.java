@@ -360,9 +360,8 @@ public class WeightScaleBleActivity extends BleBaseActivity implements View.OnCl
     @Override
     public void requestSynTime() {
         mlogList.add(0, "同步时间");
-        if (bodyFatBleUtilsData != null) {
+        if (bodyFatBleUtilsData != null)
             bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().synTime());
-        }
     }
 
     @Override

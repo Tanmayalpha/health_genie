@@ -119,7 +119,7 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
         } else if (v.getId() == R.id.btn_clear_log) {
             if (!isPauseLog) {
                 isPauseLog = true;
-            } else {
+            }else {
                 isPauseLog = false;
             }
 
@@ -179,7 +179,7 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
     @Override
     public void onFinish(RopeSkipRecord ropeSkipBean) {
 
-        refreshLog("跳绳结束" + "\n" + ropeSkipBean.toString() + " \n绊绳=" + new Gson().toJson(ropeSkipBean.getStopDetail()));
+        refreshLog("跳绳结束"+"\n"+ropeSkipBean.toString() + " \n绊绳=" + new Gson().toJson(ropeSkipBean.getStopDetail()));
     }
 
     @Override
@@ -224,7 +224,7 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
             refreshLog("没有离线记录");
         } else {
 
-            refreshLog("离线记录：\n" + new Gson().toJson(list));
+            refreshLog("离线记录：\n"+new Gson().toJson(list));
         }
     }
 

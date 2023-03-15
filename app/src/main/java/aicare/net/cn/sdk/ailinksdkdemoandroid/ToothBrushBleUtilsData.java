@@ -38,15 +38,17 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
             @Override
             public void onBmVersion(String version) {
                 //蓝牙版本号
-                if (bleToothBrushCallback != null)
+                if (bleToothBrushCallback != null) {
                     bleToothBrushCallback.onVersion(version);
+                }
             }
         });
         bleDevice.setOnMcuParameterListener(new OnMcuParameterListener() {
             @Override
             public void onMcuBatteryStatus(int status, int battery) {
-                if (bleToothBrushCallback != null)
+                if (bleToothBrushCallback != null) {
                     bleToothBrushCallback.onGetBattery(status, battery);
+                }
             }
         });
         mBleDevice.setOnBleOtherDataListener(new OnBleOtherDataListener() {
@@ -89,8 +91,9 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
 
     @Override
     public void onNotifyData(byte[] bytes, int type) {
-        if (bleToothBrushCallback != null)
+        if (bleToothBrushCallback != null) {
             bleToothBrushCallback.onShowData("蓝牙返回的A7: " + BleStrUtils.byte2HexStr(bytes));
+        }
         switch (bytes[0]) {
             case ToothBrushBleCmd.GET_TOOTHBRUSH_TIME_GEARS:
                 if (bytes.length >= 5) {
@@ -103,14 +106,14 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
                 }
                 break;
             case ToothBrushBleCmd.SET_TOOTHBRUSH_TIME_GEARS:
-            case ToothBrushBleCmd.Set_Manual_Mode:
+            case ToothBrushBleCmd.SET_MANUAL_MODE:
                 if (bytes.length >= 2) {
                     if (bleToothBrushCallback != null)
                         bleToothBrushCallback.onSetDefaultModeAndManualModeResult(bytes[0], bytes[1] & 0xff);
 
                 }
                 break;
-            case ToothBrushBleCmd.Get_Manual_Mode:
+            case ToothBrushBleCmd.GET_MANUAL_MODE:
                 if (bytes.length >= 7) {
                     int hzH = (bytes[2] & 0xff) << 8;
                     int hzl = bytes[3] & 0xff;
@@ -122,7 +125,7 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
                     }
                 }
                 break;
-            case (byte) ToothBrushBleCmd.Brush_Teeth_to_Complete:
+            case (byte) ToothBrushBleCmd.BRUSH_TEETH_TO_COMPLETE:
                 if (bytes.length >= 9) {
                     int mode = bytes[1] & 0xff;
                     int timeH = (bytes[2] & 0xff) << 8;
@@ -138,14 +141,14 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
                 }
 
                 break;
-            case ToothBrushBleCmd.The_Trial_Order:
+            case ToothBrushBleCmd.THE_TRIAL_ORDER:
                 //试用指令
                 if (bytes.length >= 2)
                     if (bleToothBrushCallback != null) {
                         bleToothBrushCallback.onTryOutResult(bytes[1] & 0xff);
                     }
                 break;
-            case ToothBrushBleCmd.Get_Second_GEARS:
+            case ToothBrushBleCmd.GET_SECOND_GEARS:
                 if (bytes.length >= 2)
                     if (bleToothBrushCallback != null) {
                         bleToothBrushCallback.onTwoLevelModeDefault(bytes[1] & 0xff);
@@ -158,8 +161,9 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
 
     @Override
     public void onNotifyDataA6(byte[] hex) {
-        if (bleToothBrushCallback != null)
+        if (bleToothBrushCallback != null) {
             bleToothBrushCallback.onShowData("蓝牙返回的A6: " + BleStrUtils.byte2HexStr(hex));
+        }
         switch (hex[0]) {
             case (byte) ToothBrushBleCmd.GET_TOOTHBRUSH_GEARS:
                 disposeSupportGears(hex);
@@ -191,8 +195,9 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
                 }
 
             }
-            if (bleToothBrushCallback != null)
+            if (bleToothBrushCallback != null) {
                 bleToothBrushCallback.onGetSupportGears(stairs, secondLevels);
+            }
         }
 
 
@@ -379,7 +384,7 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
      */
     public void setTryOut(int id, int level, int hz, int duty) {
         byte[] bytes = new byte[14];
-        bytes[0] = ToothBrushBleCmd.The_Trial_Order;
+        bytes[0] = ToothBrushBleCmd.THE_TRIAL_ORDER;
         bytes[1] = (byte) id;
         bytes[2] = (byte) level;
         bytes[3] = (byte) 0xff;
@@ -443,7 +448,7 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
      */
     public void getTwoLevelDefault() {
         byte[] bytes = new byte[1];
-        bytes[0] = ToothBrushBleCmd.Get_Second_GEARS;
+        bytes[0] = ToothBrushBleCmd.GET_SECOND_GEARS;
         sendA7(bytes);
     }
 
@@ -465,7 +470,7 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
      */
     public void setManualParameter(int hz, int duty, int time) {
         byte[] bytes = new byte[7];
-        bytes[0] = ToothBrushBleCmd.Set_Manual_Mode;
+        bytes[0] = ToothBrushBleCmd.SET_MANUAL_MODE;
         bytes[1] = 0x00;
         bytes[2] = (byte) (hz >> 8);
         bytes[3] = (byte) hz;
@@ -482,7 +487,7 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
      */
     public void getManualParameter() {
         byte[] bytes = new byte[1];
-        bytes[0] = ToothBrushBleCmd.Get_Manual_Mode;
+        bytes[0] = ToothBrushBleCmd.GET_MANUAL_MODE;
 
         sendA7(bytes);
 
@@ -526,8 +531,9 @@ public class ToothBrushBleUtilsData extends BaseBleDeviceData {
      * @param bytes
      */
     public void sendA6(byte[] bytes) {
-        if (sendBleBean == null)
+        if (sendBleBean == null) {
             sendBleBean = new SendBleBean();
+        }
         sendBleBean.setHex(bytes);
         sendData(sendBleBean);
     }

@@ -44,7 +44,7 @@
         android:layout_marginStart="13dp"
         android:layout_marginTop="11dp"
         android:layout_toEndOf="@+id/disconnect"
-        android:text="发起连接" />
+        android:text="发起连接WIFI" />
 
     <Button
         android:id="@+id/disconnect"
@@ -119,10 +119,30 @@
         android:layout_below="@+id/default_mode"
         android:layout_marginTop="5dp"
         android:text="获取时长和档位" />
+
+
+    <Button
+        android:id="@+id/btn_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setedname"
+        android:layout_marginTop="5dp"
+        android:text="得分" />
+
+    <EditText
+        android:id="@+id/ed_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setedname"
+        android:layout_toEndOf="@id/btn_score"
+        android:hint="默认时长,刷牙时长,左时长,右时长"
+
+        android:textSize="14dp" />
+
     <ListView
         android:id="@+id/log_list"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/setedname"
+        android:layout_below="@id/btn_score"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

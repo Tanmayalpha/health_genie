@@ -14,61 +14,61 @@ public class ToothBrushUtils {
     /**
      * 刷牙时长得分
      *
-     * @param defalutTime 默认时长
-     * @param totaltime   刷牙时长
+     * @param defaultTime 默认时长
+     * @param totalTime   刷牙时长
      * @return int
      */
-    public  int getDurationGrade(int defalutTime, int totaltime){
+    public  int getDurationGrade(int defaultTime, int totalTime){
         if (mToothScoreUtil==null){
             mToothScoreUtil=new ToothScoreUtil();
         }
-        return mToothScoreUtil.getDurationGrade(defalutTime,totaltime);
+        return mToothScoreUtil.getDurationGrade(defaultTime,totalTime);
     }
 
     /**
      * 范围得分
      *
-     * @param defalutTime 默认时长
+     * @param defaultTime 默认时长
      * @param lTime       左边刷牙时长
      * @param rTime       右边刷牙时长
      * @return int
      */
-    public  int getRangeGrade(int defalutTime, int lTime, int rTime){
+    public  int getRangeGrade(int defaultTime, int lTime, int rTime){
         if (mToothScoreUtil==null){
             mToothScoreUtil=new ToothScoreUtil();
         }
-        return mToothScoreUtil.getRangeGrade(defalutTime,lTime,rTime);
+        return mToothScoreUtil.getRangeGrade(defaultTime,lTime,rTime);
     }
 
     /**
      * 均匀度得分
      *
-     * @param defalutTime 默认时长
+     * @param defaultTime 默认时长
      * @param lTime       左边刷牙时长
      * @param rTime       右边刷牙时长
      * @return int
      */
-    public  int getAvgGrade(int defalutTime, int lTime, int rTime){
+    public  int getAvgGrade(int defaultTime, int lTime, int rTime){
         if (mToothScoreUtil==null){
             mToothScoreUtil=new ToothScoreUtil();
         }
-        return mToothScoreUtil.getAvgGrade(defalutTime,lTime,rTime);
+        return mToothScoreUtil.getAvgGrade(defaultTime,lTime,rTime);
     }
 
     /**
      * 获取总分
      *
-     * @param defalutTime 默认时长
+     * @param defaultTime 默认时长
      * @param totalTime   刷牙时长
      * @param lTime       左边刷牙时长
      * @param rTime       右边刷牙时长
      * @return int
      */
-    public  int getGrade(int defalutTime, int totalTime, int lTime, int rTime){
+    public  int getGrade(int defaultTime, int totalTime, int lTime, int rTime){
         if (mToothScoreUtil==null){
             mToothScoreUtil=new ToothScoreUtil();
         }
-        return mToothScoreUtil.getGrade(defalutTime,totalTime,lTime,rTime);
+        return mToothScoreUtil.getGrade(defaultTime,totalTime,lTime,rTime);
     }
 
 }

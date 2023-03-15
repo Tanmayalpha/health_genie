@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_auto_test_tools"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="指令自动校验"
+            android:textColor="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/btn_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:text="暂停" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <Button
+            android:id="@+id/btn_support_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取支持列表" />
+
+        <Button
+            android:id="@+id/btn_device_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取设备状态" />
+
+        <Button
+            android:id="@+id/btn_param"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="获取设备参数" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="输入内容请参照协议。有小数的请按照支持列表申明的小数位输入。类型是int，仅可输入支持列表获取到的类型"
+        android:textColor="@color/colorAccent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_set_param"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送设置指令" />
+
+        <Button
+            android:id="@+id/btn_change_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看原始数据"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center"
+        android:paddingStart="16dp">
+
+        <LinearLayout
+            android:id="@+id/layout_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="类型:" />
+
+            <EditText
+                android:id="@+id/ed_type"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:digits="1234567890"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_max"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最大值:" />
+
+            <EditText
+                android:id="@+id/ed_max"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:digits="1234567890."
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最小值:" />
+
+            <EditText
+                android:id="@+id/ed_min"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:digits="1234567890."
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(报警）值:" />
+
+            <EditText
+                android:id="@+id/ed_value"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:digits="1234567890."
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开关:" />
+
+            <EditText
+                android:id="@+id/ed_warm_state"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:digits="10"
+                android:hint="0-关，1-开"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/group_cal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <RadioButton
+                android:id="@+id/rb_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="加1" />
+
+            <RadioButton
+                android:id="@+id/rb_minus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="减1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="（精度值）"
+                android:textColor="@color/colorAccent" />
+        </RadioGroup>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_time_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="时分:"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/ed_time"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:digits="1234567890:"
+                android:hint="eg: 12:30"
+                app:layout_constraintBottom_toBottomOf="@id/tv_time_flag"
+                app:layout_constraintStart_toEndOf="@id/tv_time_flag"
+                app:layout_constraintTop_toTopOf="@id/tv_time_flag" />
+
+
+            <TextView
+                android:id="@+id/tv_cid_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="编号:"
+                app:layout_constraintBottom_toBottomOf="@id/tv_time_flag"
+                app:layout_constraintStart_toEndOf="@id/ed_time"
+                app:layout_constraintTop_toTopOf="@id/tv_time_flag" />
+
+            <EditText
+                android:id="@+id/ed_cid"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:hint="1~15"
+                android:inputType="number"
+                app:layout_constraintBottom_toBottomOf="@id/tv_time_flag"
+                app:layout_constraintStart_toEndOf="@id/tv_cid_flag"
+                app:layout_constraintTop_toTopOf="@id/tv_time_flag" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/sp_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/tv_time_flag"
+                app:layout_constraintStart_toEndOf="@id/ed_cid"
+                app:layout_constraintTop_toTopOf="@id/tv_time_flag" />
+
+            <CheckBox
+                android:id="@+id/cb_day1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="周一"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_flag" />
+
+            <CheckBox
+                android:id="@+id/cb_day2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="周二"
+                app:layout_constraintStart_toEndOf="@id/cb_day1"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_flag" />
+
+            <CheckBox
+                android:id="@+id/cb_day3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="周三"
+                app:layout_constraintStart_toEndOf="@id/cb_day2"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_flag" />
+
+            <CheckBox
+                android:id="@+id/cb_day4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="周四"
+                app:layout_constraintStart_toEndOf="@id/cb_day3"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_flag" />
+
+            <CheckBox
+                android:id="@+id/cb_day5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="周五"
+                app:layout_constraintStart_toEndOf="@id/cb_day4"
+                app:layout_constraintTop_toBottomOf="@id/tv_time_flag" />
+
+            <CheckBox
+                android:id="@+id/cb_day6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="周六"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cb_day5" />
+
+            <CheckBox
+                android:id="@+id/cb_day7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="周日"
+                app:layout_constraintStart_toEndOf="@id/cb_day6"
+                app:layout_constraintTop_toBottomOf="@id/cb_day5" />
+
+            <RadioGroup
+                android:id="@+id/group_alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="@id/cb_day7"
+                app:layout_constraintTop_toBottomOf="@id/cb_day1">
+
+                <RadioButton
+                    android:id="@+id/rb_open"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="开启"
+                    android:textColor="@color/colorAccent" />
+
+                <RadioButton
+                    android:id="@+id/rb_close"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="关闭"
+                    android:textColor="@color/colorAccent" />
+
+                <RadioButton
+                    android:id="@+id/rb_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="删除"
+                    android:textColor="@color/colorAccent" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="模式4-自定义才需选择周期"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cb_day6" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="--------------------------------------------------------------------------------------------------" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ListView
+            android:id="@+id/list_view_payload"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</LinearLayout>

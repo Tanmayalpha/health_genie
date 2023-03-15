@@ -5,12 +5,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_app_version"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/version" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_app_version"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/version" />
+        <Button
+            android:id="@+id/btn_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于我们"
+            />
+
+    </LinearLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,8 +42,20 @@
                     android:id="@+id/btn_clear_shake_hands"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:text="不握手不加密" />
 
+                <Button
+                    android:id="@+id/btn_rope_skipping_set_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跳绳设置模式" />
+
+                <Button
+                    android:id="@+id/btn_broadcast_scale_weight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="广播体重秤"/>
 
 
             </LinearLayout>
@@ -94,11 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="口罩" />
-                <Button
-                    android:id="@+id/btn_toothbrush_ble"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="蓝牙牙刷" />
+
 
             </LinearLayout>
 
@@ -116,7 +137,7 @@
                     android:id="@+id/btn_broadcast_scale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="广播秤" />
+                    android:text="广播体脂秤" />
 
                 <Button
                     android:id="@+id/btn_broadcast_blood_oxygen"
@@ -186,10 +207,18 @@
                 android:layout_height="wrap_content">
 
                 <Button
+                    android:id="@+id/btn_public_ble_network"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BLE通用配网" />
+
+                <Button
                     android:id="@+id/wifi_config"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="WIFI设备(配置wifi)" />
+                    android:text="WIFI设备(配置wifi)"
+                    android:visibility="gone"
+                    />
 
                 <Button
                     android:id="@+id/eight_scale"
@@ -202,6 +231,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="血糖仪" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -318,11 +349,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="共享套套机" />
-                <Button
-                    android:id="@+id/btn_rope_skip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="跳绳" />
 
                 <Button
                     android:id="@+id/btn_rope_skip"
@@ -347,6 +373,114 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="蓝牙营养秤" />
+
+                <Button
+                    android:id="@+id/btn_toothbrush_test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="牙刷测试" />
+
+                <Button
+                    android:id="@+id/btn_leaone_broadcast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LeaOne测试" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_fascia_gun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="筋膜枪" />
+
+                <Button
+                    android:id="@+id/btn_blood_pressure_tc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="血压计透传" />
+
+                <Button
+                    android:id="@+id/btn_body_scale_4g"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4G体脂秤" />
+
+                <Button
+                    android:id="@+id/btn_scooter_cm02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电滑板Cm02" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_temp_instrument"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="测温仪" />
+
+                <Button
+                    android:id="@+id/btn_leap_watch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="芯一代手表" />
+                <Button
+                    android:id="@+id/btn_meat_probe_charger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="食物探针充电盒" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btn_mqtt_air_detector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="MQTT空气检测仪" />
+                <Button
+                    android:id="@+id/btn_air_detector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="空气检测仪" />
+                <Button
+                    android:id="@+id/btn_mqtt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mqtt工具" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_wifi_ble_noise_meter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="wifi+ble噪音计" />
+
+                <Button
+                    android:id="@+id/btn_ble_noise_meter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ble噪音计" />
+
+                <Button
+                    android:id="@+id/btn_weight_scale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="连接体重秤"/>
 
             </LinearLayout>
 

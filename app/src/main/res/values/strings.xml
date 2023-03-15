@@ -6,6 +6,7 @@
     <string name="baby_hold">锁定</string>
 
 
+
     <string name="rtk_dfu_progress_state_origin"> ready to upgrade </string>
     <string name="rtk_dfu_state_abort_processing">waiting for cancellation...</string>
     <string name="rtk_dfu_state_aborted"> has been cancelled</string>
@@ -40,32 +41,6 @@
     <string name="success">success</string>
     <string name="failure">failure</string>
     <string name="check_version">version:</string>
-
     <string name="upgrade_controller">Upgrade controller</string>
     <string name="upgrade_watch">Upgrade instrument</string>
-
-    <string name="sphygmometer">sphygmometer</string>
-    <string name="forehead_gun">Forehead gun</string>
-    <string name="thermometer">thermometer</string>
-    <string name="baby_scale">Baby scale</string>
-    <string name="height_meter">Height meter</string>
-    <string name="smart_mask">Smart mask</string>
-    <string name="baby_body_fat_scale">Baby Body Fat \n Scale</string>
-    <string name="broadcast_scale">Broadcast \n scale</string>
-    <string name="oximeter">Oximeter</string>
-    <string name="wifi_ble_weight_scale">WiFi+Ble \n Body fat scale</string>
-    <string name="ble_body_fat_scale">Ble \n Body fat scale</string>
-    <string name="wifi_ble_toothbrush">toothbrush \n (wifi+ble)</string>
-    <string name="general_settings">Ble \n General settings</string>
-    <string name="device_wifi_config">WIFI Device \n (configure wifi)</string>
-    <string name="eight_scale">Eight electrode \n scale</string>
-    <string name="blood_glucose_meter">Glucometer</string>
-    <string name="ota_general">OTA Universal</string>
-    <string name="penetrate">Penetrate</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="filter">filter:</string>
-    <string name="power">Power:</string>
-    <string name="set_success">Set success</string>
-    <string name="set_failure">Set failure</string>
-    <string name="set_err">Set error</string>
 </resources>

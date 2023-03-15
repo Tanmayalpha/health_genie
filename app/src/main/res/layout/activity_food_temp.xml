@@ -14,11 +14,38 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_clear"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="清空列表" />
+                android:orientation="horizontal"
+                >
+                <Button
+                    android:id="@+id/btn_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="清空列表" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="暂停log"
+                    android:onClick="onStopLog"
+                    />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电量"
+                    android:onClick="getBattery"
+                    />
+                <TextView
+                    android:id="@+id/tv_device_battery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="电量:--%"
+                    />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btn_get_device"

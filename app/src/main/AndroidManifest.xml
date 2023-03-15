@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="aicare.net.cn.sdk.ailinksdkdemoandroid"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="aicare.net.cn.sdk.ailinksdkdemoandroid">
 
+    <!--兼容6.0以上的手机Ble-->
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -10,10 +11,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--OTA需要读写文件-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <!--兼容6.0以上的手机Ble-->
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission-sdk-23
+        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <uses-permission-sdk-23
+        android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <uses-permission
         android:name="android.permission.BLUETOOTH"
         android:maxSdkVersion="30" />
@@ -21,13 +32,16 @@
         android:name="android.permission.BLUETOOTH_ADMIN"
         android:maxSdkVersion="30" />
     <!--android12还需要增加如下权限,也需求动态申请-->
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
         android:usesPermissionFlags="neverForLocation"
-        tools:targetApi="s"/>
+        tools:targetApi="s" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <!--android10,11需要后台扫描的,需要添加如下权限-->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
@@ -35,25 +49,25 @@
         android:name="android.hardware.bluetooth"
         android:required="false" />
 
-    <!--OTA需要读写文件-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
+        android:name=".base.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:targetApi="q">
         <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -70,38 +84,69 @@
         <activity android:name=".ADWeightScaleCmdActivity" />
         <activity android:name=".ADWeightScaleUserActivity" />
         <activity android:name=".WeightScaleWifiBleActivity" />
-        <activity android:name=".WeightScaleBleActivity"/>
-        <activity android:name=".WifiConfigActivity"/>
-        <activity android:name=".EightBodyfatActivity"/>
-        <activity android:name=".TestOtaActivity"/>
-        <activity android:name=".BloodGlucoseActivity"/>
+        <activity android:name=".WeightScaleBleActivity" />
+        <activity android:name=".WifiConfigActivity" />
+        <activity android:name=".EightBodyfatActivity" />
+        <activity android:name=".TestOtaActivity" />
+        <activity android:name=".modules.blood_glucose.BloodGlucoseActivity" />
         <activity android:name=".BabyBodyFatCmdActivity" />
         <activity android:name=".BroadcastScaleActivity" />
-        <activity android:name=".TransmissionActivity"/>
+        <activity android:name=".TransmissionActivity" />
         <activity android:name=".BroadcastBloodOxygenActivity" />
         <activity android:name=".SmartMaskActivity" />
-        <activity android:name=".ToothBrushWifiBleActivity" />
-        <activity android:name=".TempHumidityActivity" />
-        <activity android:name=".SkateboardDataActivity" />
-        <activity android:name=".HeightWeightScaleActivity" />
-        <activity android:name=".ClearShakeHandsActivity" />
-        <activity android:name=".BloodSugar4GActivity" />
-        <activity android:name=".BloodOxygenActivity" />
-        <activity android:name=".RopeSkippingActivity" />
-        <activity android:name=".modules.broadcast_nutrition.BroadNutritionActivity" />
-        <activity android:name=".modules.coffee_scale.CoffeeScaleActivity" />
-        <activity android:name=".modules.food_temp.FoodTempActivity" />
-        <activity android:name=".modules.share_charger.ShareChargerActivity" />
-        <activity android:name=".modules.share_condom.ShareCondomActivity" />
-        <activity android:name=".modules.share_socket.ShareSocketActivity" />
-        <activity android:name=".modules.broadcast_height.BroadcastHeightActivity" />
-        <activity android:name=".modules.blood_glucose.BloodGlucoseActivity" />
-        <activity android:name=".modules.blood_glucose.BloodGlucoseTestActivity" />
+        <activity android:name=".modules.toothbrush.ToothBrushWifiBleActivity" />
         <activity android:name=".BLDWeightScaleBleActivity" />
-        <activity android:name=".ToothBrushBleActivity"/>
+        <activity android:name=".BloodOxygenActivity" />
+        <activity android:name=".SkateboardDataActivity" />
+        <activity android:name=".modules.blood_glucose.BloodGlucoseTestActivity" />
+        <activity android:name=".modules.share_charger.ShareChargerActivity" />
+        <activity android:name=".modules.broadcast_height.BroadcastHeightActivity" />
+        <activity android:name=".modules.coffee_scale.CoffeeScaleActivity" />
+        <activity android:name=".HeightWeightScaleActivity" />
+        <activity android:name=".find.FindDeviceActivity" />
+        <activity android:name=".TempHumidityActivity" />
+        <activity android:name=".RopeSkippingActivity" />
+        <activity android:name=".modules.airdetector.AirDetectorActivity" />
+        <activity android:name=".modules.airdetector_test.AirDetectorActivityTest" />
+        <activity
+            android:name=".modules.food_temp.FoodTempActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".find.FindDeviceNewActivity" />
+        <activity android:name=".BloodSugar4GActivity" />
+        <activity android:name=".modules.share_socket.ShareSocketActivity" />
+        <activity android:name=".modules.share_condom.ShareCondomActivity" />
+        <activity android:name=".modules.broadcast_nutrition.BroadNutritionActivity" />
+        <activity android:name=".modules.ble_nutrition.BleNutritionActivity" />
+        <activity android:name=".modules.toothbrush_test.ToothbrushTestActivity" />
+        <activity android:name=".modules.leaone_broadcast.LeaOneBroadcastActivity" />
+        <activity android:name=".modules.fascia_gun.FasciaGunActivity" />
+        <activity android:name=".modules.blood_pressure_tc.BloodPressureTcActivity" />
+        <activity android:name=".RopeSkippingSetActivity" />
+        <activity android:name=".modules.body_scale_4g.BodyScale4GActivity" />
+        <activity android:name=".AiLinkScooterActivity" />
+        <activity android:name=".modules.TempInstrument.TempInstrumentActivity" />
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".PublicBleNetworkCmdActivity" />
+        <activity android:name=".modules.noise_meter.WifiBleNoiseMeterActivity" />
+        <activity android:name=".modules.noise_meter.BleNoiseMeterActivity" />
 
+        <activity
+            android:name=".modules.weight_scale.WeightScaleActivity"
+            android:screenOrientation="portrait" />
 
-        <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer"/>
+        <activity
+            android:name=".modules.broadcast_weight_sacle.BroadcastWeightScaleActivity"
+            android:screenOrientation="unspecified" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

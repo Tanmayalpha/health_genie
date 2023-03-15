@@ -10,13 +10,11 @@ import android.widget.RadioButton;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.EightBodyFatAlgorithms;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.EightBodyFatBean;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyFatBleDeviceData;
 import cn.net.aicare.modulelibrary.module.EightBodyfatscale.EightBodyFatUtil;
@@ -286,6 +284,8 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
 
     }
 
+    private float weight;
+
     @Override
     public void onWeight(int state, float weight, int unit, int decimal) {
         //测量状态 1实时体重 2稳定体重
@@ -295,7 +295,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
         } else if (state == EightBodyFatUtil.WEIGHT_STABILIZATION_WEIGHT) {
             stateStr = "稳定体重";
         }
-
+        this.weight=weight;
         if (unit == EightBodyFatUtil.ST) {
             loglist.add(0, "测量状态：" + state + stateStr + "  体重:" + EightBodyFatUtil.lbtostlb(weight) + "  体重单位:" + unit + " 小数点位" + decimal);
         } else {
@@ -306,7 +306,7 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
     @Override
     public void onImpedance(int adc, int part, int arithmetic) {
         loglist.add(0, "阻抗:" + adc + "  部位: " + part + "  算法" + arithmetic);
-        kaimeng(part,adc);
+        kaimeng(part,adc,arithmetic);
     }
 
     @Override
@@ -342,9 +342,11 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
 
     private EightBodyfatAdc mEightBodyfatAdc;
 
-    private void kaimeng(int part, int adc) {
-        if (mEightBodyfatAdc == null) mEightBodyfatAdc = new EightBodyfatAdc();
-
+    private void kaimeng(int part, int adc,int algorithms) {
+        if (mEightBodyfatAdc == null) {
+            mEightBodyfatAdc = new EightBodyfatAdc();
+        }
+        mEightBodyfatAdc.setAlgorithms(algorithms);
         switch (part) {
             case EightBodyFatUtil.IMPEDANCE_FOOT:
                 //双脚阻抗
@@ -406,8 +408,11 @@ public class EightBodyfatActivity extends BleBaseActivity implements View.OnClic
 
     private void kaimengJieMi(EightBodyfatAdc mEightBodyfatAdc) {
         loglist.add(0,mEightBodyfatAdc.toString());
-        loglist.add(0, "默认传入用户: 性别:男,身高:170,体重 65kg 年龄25");
-        EightBodyFatBean algorithmsData = EightBodyFatAlgorithms.getInstance().getAlgorithmsData(1, 1, 170, 65, 25, mEightBodyfatAdc);
+        loglist.add(0, "默认传入用户: 性别:男,身高:180,年龄27,"+"weight  "+weight+"kg");
+        EightBodyFatBean algorithmsData =
+                EightBodyFatAlgorithms.getInstance().getAlgorithmsData(mEightBodyfatAdc.getAlgorithms(), 1, 180, weight, 27, mEightBodyfatAdc);
+//        EightBodyFatBean algorithmsData =
+//                EightBodyFatAlgorithms.getInstance().getAlgorithmsData(2, 0, 165, weight, 27, mEightBodyfatAdc);
         loglist.add(0, algorithmsData.toString());
 
     }

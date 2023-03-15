@@ -1,5 +1,6 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid.base;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.CheckPermissionUtils;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -37,7 +39,22 @@ public abstract class BleAppBaseActivity extends BleBaseActivity {
     @Nullable
     protected Toolbar mToolbar;
     private Unbinder bind;
+    //--------------ble---------------
+    /**
+     * 需要申请的权限
+     */
+    private String[] LOCATION_PERMISSION = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+    /**
+     * 权限请求返回
+     */
+    private final int PERMISSION = 101;
+    /**
+     * 定位服务返回
+     */
+    protected final int LOCATION_SERVER = 102;
+
+    private HintDataDialogFragment mHintDataDialog = null;
 
 
     @Override
@@ -253,8 +270,7 @@ public abstract class BleAppBaseActivity extends BleBaseActivity {
         if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
-        if (bind != null) {
+        if (bind != null)
             bind.unbind();
-        }
     }
 }

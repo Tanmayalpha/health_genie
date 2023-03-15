@@ -15,7 +15,6 @@ import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
-import com.pingwang.bluetoothlib.device.SendMcuBean;
 import com.pingwang.bluetoothlib.listener.CallbackDisIm;
 import com.pingwang.bluetoothlib.listener.OnBleCompanyListener;
 import com.pingwang.bluetoothlib.listener.OnBleVersionListener;
@@ -41,8 +40,7 @@ import cn.net.aicare.modulelibrary.module.sphygmomanometer.SphyDeviceData;
  * 2019/4/25<br>
  * 血压计
  */
-public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleVersionListener
-        , OnMcuParameterListener, OnBleCompanyListener, View.OnClickListener {
+public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, OnBleVersionListener, OnMcuParameterListener, OnBleCompanyListener, View.OnClickListener {
 
     private static String TAG = SphyCmdActivity.class.getName();
     private final int REFRESH_DATA = 3;
@@ -54,7 +52,8 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     private SphyDeviceData mBleDevice;
     private String mAddress;
     private BleSendCmdUtil mBleSendCmdUtil;
-    private int type;
+    private int mType;
+    private int mCid;
     private byte unit = 0;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -76,7 +75,8 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         setContentView(R.layout.activity_sphy);
         mContext = this;
         mAddress = getIntent().getStringExtra("mac");
-        type = getIntent().getIntExtra("type", -1);
+        mType = getIntent().getIntExtra("type", -1);
+        mCid = getIntent().getIntExtra("cid", -1);
         mBleSendCmdUtil = BleSendCmdUtil.getInstance();
         init();
     }
@@ -98,10 +98,10 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         });
 
 
-        findViewById(R.id.btn1).setOnClickListener(this);
         findViewById(R.id.btnVersion).setOnClickListener(this);
         findViewById(R.id.btnBattery).setOnClickListener(this);
         findViewById(R.id.btn_get_did).setOnClickListener(this);
+        findViewById(R.id.btn_voice).setOnClickListener(this);
         findViewById(R.id.clear).setOnClickListener(this);
         et_type = findViewById(R.id.et_type);
 
@@ -142,6 +142,8 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     }
 
 
+    private int mVoiceStatus = 0;
+
     @Override
     public void onClick(View v) {
         SendBleBean sendBleBean = new SendBleBean();
@@ -158,12 +160,16 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
                 sendBleBean.setHex(mBleSendCmdUtil.getDid());
                 mBleDevice.sendData(sendBleBean);
                 break;
-            case R.id.btn1:
-                String cmd = et_type.getText().toString().trim();
-                SendMcuBean sendDataBean = new SendMcuBean();
-                sendDataBean.setHex(type,cmd.getBytes());
-                mBleDevice.sendData(sendDataBean);
+            case R.id.btn_voice:
+                if (mVoiceStatus == 0) {
+                    mVoiceStatus = 1;
+                }else {
+                    mVoiceStatus=0;
+
+                }
+                mBleDevice.setSphyVoice(mVoiceStatus);
                 break;
+
             case R.id.clear:
                 if (mList != null)
                     mList.clear();
@@ -184,6 +190,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 mBleDevice = SphyDeviceData.getInstance(bleDevice);
+                mBleDevice.setType(mCid);
                 mBleDevice.setOnNotifyData(new NotifyData());
                 mBleDevice.setOnBleVersionListener(SphyCmdActivity.this);
                 mBleDevice.setOnMcuParameterListener(SphyCmdActivity.this);
@@ -224,7 +231,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     @Override
     public void onDisConnected(@NonNull String mac, int code) {
         //TODO 连接断开
-        if (mAddress.equals(mac)){
+        if (mAddress.equals(mac)) {
             BleLog.i(TAG, "连接断开");
             finish();
         }
@@ -256,9 +263,8 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         @Override
         public void onData(byte[] status, int type) {
             String data = "";
-            if (status != null) {
+            if (status != null)
                 data = BleStrUtils.byte2HexStr(status);
-            }
             if (type == 100) {
                 mList.add(TimeUtils.getTime() + "send->" + data);
             } else {
@@ -269,20 +275,45 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
         @Override
         public void getSphyCmd(byte cmd) {
-            mList.add(TimeUtils.getTime() + "指令:" + cmd);
+            String cmdStr = "";
+            switch (cmd) {
+                case SphyBleConfig.SHPY_CMD_START:
+                    cmdStr += "开始测量";
+                    break;
+                case SphyBleConfig.SHPY_CMD_STOP:
+                    cmdStr += "停止测试";
+                    break;
+                case SphyBleConfig.SHPY_CMD_MCU_START:
+                    cmdStr += "mcu 开机";
+                    break;
+                case SphyBleConfig.SHPY_CMD_MCU_STOP:
+                    cmdStr += "mcu 关机";
+                    break;
+            }
+            mList.add(TimeUtils.getTime() + "指令:" + cmdStr);
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
 
         @Override
         public void getSphyVoice(byte cmd) {
-
+            String cmdStr = "";
+            switch (cmd) {
+                case 0x00:
+                    cmdStr += "打开语音";
+                    break;
+                case 0x01:
+                    cmdStr += "关闭语音";
+                    break;
+            }
+            mList.add(TimeUtils.getTime() + "指令:" + cmdStr);
+            mHandler.sendEmptyMessage(REFRESH_DATA);
         }
 
         @Override
         public void sphyDataNow(int dia, int sys, int decimal, int pul, int unit) {
             String diaStr = BleDensityUtil.getInstance().holdDecimals(dia, decimal);
             String sysStr = BleDensityUtil.getInstance().holdDecimals(sys, decimal);
-            mList.add(TimeUtils.getTime() + "实时:dia=" + diaStr + "sys=" + sysStr + "pul=" + pul + "unit" + "=" + unit);
+            mList.add(TimeUtils.getTime() + "实时:舒张压=" + diaStr + "  收缩压=" + sysStr + "  心率=" + pul + "  单位=" + (unit == 0 ? "mmhg" : "kPa"));
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
 
@@ -290,7 +321,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         public void sphyData(int dia, int sys, int decimal, int pul, int unit) {
             String diaStr = BleDensityUtil.getInstance().holdDecimals(dia, decimal);
             String sysStr = BleDensityUtil.getInstance().holdDecimals(sys, decimal);
-            mList.add(TimeUtils.getTime() + "稳定:dia=" + diaStr + "sys=" + sysStr + "pul=" + pul + "unit" + "=" + unit);
+            mList.add(TimeUtils.getTime() + "稳定:舒张压=" + diaStr + "  收缩压=" + sysStr + "  心率=" + pul + "  单位=" + (unit == 0 ? "mmhg" : "kPa"));
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
 
@@ -316,7 +347,39 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
         @Override
         public void getErr(byte status) {
-            mList.add(TimeUtils.getTime() + "错误:" + status);
+            String errStr = "";
+            switch ((int) status) {
+
+                case 0:
+                    errStr += "未找到高压";
+                    break;
+                case 1:
+                    errStr += "无法正常加压，请检查是否插入袖带，或者重新插拔袖带气 管";
+                    break;
+                case 2:
+                    errStr += "电量低";
+                    break;
+                case 3:
+                    errStr += "传感器信号异常";
+                    break;
+                case 4:
+                    errStr += "测量结果异常";
+                    break;
+                case 5:
+                    errStr += "腕带过紧或气路堵塞";
+                    break;
+                case 60:
+                    errStr += "测量中压力干扰严重";
+                    break;
+                case 7:
+                    errStr += "压力超 290";
+                    break;
+                case 8:
+                    errStr += "标定数据异常或存储 IC 异常";
+                    break;
+
+            }
+            mList.add(TimeUtils.getTime() + "错误:" + errStr);
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
     }
@@ -342,9 +405,7 @@ public class SphyCmdActivity extends BleBaseActivity implements OnCallbackDis, O
 
     @Override
     public void onSysTime(int status, int[] times) {
-        String time =
-                times[0] + "-" + times[1] + "-" + times[2] + "  " + times[3] + ":" + times[4] +
-                        ":" + times[5];
+        String time = times[0] + "-" + times[1] + "-" + times[2] + "  " + times[3] + ":" + times[4] + ":" + times[5];
         mList.add(TimeUtils.getTime() + "系统时间:" + time);
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }

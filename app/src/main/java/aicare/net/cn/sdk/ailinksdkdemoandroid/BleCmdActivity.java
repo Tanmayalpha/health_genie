@@ -57,7 +57,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
     private final int REFRESH_DATA = 3;
     private List<String> mList;
     private ArrayAdapter listAdapter;
-    private EditText etName, etMacType,  etBroadcastTime, etMcuType, etSleepTime, et_set_device;
+    private EditText etName, etMacType, etBroadcastTime, etMcuType, etSleepTime, et_set_device;
     private Context mContext;
     private String mAddress;
     private BleSendCmdUtil mBleSendCmdUtil;
@@ -126,6 +126,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
         findViewById(R.id.btn_get_device).setOnClickListener(this);
         findViewById(R.id.btnDis).setOnClickListener(this);
         findViewById(R.id.btnConnect).setOnClickListener(this);
+        findViewById(R.id.btnSnRead).setOnClickListener(this);
         etName = findViewById(R.id.etName);
         etMacType = findViewById(R.id.etMacType);
         etBroadcastTime = findViewById(R.id.etBroadcastTime);
@@ -139,7 +140,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
         SendBleBean sendBleBean;
         switch (v.getId()) {
             case R.id.btnDis:
-                if (mBleDevice!=null){
+                if (mBleDevice != null) {
                     mBleDevice.disconnect();
                 }
                 mList.add(TimeUtils.getTime() + "断开连接");
@@ -319,6 +320,16 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
                 mList.add(TimeUtils.getTime() + "读取设备信息");
                 mHandler.sendEmptyMessage(REFRESH_DATA);
                 break;
+            case R.id.btnSnRead:
+                // 获取设备信息
+                sendBleBean = new SendBleBean();
+                byte[] sendData = new byte[1];
+                sendData[0] = (byte) 0x95;
+                sendBleBean.setHex(sendData);
+                sendData(sendBleBean);
+                mList.add(TimeUtils.getTime() + "读取SN号");
+                mHandler.sendEmptyMessage(REFRESH_DATA);
+                break;
         }
     }
 
@@ -350,6 +361,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
                 BleLog.i(TAG, "mBleDevice==null");
                 return;
             }
+            mBleDevice.setMtu(512);
             mBleDevice.setOnBleVersionListener(this);
             mBleDevice.setOnBleDeviceDataListener(this);
             mBleDevice.setOnBleErrListener(this);
@@ -383,11 +395,8 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
     @Override
     public void unbindServices() {
         CallbackDisIm.getInstance().removeListener(this);
-        BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
-        if (bleDevice != null) {
-            BleLog.i(TAG, "unbindService,断开连接");
-            bleDevice.disconnect();
-        }
+        mBluetoothService.disconnectAll();
+
     }
 
 
@@ -406,7 +415,7 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
         BleLog.i(TAG, "连接断开");
         if (mAddress.equals(mac)) {
             Toast.makeText(mContext, "连接断开:" + code, Toast.LENGTH_SHORT).show();
-            mBleDevice=null;
+            mBleDevice = null;
         }
     }
 
@@ -459,6 +468,14 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
                     mHandler.sendEmptyMessage(REFRESH_DATA);
                 }
                 break;
+                case (byte) 0x95: {
+                    // 读取设备信息
+                    byte[] dataSn = new byte[hex.length - 1];
+                    System.arraycopy(hex, 1, dataSn, 0, dataSn.length);
+                    mList.add(TimeUtils.getTime() + "读取SN：结果：" + BleStrUtils.byte2HexStr(dataSn));
+                    mHandler.sendEmptyMessage(REFRESH_DATA);
+                }
+                break;
             }
         }
     }
@@ -469,9 +486,8 @@ public class BleCmdActivity extends BleBaseActivity implements OnCallbackBle, On
             return;
         }
         String data = "";
-        if (hex != null) {
+        if (hex != null)
             data = BleStrUtils.byte2HexStr(hex);
-        }
         if (type == 100) {
             mList.add(TimeUtils.getTime() + "cid=" + type + "\nsend->" + data);
         } else {

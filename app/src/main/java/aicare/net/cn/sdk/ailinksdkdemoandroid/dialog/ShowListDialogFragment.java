@@ -15,13 +15,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -135,7 +134,7 @@ public class ShowListDialogFragment extends DialogFragment implements View.OnCli
         rv_dialog_list.setLayoutManager(new LinearLayoutManager(mContext));
         rv_dialog_list.addItemDecoration(new MyItemDecoration(mContext,
                 LinearLayoutManager.VERTICAL, 1,
-                mContext.getResources().getColor(R.color.public_white)));
+                mContext.getResources().getColor(R.color.public_press_bg)));
 
     }
 

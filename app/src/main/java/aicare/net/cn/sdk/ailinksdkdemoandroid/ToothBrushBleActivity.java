@@ -12,13 +12,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;
-import com.pingwang.bluetoothlib.utils.BleStrUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -27,6 +24,7 @@ import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
+import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushBleCmd;
 
 /**
@@ -59,7 +57,7 @@ public class ToothBrushBleActivity extends BleBaseActivity implements View.OnCli
         select_gears_et = findViewById(R.id.select_gears_et);
 
         mAddress = getIntent().getStringExtra("mac");
-        type = getIntent().getIntExtra("type", BleDeviceConfig.TOOTHBRUSH_BLE);
+        type = getIntent().getIntExtra("type", BleDeviceConfig.TOOTHBRUSH_TEST);
         mList = new ArrayList<>();
         ListView listView = findViewById(R.id.log_list);
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mList);

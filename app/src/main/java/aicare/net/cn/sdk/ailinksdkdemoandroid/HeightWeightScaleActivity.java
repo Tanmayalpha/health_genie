@@ -60,10 +60,12 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
             if (bleDevice != null) {
                 HeightBodyFatBleData.init(bleDevice);
                 HeightBodyFatBleData.getInstance().setOnHeightBodyFatDataCallback(this);
+                HeightBodyFatBleData.getInstance().setOnHeightBodyFatDataCallback(this);
             }
         }
 
     }
+
 
     @Override
     public void onServiceErr() {
@@ -115,9 +117,7 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
 
     @Override
     public void onScanning(BleValueBean data) {
-        if (data.getMac().equalsIgnoreCase(mAddress)){
-          connectBle(data.getMac());
-        }
+
 
     }
 
@@ -136,7 +136,6 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
         if (mac.equals(mAddress)) {
             logList.add(0, "连接已经断开");
             listAdapter.notifyDataSetChanged();
-           startScanBle(0);
 
         }
 
@@ -149,11 +148,7 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
 
     @Override
     public void onServicesDiscovered(String mac) {
-        BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
-        if (bleDevice != null) {
-            HeightBodyFatBleData.init(bleDevice);
-            HeightBodyFatBleData.getInstance().setOnHeightBodyFatDataCallback(this);
-        }
+
 
     }
 
@@ -307,9 +302,8 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
                 + "  阻抗: " + adc + " 算法位: " + arithmetic);
         listAdapter.notifyDataSetChanged();
 
+
     }
-
-
 
     @Override
     public void onHeart(int workMode, int status, int heart) {

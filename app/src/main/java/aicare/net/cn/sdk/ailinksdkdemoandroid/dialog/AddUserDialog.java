@@ -11,13 +11,11 @@ import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatDataUtil;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.User;
 

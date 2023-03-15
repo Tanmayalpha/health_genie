@@ -118,7 +118,6 @@ public class SP {
         } else {
             editor.putString(key, object.toString());
         }
-
         apply(editor);
         return 0;
     }

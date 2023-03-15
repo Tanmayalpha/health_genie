@@ -12,7 +12,10 @@ import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.server.ELinkBleServer;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.BuildConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -35,6 +38,9 @@ public abstract class BleBaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null)
+            supportActionBar.setTitle(getString(R.string.app_name) + BuildConfig.VERSION_NAME);
         init();
     }
 

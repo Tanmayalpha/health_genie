@@ -16,4 +16,41 @@
         <item>0x00</item>
         <item>0x01</item>
     </string-array>
+
+    <string-array name="ble_toothbrush_bind">
+        <item>0x00：直接绑定</item>
+        <item>0x01：绑定需要用户按按键</item>
+    </string-array>
+
+    <string-array name="ble_toothbrush_direction">
+        <item>0x00：把当前位置设为直立位置</item>
+        <item>0x01：Y轴朝上</item>
+        <item>0x02：Y轴朝下</item>
+        <item>0x03：Y轴朝左</item>
+        <item>0x04：Y轴朝右</item>
+    </string-array>
+
+    <string-array name="ble_toothbrush_work_mode">
+        <item>0x00：停止电机</item>
+        <item>0x01：清洁</item>
+        <item>0x02：美白</item>
+        <item>0x03：按摩</item>
+        <item>0x04：敏感</item>
+        <item>0x05：抛光</item>
+        <item>0x06：牙龈护理</item>
+        <item>0x07：漱口</item>
+        <item>0x08：保健</item>
+        <item>0x09：新手</item>
+        <item>0x0A：舒柔</item>
+        <item>0x0B：轻柔</item>
+        <item>0x0C：呵护</item>
+        <item>0xFF：手动设置</item>
+    </string-array>
+
+    <string-array name="ble_toothbrush_gear">
+        <item>0x00：不支持级别</item>
+        <item>0x01：一级挡位</item>
+        <item>0x02：二级挡位</item>
+    </string-array>
+
 </resources>

@@ -2,7 +2,6 @@ package aicare.net.cn.sdk.ailinksdkdemoandroid.utils;
 
 import com.besthealth.bhBodyComposition120.BhBodyComposition;
 import com.besthealth.bhBodyComposition120.BhErrorType;
-import com.besthealth.bhBodyComposition120.BhPeopleType;
 import com.besthealth.bhBodyComposition120.BhSex;
 import com.holtek.libHTBodyfat.HTBodyBasicInfo;
 import com.holtek.libHTBodyfat.HTBodyResultAllBody;
@@ -29,24 +28,33 @@ public class EightBodyFatAlgorithms {
     }
 
 
-
     public EightBodyFatBean getAlgorithmsData(int algorithms, int sex, int height, float weight_kg, int age, EightBodyfatAdc eightBodyfatAdc) {
         EightBodyFatBean eightBodyFatBean = new EightBodyFatBean();
         switch (algorithms) {
 
-            case 2:
+            case 0x20:
+                //实例化对象
                 BhBodyComposition bhBodyComposition = new BhBodyComposition();
+                //传入性别
                 bhBodyComposition.bhSex = sex == 1 ? BhSex.MALE.ordinal() : BhSex.FEMALE.ordinal();
-                bhBodyComposition.bhPeopleType= BhPeopleType.NORMAL.ordinal();
+                //传入体重。单位是千克。其他单位需要自己转换
                 bhBodyComposition.bhWeightKg = weight_kg;
+                //传入年龄
                 bhBodyComposition.bhAge = age;
+                //传入身高
                 bhBodyComposition.bhHeightCm = height;
+                //传入阻抗。阻抗值通过设备获取。加密数据
+                //全身阻抗
                 bhBodyComposition.bhZLeftBodyEnCode = eightBodyfatAdc.getAdcRightBody();
+                //左手阻抗
                 bhBodyComposition.bhZLeftArmEnCode = eightBodyfatAdc.getAdcLeftHand();
+                //右手阻抗
                 bhBodyComposition.bhZRightArmEnCode = eightBodyfatAdc.getAdcRightHand();
+                //左脚阻抗
                 bhBodyComposition.bhZLeftLegEnCode = eightBodyfatAdc.getAdcLeftFoot();
+                //右脚阻抗
                 bhBodyComposition.bhZRightLegEnCode = eightBodyfatAdc.getAdcRightFoot();
-
+                //校验传入的值
                 BhErrorType bhErrorType = BhErrorType.values()[bhBodyComposition.getBodyComposition()];
 
                 if (bhErrorType == BhErrorType.NONE) {

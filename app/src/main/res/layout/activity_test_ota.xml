@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
 
     <ScrollView
@@ -24,6 +25,19 @@
                 android:layout_height="wrap_content"
                 android:text="版本号:"
                 android:textSize="18dp"
+                />
+            <TextView
+                android:id="@+id/tv_path"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="文件路径:手机/Documents/AiLinkBleDemo"
+                android:textSize="14dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="请先选择文件，再点击具体类型，然后点击开始发送；如未开始，请再点击下具体类型"
+                android:textSize="14dp"
                 />
 
             <LinearLayout
@@ -57,7 +71,7 @@
                     android:id="@+id/btn_start_ota"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="开始OTA"
+                    android:text="开始发送"
                     />
 
 
@@ -81,19 +95,19 @@
                     android:id="@+id/btn_ota_start_585"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OTA:585"
+                    android:text="DIA:585"
                     />
                 <Button
                     android:id="@+id/btn_ota_start_531"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OTA:531"
+                    android:text="DIA:531"
                     />
                 <Button
                     android:id="@+id/btn_ota_start_580"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OTA:580"
+                    android:text="DIA:580"
                     />
 
             </LinearLayout>
@@ -108,11 +122,50 @@
                     android:id="@+id/btn_ota_bk"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="OTA:BK"
-                    />
+                    android:text="OTA:BK" />
+                <Button
+                    android:id="@+id/btn_ota_opl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTA:OPL" />
+
+                <Button
+                    android:id="@+id/btn_ota_jl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OTA:JL" />
 
 
 
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                >
+                <Button
+                    android:id="@+id/btn_watch_jl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WATCH:JL" />
+                <Button
+                    android:id="@+id/btn_file_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="表盘列表" />
+                <Button
+                    android:id="@+id/btn_file_watch_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设表盘" />
+                <Button
+                    android:id="@+id/btn_file_watch_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="删表盘" />
 
             </LinearLayout>
 

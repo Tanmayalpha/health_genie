@@ -16,15 +16,15 @@ import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import aicare.net.cn.sdk.ailinksdkdemoandroid.BuildConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -124,7 +124,7 @@ public class FindDeviceNewActivity extends BleAppBaseActivity implements View.On
         btn_scan_ble = findViewById(R.id.btn_scan_ble);
         rv_device = findViewById(R.id.rv_device);
         rv_device.setLayoutManager(new GridLayoutManager(mContext, 2, LinearLayoutManager.VERTICAL, false));
-        rv_device.addItemDecoration(new MyItemDecoration(mContext, LinearLayoutManager.VERTICAL, 1, mContext.getResources().getColor(R.color.public_white)));
+        rv_device.addItemDecoration(new MyItemDecoration(mContext, LinearLayoutManager.VERTICAL, 1, mContext.getResources().getColor(R.color.public_press_bg)));
 //        rv_device.setVisibility(View.INVISIBLE);
     }
 

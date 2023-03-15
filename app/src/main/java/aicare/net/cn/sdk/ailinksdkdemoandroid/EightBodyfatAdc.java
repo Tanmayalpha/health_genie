@@ -14,6 +14,7 @@ public class EightBodyfatAdc {
     private int adcRightHandLeftFoot;
     private int adcLeftHandRightFoot;
     private int adcBody;
+    private int algorithms;
 
 
     public int getAdcFoot() {
@@ -104,6 +105,13 @@ public class EightBodyfatAdc {
         this.adcBody = adcBody;
     }
 
+    public int getAlgorithms() {
+        return algorithms;
+    }
+
+    public void setAlgorithms(int algorithms) {
+        this.algorithms = algorithms;
+    }
 
     @Override
     public String toString() {

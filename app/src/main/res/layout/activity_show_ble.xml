@@ -27,8 +27,14 @@
             android:id="@+id/clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/clear"
-            />
+            android:text="@string/clear" />
+
+        <EditText
+            android:id="@+id/et_cid"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:digits="-0123456789x"
+            android:hint="CID" />
 
 
     </LinearLayout>
@@ -49,8 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="5dp"
-        />
+            android:padding="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -69,14 +74,11 @@
 
     </LinearLayout>
 
-
-    <ListView
-        android:id="@+id/listview"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_data"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp">
+        android:padding="10dp" />
 
-
-    </ListView>
 
 </LinearLayout>

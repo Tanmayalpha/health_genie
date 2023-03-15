@@ -9,19 +9,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.TempHumidity.TempHumidityBleUtils;
 
 /**
@@ -93,6 +92,10 @@ public class TempHumidityActivity extends BleBaseActivity implements OnCallbackB
         findViewById(R.id.btn_hear).setOnClickListener(this);
         findViewById(R.id.btn_show_history).setOnClickListener(this);
         findViewById(R.id.btn_clear).setOnClickListener(this);
+        findViewById(R.id.btn_interval_one).setOnClickListener(this);
+        findViewById(R.id.btn_interval_three).setOnClickListener(this);
+        findViewById(R.id.btn_interval_five).setOnClickListener(this);
+        findViewById(R.id.btn_ota).setOnClickListener(this);
 
 
         listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, logList);
@@ -237,6 +240,26 @@ public class TempHumidityActivity extends BleBaseActivity implements OnCallbackB
                     historyLogList.clear();
                     listAdapter.notifyDataSetChanged();
                     historyListAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.btn_interval_one:
+                    logList.add(0, "上报间隔1分钟");
+                    TempHumidityBleUtils.getInstance().setReportTime(60);
+                    listAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.btn_interval_three:
+                    logList.add(0, "上报间隔3分钟");
+                    TempHumidityBleUtils.getInstance().setReportTime(180);
+                    listAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.btn_interval_five:
+                    logList.add(0, "上报间隔5分钟");
+                    TempHumidityBleUtils.getInstance().setReportTime(300);
+                    listAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.btn_ota:
+                    logList.add(0, "请求ota");
+                    TempHumidityBleUtils.getInstance().ota();
+                    listAdapter.notifyDataSetChanged();
                     break;
             }
         }
