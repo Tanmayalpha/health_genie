@@ -26,6 +26,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -43,6 +51,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.adapter.StringAdapter;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.config.AppConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
@@ -63,13 +72,6 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.toothbrush_test.Toothbrush
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.weight_scale.WeightScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.CheckPermissionUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import cn.net.aicare.modulelibrary.module.RopeSkipping.RopeSkippingBleData;
 import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
 
@@ -129,8 +131,9 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_ble);
         ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null)
+        if (supportActionBar != null) {
             supportActionBar.setTitle(getString(R.string.app_name) + BuildConfig.VERSION_NAME);
+        }
         Intent mUserService = new Intent(this.getApplicationContext(), ELinkBleServer.class);
         //核心用户服务
         startService(mUserService);
@@ -433,26 +436,32 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         int type = mType;//默认婴儿秤
         switch (type) {
             case BleDeviceConfig.BABY_SCALE:
+                //婴儿秤
                 intent.setClass(ShowBleActivity.this, BabyCmdActivity.class);
                 break;
             case BleDeviceConfig.INFRARED_THERMOMETER:
+                //额温枪
                 intent.setClass(ShowBleActivity.this, TempGunCmdActivity.class);
                 break;
             case BleDeviceConfig.BLOOD_PRESSURE:
             case BleDeviceConfig.SPHY_WIFI_BLE:
+                //血压计
                 intent.setClass(ShowBleActivity.this, SphyCmdActivity.class);
                 break;
             case BleDeviceConfig.THERMOMETER:
+                //体温计
                 intent.setClass(ShowBleActivity.this, TempCmdActivity.class);
                 break;
             case BleDeviceConfig.HEIGHT_METER:
+                //身高仪
                 intent.setClass(ShowBleActivity.this, HeightCmdActivity.class);
                 break;
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE:
+                //体重体脂称
                 intent.setClass(ShowBleActivity.this, WeightScaleBleActivity.class);
                 break;
-
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD:
+                //体重体脂称
                 intent.setClass(ShowBleActivity.this, ADWeightScaleCmdActivity.class);
                 break;
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE:
@@ -499,7 +508,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 break;
             case BleDeviceConfig.FIND_DEVICE:
                 // 寻物器
-//                intent.setClass(ShowBleActivity.this, FindDeviceActivity.class);
                 intent.setClass(ShowBleActivity.this, FindDeviceNewActivity.class);
                 BleConfig.setHandshakeStatus(mac, false);
                 break;
@@ -508,6 +516,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 intent.setClass(ShowBleActivity.this, FoodTempActivity.class);
                 break;
             case BleDeviceConfig.HEIGHT_BODY_FAT:
+                //身高体脂秤
                 intent.setClass(ShowBleActivity.this, HeightWeightScaleActivity.class);
                 break;
             case BleDeviceConfig.TEMP_Humidity:
@@ -644,6 +653,14 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     }
 
 
+    /**
+     * 检查设备
+     *
+     * @param scanCid    扫描cid
+     * @param cid        cid
+     * @param nameAndMac 名字和mac过滤
+     * @return boolean
+     */
     private boolean isCheckDevice(int scanCid, int cid, boolean nameAndMac) {
         boolean okDevice = false;
         if (scanCid == BleDeviceConfig.BLOOD_PRESSURE) {

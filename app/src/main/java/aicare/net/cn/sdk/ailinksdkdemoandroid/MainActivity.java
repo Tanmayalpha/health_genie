@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.besthealth.bhBodyComposition120.BhBodyComposition;
+import com.pingwang.bluetoothlib.AILinkSDK;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
 import java.util.ArrayList;
@@ -53,23 +54,6 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initData();
         initListener();
-        int bodyComposition = new BhBodyComposition().getBodyComposition();
-        L.i("bodyComposition:" + bodyComposition);
-
-//        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:10086"));
-//        Method setDefaultSim = null;
-//        try {
-//            setDefaultSim = TelephonyManager.class.getDeclaredMethod("setDefaultSim", Context.class, int.class, int.class);
-//            setDefaultSim.invoke(null, this, 0, 0);
-//        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        }
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
     }
 
 
@@ -77,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
         String version = getString(R.string.version) + ":" + BuildConfig.VERSION_NAME;
         ((TextView) findViewById(R.id.tv_app_version)).setText(version);
         ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null)
+        if (supportActionBar != null) {
             supportActionBar.setTitle(getString(R.string.app_name) + BuildConfig.VERSION_NAME);
+        }
         findViewById(R.id.btn_about).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,42 +72,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         MyListener listener = new MyListener();
-
-//        Button btn_shpy = findViewById(R.id.btn_sphy);
-//        Button btn_tempgun = findViewById(R.id.btn_tempgun);
-//        Button btn_temp = findViewById(R.id.btn_temp);
-//        Button btn_baby = findViewById(R.id.btn_baby);
-//        Button btn_height = findViewById(R.id.btn_height);
-//        Button btn_ble = findViewById(R.id.btn_ble);
-//        Button btn_weightScale = findViewById(R.id.btn_lock);
-//        Button btn_ble_test = findViewById(R.id.btn_ble_test);
-//        Button btnConnectTest = findViewById(R.id.btnConnectTest);
-//        Button btn_ad_weight = findViewById(R.id.btn_ad_weight);
-//        Button btn_ble_weight = findViewById(R.id.btn_ble_weight);
-//        Button btn_wifi_ble_tooth = findViewById(R.id.btn_wifi_ble_tooth);
-//        Button wifi_config = findViewById(R.id.wifi_config);
-//        Button eight_scale = findViewById(R.id.eight_scale);
-//        Button btn_ota = findViewById(R.id.btn_ota);
-//        Button btn_wristband = findViewById(R.id.btn_wristband);
-//        Button glucometer = findViewById(R.id.glucometer);
-//        Button btn_broadcast_scale = findViewById(R.id.btn_broadcast_scale);
-//        Button btn_broadcast_blood_oxygen = findViewById(R.id.btn_broadcast_blood_oxygen);
-//        Button btn_smart_mask = findViewById(R.id.btn_smart_mask);
-//        Button btn_bld = findViewById(R.id.btn_bld);
-//        Button btn_bleBo = findViewById(R.id.btn_bleBo);
-//        Button btn_coffeeScale = findViewById(R.id.btn_coffeeScale);
-//        Button btn_scooter = findViewById(R.id.btn_scooter);
-//        Button btn_shareCharger = findViewById(R.id.btn_shareCharger);
-//        Button btn_transmission = findViewById(R.id.btn_transmission);
-//        Button btn_wifi_ble_weight = findViewById(R.id.btn_wifi_ble_weight);
-//        Button btn_baby_body_fat = findViewById(R.id.btn_baby_body_fat);
         mList.add(findViewById(R.id.btn_sphy));
         mList.add(findViewById(R.id.btn_tempgun));
         mList.add(findViewById(R.id.btn_temp));
         mList.add(findViewById(R.id.btn_baby));
         mList.add(findViewById(R.id.btn_height));
         mList.add(findViewById(R.id.btn_ble));
-//        mList.add(findViewById(R.id.btn_lock));
         mList.add(findViewById(R.id.btn_ble_test));
         mList.add(findViewById(R.id.btnConnectTest));
         mList.add(findViewById(R.id.btn_ad_weight));
@@ -190,28 +145,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(mContext, RopeSkippingSetActivity.class));
 
-
-//                Intent intent = new Intent();
-//                intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//
-//                mHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            L.i("按下音量+ start");
-//                            String keyCommand = "input keyevent " + KeyEvent.KEYCODE_VOLUME_UP;
-//                            Runtime runtime = Runtime.getRuntime();
-//                            Process proc = runtime.exec(keyCommand);
-//                            L.i("按下音量+ stop"+proc.toString());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, 5000);
-
             }
         });
 
@@ -252,15 +185,6 @@ public class MainActivity extends AppCompatActivity {
     protected void initView() {
         BleLog.init("", "", true);
         //connectDevice(BleValueBean bleValueBean);连接的时候需要传广播对象,否则返回的cid,vid,pid始终都是0
-//        AILinkSDK.getInstance().init(getApplication(), new AILinkSDK.OnNewKeyListener() {
-//            @Override
-//            public boolean onNewKey(int cid, int vid, int pid) {
-//                if (vid == 1) {
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
         //每次连接之前都要设置一次,设置一次之后就一直有效
         //sdk
 //        AILinkBleManager.getInstance().init(mContext, new AILinkBleManager.onInitListener() {
@@ -569,8 +493,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         //请求权限被拒绝
-        if (requestCode != PERMISSION)
+        if (requestCode != PERMISSION) {
             return;
+        }
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             initPermissions();
         } else {
