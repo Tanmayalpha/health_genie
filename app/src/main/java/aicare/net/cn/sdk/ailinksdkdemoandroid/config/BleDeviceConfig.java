@@ -1,5 +1,6 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid.config;
 
+
 /**
  * xing<br>
  * 2019/3/5<br>
@@ -252,6 +253,10 @@ public class BleDeviceConfig {
      */
     public final static int WEIGHT_SCALE = 0X0056;
 
+    /**
+     * 食物探针
+     */
+    public final static int MEAT_PROBE = 0X003F;
 
     //------------------特殊
 
@@ -265,3 +270,4 @@ public class BleDeviceConfig {
      */
     public final static int PUBLIC_BLE_NETWORK = -7;
 }
+

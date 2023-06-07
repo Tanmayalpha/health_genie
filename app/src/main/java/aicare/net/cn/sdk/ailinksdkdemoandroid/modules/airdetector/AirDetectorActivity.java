@@ -415,16 +415,18 @@ public class AirDetectorActivity extends BleAppBaseActivity implements AirDetect
                     String valueMin = ed_min.getText().toString().trim();
                     float myValueMax = valueMax.contains("\\.") ? Float.parseFloat(valueMax) : Integer.parseInt(valueMax);
                     float myValueMin = valueMin.contains("\\.") ? Float.parseFloat(valueMin) : Integer.parseInt(valueMin);
+                    int warmStateTemp = Integer.parseInt(ed_warm_state.getText().toString().trim());
                     sendDataBean = AirSendUtil.setWarmTemp(supportBean.getPoint(),
-                            supportBean.getUnit(), myValueMax, myValueMin);
+                            supportBean.getUnit(), myValueMax, myValueMin, warmStateTemp);
                     break;
                 case AirConst.AIR_TYPE_HUMIDITY:
                     valueMax = ed_max.getText().toString().trim();
                     valueMin = ed_min.getText().toString().trim();
                     myValueMax = valueMax.contains("\\.") ? Float.parseFloat(valueMax) : Integer.parseInt(valueMax);
                     myValueMin = valueMin.contains("\\.") ? Float.parseFloat(valueMin) : Integer.parseInt(valueMin);
+                    int warmStateHumi = Integer.parseInt(ed_warm_state.getText().toString().trim());
                     sendDataBean = AirSendUtil.setWarmHumidity(supportBean.getPoint(),
-                            myValueMax, myValueMin);
+                            myValueMax, myValueMin, warmStateHumi);
                     break;
                 case AirConst.AIR_SETTING_VOICE:
                     warmState = Integer.parseInt(ed_warm_state.getText().toString().trim());

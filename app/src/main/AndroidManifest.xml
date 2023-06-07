@@ -19,11 +19,9 @@
 
 
     <!--兼容6.0以上的手机Ble-->
-    <uses-permission-sdk-23
-        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
-    <uses-permission-sdk-23
-        android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-permission
         android:name="android.permission.BLUETOOTH"
@@ -62,7 +60,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="q">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -129,6 +128,8 @@
         <activity android:name=".PublicBleNetworkCmdActivity" />
         <activity android:name=".modules.noise_meter.WifiBleNoiseMeterActivity" />
         <activity android:name=".modules.noise_meter.BleNoiseMeterActivity" />
+        <activity android:name=".modules.meat_probe_charger.MeatProbeChargerActivity" />
+        <activity android:name=".modules.meat_probe.MeatProbeActivity" />
 
         <activity
             android:name=".modules.weight_scale.WeightScaleActivity"
@@ -147,7 +148,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer"/>
+        <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer" />
     </application>
 
 </manifest>

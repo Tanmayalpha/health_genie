@@ -20,9 +20,12 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.airdetector.AirUtil;
 import cn.net.aicare.modulelibrary.module.airDetector.AirConst;
 import cn.net.aicare.modulelibrary.module.airDetector.AirDetectorWifeBleData;
 import cn.net.aicare.modulelibrary.module.airDetector.AirSendUtil;
+import cn.net.aicare.modulelibrary.module.airDetector.AlarmClockStatement;
 import cn.net.aicare.modulelibrary.module.airDetector.StatusBean;
 import cn.net.aicare.modulelibrary.module.airDetector.SupportBean;
 
@@ -72,10 +75,11 @@ public class AirDetectorActivityTest extends BleAppBaseActivity implements AirDe
     private static final int STEP_CAL_TVOC = 36; // TVOC校准
     private static final int STEP_CAL_CO = 37; // CO校准
     private static final int STEP_SETTING_ALARM = 38; // 闹钟
+    private static final int STEP_SETTING_WARN_SWITCH = 39; // 报警总开关
     //    private static final int STEP_DEVICE_SELF_TEST = 18; // 设备自检
 //    private static final int STEP_DEVICE_BIND = 18; // 设备绑定
 //    private static final int STEP_RESTORE_FACTORY_SETTINGS = 18; // 恢复出厂设置
-    private static final int STEP_DONE = 39;// 结束
+    private static final int STEP_DONE = 40;// 结束
 
     private static final int RESULT_NULL = 0;
     private static final int RESULT_SUCCESS = 1;
@@ -283,6 +287,12 @@ public class AirDetectorActivityTest extends BleAppBaseActivity implements AirDe
     public void onStatusList(SparseArray<StatusBean> statusList) {
         if (mStep == STEP_REALTIME_STATUS) {
             stepSuccess(AirDetectorTestShowUtil.showTextStatus(statusList, deviceSupportList));
+        } else if (mStep == STEP_CAL_HCHO || mStep == STEP_CAL_TEMP || mStep == STEP_CAL_HUMIDITY || mStep == STEP_CAL_PM2_5
+                || mStep == STEP_CAL_PM1_0 || mStep == STEP_CAL_VOC || mStep == STEP_CAL_CO2 || mStep == STEP_CAL_AQI
+                || mStep == STEP_CAL_TVOC || mStep == STEP_CAL_CO) {
+            if (statusList.get(AirConst.AIR_CALIBRATION_PARAMETERS) != null) {
+                stepSuccess(AirDetectorTestShowUtil.showCalSettingAfterTextStatus(statusList, deviceSupportList));
+            }
         }
     }
 
@@ -317,21 +327,21 @@ public class AirDetectorActivityTest extends BleAppBaseActivity implements AirDe
                 type = AirConst.AIR_TYPE_FORMALDEHYDE;
                 if (isSupportWarmType(type)) {
                     addTest("设置甲醛报警");
-                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmMaxByType(type, switchOpenFlag, 0.08f, deviceSupportList.get(type).getPoint()));
+                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmMaxByType(type, switchOpenFlag, 0.10f, deviceSupportList.get(type).getPoint()));
                 }
                 break;
             case STEP_WARM_TEMP:
                 type = AirConst.AIR_TYPE_TEMP;
                 if (isSupportWarmType(type)) {
                     addTest("设置温度报警");
-                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmTemp(0, AirConst.UNIT_C, 30f, 0f));
+                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmTemp(0, AirConst.UNIT_C, 30f, 0f, 1));
                 }
                 break;
             case STEP_WARM_HUMIDITY:
                 type = AirConst.AIR_TYPE_HUMIDITY;
                 if (isSupportWarmType(type)) {
                     addTest("设置湿度报警");
-                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmHumidity(0, 60f, 7f));
+                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmHumidity(0, 60f, 7f, 1));
                 }
                 break;
             case STEP_WARM_PM2_5:
@@ -467,77 +477,77 @@ public class AirDetectorActivityTest extends BleAppBaseActivity implements AirDe
             case STEP_CAL_HCHO:
                 type = AirConst.AIR_TYPE_FORMALDEHYDE;
                 if (isSupportCalType(type)) {
-                    addTest("设置甲醛校准");
+                    addTest("设置甲醛校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_TEMP:
                 type = AirConst.AIR_TYPE_TEMP;
                 if (isSupportCalType(type)) {
-                    addTest("设置温度校准");
+                    addTest("设置温度校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_HUMIDITY:
                 type = AirConst.AIR_TYPE_HUMIDITY;
                 if (isSupportCalType(type)) {
-                    addTest("设置湿度校准");
+                    addTest("设置湿度校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_PM2_5:
                 type = AirConst.AIR_TYPE_PM_2_5;
                 if (isSupportCalType(type)) {
-                    addTest("设置PM2.5校准");
+                    addTest("设置PM2.5校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_PM1_0:
                 type = AirConst.AIR_TYPE_PM_1;
                 if (isSupportCalType(type)) {
-                    addTest("设置PM1.0校准");
+                    addTest("设置PM1.0校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_PM10:
                 type = AirConst.AIR_TYPE_PM_10;
                 if (isSupportCalType(type)) {
-                    addTest("设置PM10校准");
+                    addTest("设置PM10校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_VOC:
                 type = AirConst.AIR_TYPE_VOC;
                 if (isSupportCalType(type)) {
-                    addTest("设置VOC校准");
+                    addTest("设置VOC校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_CO2:
                 type = AirConst.AIR_TYPE_CO2;
                 if (isSupportCalType(type)) {
-                    addTest("设置二氧化碳校准");
+                    addTest("设置二氧化碳校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_AQI:
                 type = AirConst.AIR_TYPE_AQI;
                 if (isSupportCalType(type)) {
-                    addTest("设置空气质量校准");
+                    addTest("设置空气质量校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_TVOC:
                 type = AirConst.AIR_TYPE_TVOC;
                 if (isSupportCalType(type)) {
-                    addTest("设置TVOC校准");
+                    addTest("设置TVOC校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
             case STEP_CAL_CO:
                 type = AirConst.AIR_TYPE_CO;
                 if (isSupportCalType(type)) {
-                    addTest("设置一氧化碳校准");
+                    addTest("设置一氧化碳校准, 单位校准值加1");
                     mAirDetectorWifeBleData.sendData(AirSendUtil.setCalibrationParam(type, 0));
                 }
                 break;
@@ -545,8 +555,34 @@ public class AirDetectorActivityTest extends BleAppBaseActivity implements AirDe
                 type = AirConst.AIR_ALARM_CLOCK;
                 if (isSupportType(type)) {
                     addTest("设置闹钟");
-                    int[] days = {0,1,1,1,1,1,1,0};
-                    mAirDetectorWifeBleData.sendData(AirSendUtil.setAlarm(1, 14, 30, days, 4, 0, false));
+                    SupportBean supportBean = deviceSupportList.get(AirConst.AIR_ALARM_CLOCK);
+                    if (supportBean.getExtentObject() != null) {
+                        AlarmClockStatement alarmClockStatement = (AlarmClockStatement) supportBean.getExtentObject();
+                        int mode = 0;
+                        if (alarmClockStatement.isMode4()) {
+                            mode = 4;
+                        } else if (alarmClockStatement.isMode0()) {
+                            mode = 0;
+                        } else if (alarmClockStatement.isMode1()) {
+                            mode = 1;
+                        } else if (alarmClockStatement.isMode2()) {
+                            mode = 2;
+                        } else if (alarmClockStatement.isMode3()) {
+                            mode = 3;
+                        }
+                        int[] days = AirUtil.getAlarmClockDayByMode(mode);
+                        mAirDetectorWifeBleData.sendData(AirSendUtil.setAlarm(1, 14, 30, days, 4, 0, false));
+                    }
+                }
+                break;
+            case STEP_SETTING_WARN_SWITCH:
+                type = AirConst.AIR_SETTING_WARM;
+                if (isSupportType(type) && deviceSupportList.get(type).getCurValue() == 0x02) {
+                    addTest("设置指标报警总开关");
+                    mAirDetectorWifeBleData.sendData(AirSendUtil.setMasterWarnSwitch(1));
+                } else {
+                    mStep = getNextStep();
+                    test();
                 }
                 break;
             case STEP_DONE:
@@ -980,6 +1016,13 @@ public class AirDetectorActivityTest extends BleAppBaseActivity implements AirDe
     @Override
     public void onResultDataDisplayMode(String content) {
         if (mStep == STEP_DATA_DISPLAY_MODE) {
+            stepSuccess(content);
+        }
+    }
+
+    @Override
+    public void onResultMasterWarnSwitch(String content) {
+        if (mStep == STEP_SETTING_WARN_SWITCH) {
             stepSuccess(content);
         }
     }

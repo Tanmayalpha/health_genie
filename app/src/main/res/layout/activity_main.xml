@@ -57,6 +57,16 @@
                     android:layout_height="wrap_content"
                     android:text="广播体重秤"/>
 
+                <Button
+                    android:id="@+id/btn_meat_probe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="食物探针"/>
+                <Button
+                    android:id="@+id/btn_meat_probe_charger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="探针充电盒" />
 
             </LinearLayout>
 
@@ -137,7 +147,7 @@
                     android:id="@+id/btn_broadcast_scale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="广播体脂秤" />
+                    android:text="广播秤" />
 
                 <Button
                     android:id="@+id/btn_broadcast_blood_oxygen"
@@ -432,12 +442,8 @@
                     android:id="@+id/btn_leap_watch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="芯一代手表" />
-                <Button
-                    android:id="@+id/btn_meat_probe_charger"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="食物探针充电盒" />
+                    android:text="运动手表" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -480,7 +486,7 @@
                     android:id="@+id/btn_weight_scale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="连接体重秤"/>
+                    android:text="体重秤"/>
 
             </LinearLayout>
 

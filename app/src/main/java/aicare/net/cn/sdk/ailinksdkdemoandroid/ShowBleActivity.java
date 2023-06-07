@@ -63,6 +63,8 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.blood_pressure_tc.BloodPre
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.coffee_scale.CoffeeScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.fascia_gun.FasciaGunActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.food_temp.FoodTempActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.meat_probe.MeatProbeActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.meat_probe_charger.MeatProbeChargerActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.noise_meter.BleNoiseMeterActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.noise_meter.WifiBleNoiseMeterActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_charger.ShareChargerActivity;
@@ -131,9 +133,8 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_ble);
         ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
+        if (supportActionBar != null)
             supportActionBar.setTitle(getString(R.string.app_name) + BuildConfig.VERSION_NAME);
-        }
         Intent mUserService = new Intent(this.getApplicationContext(), ELinkBleServer.class);
         //核心用户服务
         startService(mUserService);
@@ -266,10 +267,18 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                         //要加密要握手。别人家的东西
                         if (mVid == 0x0027 && mPid == 0x0001) {
                             BleConfig.setHandshakeStatus(RopeSkippingBleData.LongXiang, mac, true);
+                        } else if (mVid == 0x0003 && mPid == 0x0009) {
+                            BleConfig.setHandshakeStatus(mac, true, mCid, mVid, mPid);
+                            //设置A7不加密
+                            mNoEncryptionMac = mac;
                         }
                     } else if (mCid == BleDeviceConfig.LEAP_WATCH) {
                         // 手表不握手
                         BleConfig.setHandshakeStatus(mac, false);
+                    } else if (mCid == BleDeviceConfig.MEAT_PROBE_CHARGER) {
+                        //探针充电盒握手
+                        BleConfig.setHandshakeStatus(mac, true, mCid, mVid, mPid);
+                        mNoEncryptionMac = mac;
                     }
                     if (mBluetoothService != null) {
                         mBluetoothService.stopScan();
@@ -381,6 +390,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     public void onScanning(@NonNull BleValueBean data) {
         String mAddress = data.getMac();
         BleLog.i(TAG, "MAC=" + mAddress + "||CID=" + data.getCid() + "||VID=" + data.getVid() + "||PID=" + data.getPid());
+
         boolean oldData = false;
         for (int i = 0; i < mBleValueList.size(); i++) {
             BleValueBean bleValueBean = mBleValueList.get(i);
@@ -429,39 +439,34 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             bleDevice.setA7Encryption(false);
             mNoEncryptionMac = "";
 
-
         }
         dismissLoading();
         Intent intent = new Intent();
         int type = mType;//默认婴儿秤
         switch (type) {
             case BleDeviceConfig.BABY_SCALE:
-                //婴儿秤
                 intent.setClass(ShowBleActivity.this, BabyCmdActivity.class);
                 break;
             case BleDeviceConfig.INFRARED_THERMOMETER:
-                //额温枪
                 intent.setClass(ShowBleActivity.this, TempGunCmdActivity.class);
                 break;
             case BleDeviceConfig.BLOOD_PRESSURE:
             case BleDeviceConfig.SPHY_WIFI_BLE:
-                //血压计
                 intent.setClass(ShowBleActivity.this, SphyCmdActivity.class);
                 break;
             case BleDeviceConfig.THERMOMETER:
-                //体温计
                 intent.setClass(ShowBleActivity.this, TempCmdActivity.class);
                 break;
             case BleDeviceConfig.HEIGHT_METER:
-                //身高仪
                 intent.setClass(ShowBleActivity.this, HeightCmdActivity.class);
                 break;
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE:
-                //体重体脂称
                 intent.setClass(ShowBleActivity.this, WeightScaleBleActivity.class);
                 break;
+//            case BleDeviceConfig.SMART_LOCK:
+//                intent.setClass(ShowBleActivity.this, LockCmdActivity.class);
+//                break;
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD:
-                //体重体脂称
                 intent.setClass(ShowBleActivity.this, ADWeightScaleCmdActivity.class);
                 break;
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_WIFI_BLE:
@@ -508,6 +513,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 break;
             case BleDeviceConfig.FIND_DEVICE:
                 // 寻物器
+//                intent.setClass(ShowBleActivity.this, FindDeviceActivity.class);
                 intent.setClass(ShowBleActivity.this, FindDeviceNewActivity.class);
                 BleConfig.setHandshakeStatus(mac, false);
                 break;
@@ -516,7 +522,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 intent.setClass(ShowBleActivity.this, FoodTempActivity.class);
                 break;
             case BleDeviceConfig.HEIGHT_BODY_FAT:
-                //身高体脂秤
                 intent.setClass(ShowBleActivity.this, HeightWeightScaleActivity.class);
                 break;
             case BleDeviceConfig.TEMP_Humidity:
@@ -559,7 +564,10 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.BLE_NOISE_METER:
                 intent.setClass(ShowBleActivity.this, BleNoiseMeterActivity.class);
                 break;
-
+            //探针充电盒
+            case BleDeviceConfig.MEAT_PROBE_CHARGER:
+                intent.setClass(ShowBleActivity.this, MeatProbeChargerActivity.class);
+                break;
             //体脂秤
             case BleDeviceConfig.WEIGHT_SCALE:
                 intent.setClass(ShowBleActivity.this, WeightScaleActivity.class);
@@ -586,6 +594,10 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.CLEAR_SHAKE_HANDS:
                 //验证不握手不加密的界面
                 intent.setClass(ShowBleActivity.this, ClearShakeHandsActivity.class);
+                break;
+            //食物探针
+            case BleDeviceConfig.MEAT_PROBE:
+                intent.setClass(ShowBleActivity.this, MeatProbeActivity.class);
                 break;
 
             default:
@@ -653,14 +665,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     }
 
 
-    /**
-     * 检查设备
-     *
-     * @param scanCid    扫描cid
-     * @param cid        cid
-     * @param nameAndMac 名字和mac过滤
-     * @return boolean
-     */
     private boolean isCheckDevice(int scanCid, int cid, boolean nameAndMac) {
         boolean okDevice = false;
         if (scanCid == BleDeviceConfig.BLOOD_PRESSURE) {

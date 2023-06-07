@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 
 import java.text.SimpleDateFormat;
@@ -229,6 +230,11 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
     }
 
     @Override
+    public void onSupportUnit(List<SupportUnitBean> list) {
+
+    }
+
+    @Override
     public void onMeasureOk() {
         addText("测量完成");
     }
@@ -283,7 +289,7 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
      *
      * @param quest 1-请求同步时间
      */
-    @Override
+
     public void onSyncTime(int quest) {
         if (quest == 1) {
             if (mWeightScaleDevice != null) {
