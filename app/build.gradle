@@ -6,8 +6,8 @@ android {
         applicationId "aicare.net.cn.sdk.ailinksdkdemoandroid"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 18
-        versionName "1.10.60"
+        versionCode 19
+        versionName "1.10.61"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -42,7 +42,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.elinkthings:AILinkSDKRepositoryAndroid:1.13.1'//蓝牙核心库
     implementation 'com.github.elinkthings:AILinkSDKOtaLibraryAndroid:1.0.3'//OTA库,需要依赖核心库
-    implementation 'com.github.elinkthings:AILinkSDKParsingLibraryAndroid:1.8.3'//蓝牙解析库
+    implementation 'com.github.elinkthings:AILinkSDKParsingLibraryAndroid:1.8.4'//蓝牙解析库
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.jakewharton:butterknife:10.2.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
