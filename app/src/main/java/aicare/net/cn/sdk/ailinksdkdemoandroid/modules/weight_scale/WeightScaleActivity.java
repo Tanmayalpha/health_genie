@@ -8,6 +8,9 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import androidx.annotation.Nullable;
+
+import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 
 import java.text.SimpleDateFormat;
@@ -17,7 +20,6 @@ import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.weightscale.WeightScaleDevice;
 
 /**
@@ -35,7 +37,7 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
 
     private WeightScaleDevice mWeightScaleDevice;
 
-    private Button btn_weight_battery, btn_weight_sync_time,btn_weight_query_unit;
+    private Button btn_weight_battery, btn_weight_sync_time, btn_weight_query_unit;
 
     private RadioButton kg, jing, stlb, lb;
 
@@ -229,6 +231,11 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
     }
 
     @Override
+    public void onSupportUnit(List<SupportUnitBean> list) {
+
+    }
+
+    @Override
     public void onMeasureOk() {
         addText("测量完成");
     }
@@ -278,19 +285,6 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
         addText("版本号：" + version);
     }
 
-    /**
-     * 请求同步时间
-     *
-     * @param quest 1-请求同步时间
-     */
-    @Override
-    public void onSyncTime(int quest) {
-        if (quest == 1) {
-            if (mWeightScaleDevice != null) {
-                mWeightScaleDevice.appSyncTime();
-            }
-        }
-    }
 
     @Override
     public void onBattery(int status, int battery) {
@@ -307,7 +301,7 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
             if (mWeightScaleDevice != null) {
                 mWeightScaleDevice.appSyncTime();
             }
-        }else if (view.getId()==R.id.btn_weight_query_unit){
+        } else if (view.getId() == R.id.btn_weight_query_unit) {
             if (mWeightScaleDevice != null) {
                 mWeightScaleDevice.queryUnit();
             }

@@ -8,6 +8,10 @@ import android.util.SparseArray;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.utils.BleLog;
@@ -17,9 +21,6 @@ import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
-import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import cn.net.aicare.modulelibrary.module.airDetector.AirConst;
 import cn.net.aicare.modulelibrary.module.airDetector.AirDetectorWifeBleData;
 import cn.net.aicare.modulelibrary.module.airDetector.AirSendUtil;
@@ -324,14 +325,14 @@ public class AirDetectorActivityTest extends BleAppBaseActivity implements AirDe
                 type = AirConst.AIR_TYPE_TEMP;
                 if (isSupportWarmType(type)) {
                     addTest("设置温度报警");
-                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmTemp(0, AirConst.UNIT_C, 30f, 0f));
+                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmTemp(0, AirConst.UNIT_C, 30f, 0f,1));
                 }
                 break;
             case STEP_WARM_HUMIDITY:
                 type = AirConst.AIR_TYPE_HUMIDITY;
                 if (isSupportWarmType(type)) {
                     addTest("设置湿度报警");
-                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmHumidity(0, 60f, 7f));
+                    mAirDetectorWifeBleData.sendData(AirSendUtil.setWarmHumidity(0, 60f, 7f,1));
                 }
                 break;
             case STEP_WARM_PM2_5:
