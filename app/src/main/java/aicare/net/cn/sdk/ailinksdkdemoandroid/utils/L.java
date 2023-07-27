@@ -2,11 +2,11 @@ package aicare.net.cn.sdk.ailinksdkdemoandroid.utils;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import androidx.annotation.NonNull;
 
 /**
  * 打印日志工具

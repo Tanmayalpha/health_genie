@@ -6,6 +6,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pingwang.bluetoothlib.device.BleDevice;
 
@@ -14,11 +21,8 @@ import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import cn.net.aicare.modulelibrary.module.BleToothbrush.ToothbrushTestData;
+import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushBleUtilsData;
 
 public class ToothbrushTestActivity extends BleBaseActivity implements ToothbrushTestData.BleToothbrushCallback, ToothbrushTestAdapter.OnSelectListener {
 
@@ -48,6 +52,8 @@ public class ToothbrushTestActivity extends BleBaseActivity implements Toothbrus
     private static final int MSG_NEXT = 101;// 下一步
 
     private RecyclerView recycler_view;
+    private Button btn_toothbrush_prevent_splash, btn_toothbrush_prevent_splash_test;
+    private TextView tv_toothbrush_status;
 
     private List<ToothbrushTestBean> mList;
     private ToothbrushTestAdapter mAdapter;
@@ -55,6 +61,7 @@ public class ToothbrushTestActivity extends BleBaseActivity implements Toothbrus
     private String mMac;
     private BleDevice mBleDevice;
     private ToothbrushTestData mToothbrushTestData;
+    private ToothBrushBleUtilsData mToothBrushBleUtilsData;
 
     private int mStep;// 当前正在进行哪个步骤
     private int mSupportMode;// 支持的模式
@@ -409,6 +416,7 @@ public class ToothbrushTestActivity extends BleBaseActivity implements Toothbrus
 
     /**
      * 添加测试项标题
+     *
      * @param type 1：自动测试；2：手动测试
      */
     private void addTestTitle(int type) {
@@ -488,10 +496,6 @@ public class ToothbrushTestActivity extends BleBaseActivity implements Toothbrus
      * @param str str
      */
     private void showNgDialog(String str) {
-        new AlertDialog.Builder(this)
-                .setTitle("请按照协议回复：")
-                .setMessage("\n" + str)
-                .setPositiveButton("确认", null)
-                .show();
+        new AlertDialog.Builder(this).setTitle("请按照协议回复：").setMessage("\n" + str).setPositiveButton("确认", null).show();
     }
 }

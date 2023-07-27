@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
@@ -28,8 +31,6 @@ import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.sphygmomanometer.SphyBleConfig;
 
 
@@ -226,7 +227,7 @@ public class ClearShakeHandsActivity extends BleBaseActivity implements OnCallba
 
 
     @Override
-    public void onNotifyData(byte[] hex, int type) {
+    public void onNotifyData(String uuid, byte[] hex, int type) {
         mList.add(TimeUtils.getTime() + "notify->" + BleStrUtils.byte2HexStr(hex));
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -27,7 +29,6 @@ import java.util.List;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.AddUserDialog;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.AppHistoryRecordBean;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatDataUtil;
@@ -172,7 +173,7 @@ public class WeightScaleBleActivity extends BleBaseActivity implements View.OnCl
 //        BleLog.i(TAG, "服务与界面建立连接成功");
         //与服务建立连接
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 BodyFatBleUtilsData.init(bleDevice, this, null);
@@ -198,6 +199,9 @@ public class WeightScaleBleActivity extends BleBaseActivity implements View.OnCl
     public void unbindServices() {
         mlogList.add(0, "服务与界面建立断开连接成功");
         mMHandler.sendEmptyMessage(ToRefreUi);
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
     @Override
@@ -249,14 +253,27 @@ public class WeightScaleBleActivity extends BleBaseActivity implements View.OnCl
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
+    private String mOldData = "";
+
     @Override
     public void onWeightData(int status, float weight, int weightUnit, int decimals) {
-        mlogList.add(0, "体重数据类型：" + status + " 体重: " + weight + " 单位：" + weightUnit + " 小数点位: " + decimals);
+        String data = "体重数据类型：" + (status==BodyFatDataUtil.WEIGHT_TESTING?"实时":"稳定") + "\n体重: " + weight + " 单位：" + weightUnit + " 小数点位: " + decimals;
+        if (mOldData.equals(data)) {
+            return;
+        }
+        mOldData = data;
+        mlogList.add(0, data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
+    private int mOldStatus = -1;
+
     @Override
     public void onStatus(int status) {
+        if (mOldStatus == status) {
+            return;
+        }
+        mOldStatus = status;
 
         switch (status) {
             case BodyFatDataUtil.WEIGHT_TESTING:

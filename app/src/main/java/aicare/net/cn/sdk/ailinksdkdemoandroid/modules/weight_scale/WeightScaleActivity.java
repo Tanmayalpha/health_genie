@@ -197,7 +197,8 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
     public static float[] LbToSt(float lbSize) {
         float[] lbFloatS = new float[2];
         int st = (int) lbSize / 14;
-        float lb = lbSize % 14f;
+        String str = String.valueOf(lbSize);
+        float lb = (float) (Double.parseDouble(str) - (st * 14));
         lbFloatS[0] = st;
         lbFloatS[1] = lb;
         return lbFloatS;
@@ -232,6 +233,10 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
 
     @Override
     public void onSupportUnit(List<SupportUnitBean> list) {
+        //支持的单位列表
+        for (SupportUnitBean supportUnitBean : list) {
+            addText("支持的单位列表:[" + supportUnitBean.toString() + "]");
+        }
 
     }
 
@@ -285,6 +290,19 @@ public class WeightScaleActivity extends BleBaseActivity implements WeightScaleD
         addText("版本号：" + version);
     }
 
+    /**
+     * 请求同步时间
+     *
+     * @param quest 1-请求同步时间
+     */
+//    @Override
+//    public void onSyncTime(int quest) {
+//        if (quest == 1) {
+//            if (mWeightScaleDevice != null) {
+//                mWeightScaleDevice.appSyncTime();
+//            }
+//        }
+//    }
 
     @Override
     public void onBattery(int status, int battery) {

@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.listener.OnCallbackDis;
@@ -24,7 +26,6 @@ import java.util.UUID;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BloodOxygen.BroadcastBloodOxygenBleConfig;
 import cn.net.aicare.modulelibrary.module.BloodOxygen.BroadcastBloodOxygenDeviceData;
 
@@ -97,7 +98,7 @@ public class BroadcastBloodOxygenActivity extends BleBaseActivity implements OnC
                 break;
             case R.id.open:
                 if (mBluetoothService != null) {
-                    mBluetoothService.scanLeDevice(0, UUID.fromString("0000F0A0-0000-1000-8000-00805F9B34FB"));
+                    mBluetoothService.startScan(0, UUID.fromString("0000F0A0-0000-1000-8000-00805F9B34FB"));
                 }
                 break;
             case R.id.stop:
@@ -120,7 +121,7 @@ public class BroadcastBloodOxygenActivity extends BleBaseActivity implements OnC
             mDevice = BroadcastBloodOxygenDeviceData.getInstance();
             mDevice.setOnNotifyData(this);
             mBluetoothService.setOnScanFilterListener(this);
-            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
+            mBluetoothService.startScan(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
         }
     }
 

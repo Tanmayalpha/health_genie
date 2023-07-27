@@ -14,6 +14,9 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,8 +33,6 @@ import java.util.List;
 import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import cn.net.aicare.algorithmutil.AlgorithmUtil;
 import cn.net.aicare.algorithmutil.BodyFatData;
 

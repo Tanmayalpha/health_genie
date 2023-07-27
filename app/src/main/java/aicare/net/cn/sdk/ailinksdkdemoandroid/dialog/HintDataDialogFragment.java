@@ -16,13 +16,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 
 
 /**
@@ -41,10 +41,10 @@ public class HintDataDialogFragment extends DialogFragment {
      * 是否居中
      */
     private boolean isCenter = false;
-    private CharSequence mCancel;
+    private CharSequence mCancel = "";
     @ColorInt
     private int mCancelColor = 0;
-    private CharSequence mOkStr;
+    private CharSequence mOkStr = "";
     @ColorInt
     private int mOkColor = 0;
     @ColorInt
@@ -76,7 +76,6 @@ public class HintDataDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        L.i(TAG, "onCreateDialog");
         Dialog dialogView = new Dialog(requireContext(), R.style.MyDialog);// 创建自定义样式dialog
         dialogView.setCancelable(false);//设置是否可以关闭
         dialogView.setCanceledOnTouchOutside(mCancelBlank);//设置点击空白处是否可以取消
@@ -98,7 +97,6 @@ public class HintDataDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        L.i(TAG, "onCreateView");
         return inflater.inflate(R.layout.dialog_hint_data, container);// 得到加载view
 
 
@@ -116,7 +114,6 @@ public class HintDataDialogFragment extends DialogFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        L.i(TAG, "onActivityCreated");
         Dialog dialog = getDialog();
         if (dialog != null) {
             getDialog().setOnShowListener(null);
@@ -181,10 +178,12 @@ public class HintDataDialogFragment extends DialogFragment {
     public HintDataDialogFragment initColor(@ColorInt int cancelColor, @ColorInt int okColor) {
         this.mCancelColor = cancelColor;
         this.mOkColor = okColor;
-        if (mTvCancel != null && mCancelColor != 0)
+        if (mTvCancel != null && mCancelColor != 0) {
             mTvCancel.setTextColor(mCancelColor);
-        if (mTvSucceed != null && mOkColor != 0)
+        }
+        if (mTvSucceed != null && mOkColor != 0) {
             mTvSucceed.setTextColor(mOkColor);
+        }
         return this;
     }
 
@@ -199,10 +198,11 @@ public class HintDataDialogFragment extends DialogFragment {
             } else if (mContent == null) {
                 mTvContent.setVisibility(View.GONE);
             }
-            if (isCenter)
+            if (isCenter) {
                 mTvContent.setGravity(Gravity.CENTER);
-            else
+            } else {
                 mTvContent.setGravity(Gravity.CENTER_VERTICAL);
+            }
         }
         return this;
     }
@@ -258,8 +258,9 @@ public class HintDataDialogFragment extends DialogFragment {
             } else if (mOkStr == null) {
                 mTvSucceed.setVisibility(View.GONE);
             }
-            if (mOkColor != 0)
+            if (mOkColor != 0) {
                 mTvSucceed.setTextColor(mOkColor);
+            }
         }
         return this;
     }
@@ -337,10 +338,12 @@ public class HintDataDialogFragment extends DialogFragment {
             if (getActivity() != null) {
                 getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
                 if (dialog.getWindow() != null)
+                {
                     //设置宽度为80%
                     dialog.getWindow()
                             .setLayout((int) (dm.widthPixels * 0.9),
                                     ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
             }
         }
     }
@@ -354,7 +357,6 @@ public class HintDataDialogFragment extends DialogFragment {
                 mShow = true;
             }
         } catch (Exception e) {
-            L.e(TAG, "显示异常");
             e.printStackTrace();
         }
     }
@@ -378,7 +380,6 @@ public class HintDataDialogFragment extends DialogFragment {
             mShow = false;
             super.dismiss();
         } catch (Exception e) {
-            L.e(TAG, "关闭异常");
             e.printStackTrace();
         }
     }

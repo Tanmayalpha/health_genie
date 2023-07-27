@@ -8,20 +8,26 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.AllUnitUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import cn.net.aicare.algorithmutil.AlgorithmUtil;
+import cn.net.aicare.algorithmutil.BodyFatData;
 import cn.net.aicare.modulelibrary.module.HeightWeightScale.HeightBodyFatBleData;
 import cn.net.aicare.modulelibrary.module.HeightWeightScale.HeightBodyFatBleUntils;
+import cn.net.aicare.modulelibrary.module.HeightWeightScale.HeightBodyFatUser;
+import cn.net.aicare.modulelibrary.module.utils.AicareBleConfig;
 
 /**
  * 身高体脂秤
@@ -50,12 +56,13 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
     private int currentVoice = 1;
     private int selectVoice = 1;
 
+    private HeightBodyFatUser mHeightBodyFatUser;
+
     @Override
     public void onServiceSuccess() {
-        mBluetoothService.setOnCallback(this);
         logList.add(0, "绑定服务成功");
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 HeightBodyFatBleData.init(bleDevice);
@@ -74,7 +81,9 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
 
     @Override
     public void unbindServices() {
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
 
@@ -225,6 +234,8 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
                 logList.add(0, "设置声音结果:" + resultStr);
                 break;
 
+            default:break;
+
         }
         listAdapter.notifyDataSetChanged();
 
@@ -291,7 +302,12 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
             mMHandler.removeMessages(FINISH);
             mMHandler.sendEmptyMessageDelayed(FINISH, 40000);
         }
+        if (mHeightBodyFatUser!=null) {
 
+            mHeightBodyFatUser.setWeight(weight);
+            mHeightBodyFatUser.setDecimals(decimals);
+            mHeightBodyFatUser.setUnit(unit);
+        }
 
     }
 
@@ -300,6 +316,25 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
         mMHandler.removeMessages(ADC);
         logList.add(0, "阻抗数据 模式:" + workMode + " 测量状态: " + status + "\n 阻抗类型: " + adcType
                 + "  阻抗: " + adc + " 算法位: " + arithmetic);
+
+//        arithmetic
+        if (mHeightBodyFatUser != null && arithmetic != 0) {
+            int sex = mHeightBodyFatUser.getSex();
+            if (sex == 0) {
+                sex = 2;
+            }
+            String weightToKg = AllUnitUtils.getWeightToKg(mHeightBodyFatUser.getUnit(), String.valueOf(mHeightBodyFatUser.getWeight()), mHeightBodyFatUser.getDecimals());
+            BodyFatData bodyFatData = AicareBleConfig.getBodyFatData(AlgorithmUtil.AlgorithmType.TYPE_AICARE, sex, mHeightBodyFatUser.getAge(), Double.parseDouble(weightToKg),
+                    mHeightBodyFatUser.getHeight(), mHeightBodyFatUser.getAdc());
+            logList.add( "体脂数据:" + "\n 体脂率: " + bodyFatData.getBfr() + " 皮下脂肪: " + bodyFatData.getSfr() +
+                        "\n 内脏脂肪: " + bodyFatData.getUvi() + " 肌肉率: " + bodyFatData.getRom() +
+                        "\n 基础代谢率: " + bodyFatData.getBmr() + " 身体年龄:" + bodyFatData.getBodyAge()+
+                        "\n 水分: " + bodyFatData.getVwc() + " 蛋白率:" + bodyFatData.getPp()+
+                        "\n BMI: " + bodyFatData.getBmi() + " 骨量:" + bodyFatData.getBm()
+                        );
+
+
+        }
         listAdapter.notifyDataSetChanged();
 
 
@@ -405,15 +440,16 @@ public class HeightWeightScaleActivity extends BleBaseActivity implements OnCall
                 case R.id.girl:
                     logList.add(0, "下用户 女 18岁 165cm :" + selectWUnit);
                     listAdapter.notifyDataSetChanged();
-                    HeightBodyFatBleData.getInstance().sendData(HeightBodyFatBleUntils.setUser(0, 18, 165));
+                    mHeightBodyFatUser=new HeightBodyFatUser(0,18,165,0,0);
+                    HeightBodyFatBleData.getInstance().sendData(HeightBodyFatBleUntils.setUser(mHeightBodyFatUser.getSex(), mHeightBodyFatUser.getAge(), mHeightBodyFatUser.getHeight()));
                     mMHandler.removeMessages(SETUSER);
                     mMHandler.sendEmptyMessageDelayed(SETUSER, 3000);
                     break;
                 case R.id.man:
                     logList.add(0, "下用户 男 28岁 170cm :" + selectWUnit);
                     listAdapter.notifyDataSetChanged();
-
-                    HeightBodyFatBleData.getInstance().sendData(HeightBodyFatBleUntils.setUser(1, 28, 170));
+                    mHeightBodyFatUser=new HeightBodyFatUser(1,28,170,0,0);
+                    HeightBodyFatBleData.getInstance().sendData(HeightBodyFatBleUntils.setUser(mHeightBodyFatUser.getSex(), mHeightBodyFatUser.getAge(), mHeightBodyFatUser.getHeight()));
                     mMHandler.removeMessages(SETUSER);
                     mMHandler.sendEmptyMessageDelayed(SETUSER, 3000);
 

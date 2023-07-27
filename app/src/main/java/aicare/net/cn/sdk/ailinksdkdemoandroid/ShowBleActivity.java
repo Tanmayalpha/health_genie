@@ -5,17 +5,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
@@ -26,10 +21,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
-import com.pingwang.bluetoothlib.listener.CallbackDisIm;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.server.ELinkBleServer;
@@ -43,10 +44,12 @@ import java.util.Map;
 import java.util.UUID;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.adapter.StringAdapter;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.config.BleDeviceConfig;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.LoadingIosDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.find.FindDeviceNewActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.PublicBleNetworkCmdActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.TempInstrument.TempInstrumentActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.airdetector.AirDetectorActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.ble_nutrition.BleNutritionActivity;
@@ -54,22 +57,19 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.blood_pressure_tc.BloodPre
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.coffee_scale.CoffeeScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.fascia_gun.FasciaGunActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.food_temp.FoodTempActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.meat_probe.MeatProbeActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.meat_probe_charger.MeatProbeChargerActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.noise_meter.BleNoiseMeterActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.noise_meter.WifiBleNoiseMeterActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.ropeskipping.RopeSkippingActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_charger.ShareChargerActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_condom.ShareCondomActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.share_socket.ShareSocketActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.toothbrush.ToothBrushWifiBleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.toothbrush_test.ToothbrushTestActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.weight_scale.WeightScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.CheckPermissionUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import cn.net.aicare.modulelibrary.module.RopeSkipping.RopeSkippingBleData;
 import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
 
@@ -77,9 +77,9 @@ import cn.net.aicare.modulelibrary.module.scooter.SkateboardBleConfig;
 /**
  * xing<br>
  * 2019/3/6<br>
- * java类作用描述
+ * 扫描蓝牙设备界面
  */
-public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle, OnScanFilterListener {
+public class ShowBleActivity extends BleBaseActivity implements OnCallbackBle, OnScanFilterListener {
 
     public static final int REQUEST_PERMISSION_CODE = 1500;
 
@@ -91,11 +91,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     private EditText et_cid;
     private List<BleValueBean> mBleValueList;
     private StringAdapter listAdapter;
-    private ELinkBleServer mBluetoothService;
-    /**
-     * 服务Intent
-     */
-    private Intent bindIntent;
+
     private Context mContext;
     private int mType;
     private String mNoEncryptionMac = "";
@@ -150,8 +146,8 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         }
     }
 
+
     private void initData() {
-        bindService();
 
     }
 
@@ -192,10 +188,10 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                     if (mType == BleDeviceConfig.SMART_SCOOTER) {
                         Map<String, String> map = new HashMap<>();
                         map.put(SkateboardBleConfig.UUID_BROADCAST.toString(), "37,3,1");//37=0x0025=电滑板的cid
-                        mBluetoothService.scanLeDevice(30 * 1000, map, BleConfig.UUID_SERVER_AILINK, SkateboardBleConfig.UUID_BROADCAST);
+                        mBluetoothService.startScan(30 * 1000, map, BleConfig.UUID_SERVER_AILINK, SkateboardBleConfig.UUID_BROADCAST);
                     } else {
                         //0000FEE7=手表
-                        mBluetoothService.scanLeDevice(1000, BleConfig.UUID_SERVER_AILINK, UUID.fromString("0000FEE7-0000-1000-8000-00805F9B34FB"), SkateboardBleConfig.UUID_BROADCAST);
+                        mBluetoothService.startScan(1000, BleConfig.UUID_SERVER_AILINK, UUID.fromString("0000FEE7-0000-1000-8000-00805F9B34FB"), SkateboardBleConfig.UUID_BROADCAST);
                     }
                     mBleValueList.clear();
                     listAdapter.notifyDataSetChanged();
@@ -235,7 +231,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                     BleConfig.setHandshakeStatus(mac, false);
                     if (mBluetoothService != null) {
                         mBluetoothService.stopScan();
-                        mBluetoothService.connectDevice(mac);
+                        mBluetoothService.connectDevice(new BleValueBean(mac, mCid, mVid, mPid));
                         showLoading();
                     }
                 } else if (BleDeviceConfig.TOOTHBRUSH_WIFI_BLE == mType) {
@@ -263,18 +259,18 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                         //要加密要握手。别人家的东西
                         if (mVid == 0x0027 && mPid == 0x0001) {
                             BleConfig.setHandshakeStatus(RopeSkippingBleData.LongXiang, mac, true);
+                        } else if (mVid == 0x0003 && mPid == 0x0009) {
+                            //设置A7不加密
+                            mNoEncryptionMac = mac;
                         }
-                    } else if (mCid == BleDeviceConfig.LEAP_WATCH) {
-                        // 手表不握手
-                        BleConfig.setHandshakeStatus(mac, false);
+                    } else if (mCid == BleDeviceConfig.MEAT_PROBE_CHARGER) {
+                        //探针充电盒握手
+                        BleConfig.setHandshakeStatus(mac, true, mCid, mVid, mPid);
+                        mNoEncryptionMac = mac;
                     }
                     if (mBluetoothService != null) {
                         mBluetoothService.stopScan();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            mBluetoothService.connectDevice(mac, BluetoothDevice.TRANSPORT_LE);
-                        } else {
-                            mBluetoothService.connectDevice(mac);
-                        }
+                        mBluetoothService.connectDevice(new BleValueBean(mac, mCid, mVid, mPid));
                         showLoading();
                     }
                 }
@@ -315,57 +311,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
 
     //---------------------------------服务---------------------------------------------------
 
-    private void bindService() {
-        BleLog.i(TAG, "绑定服务");
-        if (bindIntent == null) {
-            bindIntent = new Intent(mContext, ELinkBleServer.class);
-            if (mFhrSCon != null) {
-                this.bindService(bindIntent, mFhrSCon, Context.BIND_AUTO_CREATE);
-            }
-        }
-    }
-
-
-    private void unbindService() {
-        if (mBluetoothService != null) {
-            mBluetoothService.stopForeground();//停止前台服务
-        }
-        CallbackDisIm.getInstance().removeListener(this);
-        if (mFhrSCon != null) {
-            BleLog.i(TAG, "解绑服务");
-            this.unbindService(mFhrSCon);
-        }
-        bindIntent = null;
-    }
-
-
-    /**
-     * 服务连接与界面的连接
-     */
-    private ServiceConnection mFhrSCon = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            BleLog.i(TAG, "服务与界面建立连接成功");
-            //与服务建立连接
-            mBluetoothService = ((ELinkBleServer.BluetoothBinder) service).getService();
-            if (mBluetoothService != null) {
-                mBluetoothService.setOnCallback(ShowBleActivity.this);
-                mBluetoothService.setOnScanFilterListener(ShowBleActivity.this);
-                mBluetoothService.initForegroundService(1, R.mipmap.ic_launcher, "前台服务", MainActivity.class);
-                mBluetoothService.startForeground();//启动前台服务
-
-                mHandler.sendEmptyMessage(BIND_SERVER_OK);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            BleLog.i(TAG, "服务与界面连接断开");
-            //与服务断开连接
-            mBluetoothService = null;
-        }
-    };
-
 
     @Override
     public void onStartScan() {
@@ -378,6 +323,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     public void onScanning(@NonNull BleValueBean data) {
         String mAddress = data.getMac();
         BleLog.i(TAG, "MAC=" + mAddress + "||CID=" + data.getCid() + "||VID=" + data.getVid() + "||PID=" + data.getPid());
+
         boolean oldData = false;
         for (int i = 0; i < mBleValueList.size(); i++) {
             BleValueBean bleValueBean = mBleValueList.get(i);
@@ -394,14 +340,14 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             mBleValueList.add(data);
             listAdapter.notifyDataSetChanged();
         } else {
-//            if (System.currentTimeMillis()-mOldRefreshTime>500){
-//                mOldRefreshTime=System.currentTimeMillis();
-//                listAdapter.notifyDataSetChanged();
-//            }
+            //            if (System.currentTimeMillis()-mOldRefreshTime>500){
+            //                mOldRefreshTime=System.currentTimeMillis();
+            //                listAdapter.notifyDataSetChanged();
+            //            }
         }
-//        String data1 = BleStrUtils.byte2HexStr(data.getScanRecord());
-//        String data2 = BleStrUtils.byte2HexStr(data.getManufacturerData());
-//        BleLog.i(TAG, "设备地址+广播数据:" + mAddress + "||" + data1 + "||" + data2);
+        //        String data1 = BleStrUtils.byte2HexStr(data.getScanRecord());
+        //        String data2 = BleStrUtils.byte2HexStr(data.getManufacturerData());
+        //        BleLog.i(TAG, "设备地址+广播数据:" + mAddress + "||" + data1 + "||" + data2);
 
 
     }
@@ -425,7 +371,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             BleDevice bleDevice = mBluetoothService.getBleDevice(mac);
             bleDevice.setA7Encryption(false);
             mNoEncryptionMac = "";
-
 
         }
         dismissLoading();
@@ -451,7 +396,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE:
                 intent.setClass(ShowBleActivity.this, WeightScaleBleActivity.class);
                 break;
-
             case BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD:
                 intent.setClass(ShowBleActivity.this, ADWeightScaleCmdActivity.class);
                 break;
@@ -499,7 +443,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
                 break;
             case BleDeviceConfig.FIND_DEVICE:
                 // 寻物器
-//                intent.setClass(ShowBleActivity.this, FindDeviceActivity.class);
+                //                intent.setClass(ShowBleActivity.this, FindDeviceActivity.class);
                 intent.setClass(ShowBleActivity.this, FindDeviceNewActivity.class);
                 BleConfig.setHandshakeStatus(mac, false);
                 break;
@@ -550,14 +494,17 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.BLE_NOISE_METER:
                 intent.setClass(ShowBleActivity.this, BleNoiseMeterActivity.class);
                 break;
-
+            //探针充电盒
+            case BleDeviceConfig.MEAT_PROBE_CHARGER:
+                intent.setClass(ShowBleActivity.this, MeatProbeChargerActivity.class);
+                break;
             //体脂秤
             case BleDeviceConfig.WEIGHT_SCALE:
                 intent.setClass(ShowBleActivity.this, WeightScaleActivity.class);
                 break;
-//            case BleDeviceConfig.BLD_WEIGHT:
-//                intent.setClass(ShowBleActivity.this, BLDWeightScaleBle.class);
-//                break;
+            //            case BleDeviceConfig.BLD_WEIGHT:
+            //                intent.setClass(ShowBleActivity.this, BLDWeightScaleBle.class);
+            //                break;
             case -1:
                 intent.setClass(ShowBleActivity.this, BleCmdActivity.class);
                 break;
@@ -577,6 +524,10 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
             case BleDeviceConfig.CLEAR_SHAKE_HANDS:
                 //验证不握手不加密的界面
                 intent.setClass(ShowBleActivity.this, ClearShakeHandsActivity.class);
+                break;
+            //食物探针
+            case BleDeviceConfig.MEAT_PROBE:
+                intent.setClass(ShowBleActivity.this, MeatProbeActivity.class);
                 break;
 
             default:
@@ -681,6 +632,30 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         }
     }
 
+
+    @Override
+    public void onServiceSuccess() {
+        if (mBluetoothService != null) {
+            mBluetoothService.setOnCallbackBle(ShowBleActivity.this);
+            mBluetoothService.setOnScanFilterListener(ShowBleActivity.this);
+            mBluetoothService.initForegroundService(1, R.mipmap.ic_launcher, "前台服务", MainActivity.class);
+            mBluetoothService.startForegroundService();//启动前台服务
+            mHandler.sendEmptyMessage(BIND_SERVER_OK);
+        }
+    }
+
+    @Override
+    public void onServiceErr() {
+
+    }
+
+    @Override
+    public void unbindServices() {
+        if (mBluetoothService != null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
+    }
+
     //--------------------------start Loading--------------------------
     private LoadingIosDialogFragment mDialogFragment;
 
@@ -710,7 +685,7 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
     protected void onResume() {
         super.onResume();
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(ShowBleActivity.this);
+            mBluetoothService.setOnCallbackBle(ShowBleActivity.this);
             mBluetoothService.setOnScanFilterListener(ShowBleActivity.this);
         }
     }
@@ -721,7 +696,6 @@ public class ShowBleActivity extends AppCompatActivity implements OnCallbackBle,
         if (mBluetoothService != null) {
             mBluetoothService.stopScan();
         }
-        unbindService();
     }
 
 

@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
@@ -18,7 +20,6 @@ import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 
 public class LeaOneBroadcastActivity extends BleBaseActivity implements View.OnClickListener, OnScanFilterListener {
 
@@ -57,7 +58,7 @@ public class LeaOneBroadcastActivity extends BleBaseActivity implements View.OnC
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_start) {
-            mBluetoothService.scanLeDevice(0);
+            mBluetoothService.startScan(0);
         } else if (id == R.id.btn_stop) {
             mBluetoothService.stopScan();
         } else if (id == R.id.btn_clear) {

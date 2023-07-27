@@ -195,7 +195,7 @@
                     android:id="@+id/etName"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:maxLength="13" />
+                    android:maxLength="15" />
 
 
             </LinearLayout>

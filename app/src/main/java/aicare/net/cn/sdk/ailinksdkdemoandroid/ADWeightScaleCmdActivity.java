@@ -15,6 +15,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -28,14 +31,11 @@ import com.pingwang.bluetoothlib.listener.OnMcuParameterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleBleConfig;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleBodyFatData;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleBodyFatDataRecord;
@@ -43,19 +43,16 @@ import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleDeviceData;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleUserData;
 
 
-
 /**
  * xing<br>
  * 2019/7/12<br>
  * 显示数据
  */
-public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallbackBle, OnBleVersionListener, OnMcuParameterListener, OnBleCompanyListener, OnBleSettingListener,
-        ADWeightScaleDeviceData.onNotifyData, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallbackBle, OnBleVersionListener, OnMcuParameterListener, OnBleCompanyListener, OnBleSettingListener, ADWeightScaleDeviceData.onNotifyData, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     private static String TAG = ADWeightScaleCmdActivity.class.getName();
     private final int REFRESH_DATA = 3;
-    private TextView user_id_tv, user_sex_tv, user_age_tv, user_height_tv, user_weight_tv,
-            user_adc_tv;
+    private TextView user_id_tv, user_sex_tv, user_age_tv, user_height_tv, user_weight_tv, user_adc_tv;
     private List<String> mList;
     private ArrayAdapter listAdapter;
     private Context mContext;
@@ -306,7 +303,7 @@ public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallb
         BleLog.i(TAG, "服务与界面建立连接成功");
         //与服务建立连接
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 mDevice = ADWeightScaleDeviceData.getInstance(bleDevice);
@@ -333,7 +330,9 @@ public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallb
             mDevice.clear();
             mDevice = null;
         }
-
+        if (mBluetoothService != null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
     //-----------------状态-------------------
@@ -576,7 +575,7 @@ public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallb
 
     @Override
     public void getAppUpdateUser(int status) {
-//00：更新列表成功
+        //00：更新列表成功
         //01：更新个人用户成功
         //02：更新列表失败
         //03：更新个人用户失败
@@ -620,9 +619,7 @@ public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallb
 
     @Override
     public void onSysTime(int status, int[] times) {
-        String time =
-                times[0] + "-" + times[1] + "-" + times[2] + "  " + times[3] + ":" + times[4] +
-                        ":" + times[5];
+        String time = times[0] + "-" + times[1] + "-" + times[2] + "  " + times[3] + ":" + times[4] + ":" + times[5];
         mList.add(TimeUtils.getTime() + "系统时间:" + time);
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
@@ -638,19 +635,19 @@ public class ADWeightScaleCmdActivity extends BleBaseActivity implements OnCallb
                 msg = "同步时间";
                 break;
         }
-        String cmdDataMsg="";
-        switch (cmdData){
+        String cmdDataMsg = "";
+        switch (cmdData) {
 
             case 0:
-                cmdDataMsg="设置成功";
+                cmdDataMsg = "设置成功";
                 break;
             case 1:
 
-                cmdDataMsg="设置失败";
+                cmdDataMsg = "设置失败";
                 break;
             case 2:
 
-                cmdDataMsg="不支持设置";
+                cmdDataMsg = "不支持设置";
                 break;
 
         }

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +13,13 @@ import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 
 /**
  * 噪音计(ble)
  *
  * @author xing
  */
-public class BleDemoActivity extends BleBaseActivity {
+public class BleDemoActivity extends BleBaseActivity  {
 
     private ListView list_view;
 

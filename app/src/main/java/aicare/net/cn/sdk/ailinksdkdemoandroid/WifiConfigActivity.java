@@ -18,6 +18,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,10 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import cn.net.aicare.modulelibrary.module.wifi.WifiConfig;
 import cn.net.aicare.modulelibrary.module.wifi.WifiUtils;
 

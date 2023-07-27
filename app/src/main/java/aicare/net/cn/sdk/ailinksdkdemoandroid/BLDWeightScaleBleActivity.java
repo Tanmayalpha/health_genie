@@ -10,6 +10,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -20,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BLDBodyfatScale.BLDBodyFatBleUtilsData;
 import cn.net.aicare.modulelibrary.module.BLDBodyfatScale.BLDBodyFatDataUtil;
 import cn.net.aicare.modulelibrary.module.BLDBodyfatScale.BLDUser;
@@ -145,7 +146,7 @@ public class BLDWeightScaleBleActivity extends BleBaseActivity implements View.O
 //        BleLog.i(TAG, "服务与界面建立连接成功");
         //与服务建立连接
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 BLDBodyFatBleUtilsData.init(bleDevice, this);
@@ -170,6 +171,9 @@ public class BLDWeightScaleBleActivity extends BleBaseActivity implements View.O
     public void unbindServices() {
         mlogList.add(0, "服务与界面建立断开连接成功");
         mMHandler.sendEmptyMessage(ToRefreUi);
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
     @Override

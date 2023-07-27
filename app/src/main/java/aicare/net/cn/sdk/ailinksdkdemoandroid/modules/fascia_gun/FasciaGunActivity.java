@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.device.BleDevice;
 
 import java.text.SimpleDateFormat;
@@ -18,7 +20,6 @@ import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.FasciaGun.FasciaGunData;
 
 /**

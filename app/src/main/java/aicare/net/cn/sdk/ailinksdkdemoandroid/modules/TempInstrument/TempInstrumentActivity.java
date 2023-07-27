@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
 import com.pingwang.bluetoothlib.device.SendBleBean;
@@ -31,8 +34,6 @@ import java.util.Map;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.TempInstrument.TempInstrumentBleConfig;
 import cn.net.aicare.modulelibrary.module.TempInstrument.TempInstrumentDeviceData;
 

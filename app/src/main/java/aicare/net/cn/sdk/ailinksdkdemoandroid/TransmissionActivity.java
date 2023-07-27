@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
@@ -25,7 +27,6 @@ import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.Transmission.TransmissionDeviceData;
 
 /**
@@ -51,7 +52,7 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
 //        BleLog.i(TAG, "服务与界面建立连接成功");
         //与服务建立连接
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 if (tv_device_info!=null) {
@@ -72,7 +73,9 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
 
     @Override
     public void unbindServices() {
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
 
@@ -165,7 +168,7 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
 
     @Override
     public void showData(String data, int type) {
-        mlogList.add(0, "收 payload数据" +  TimeUtils.getTime() +"cid=" + type + "\n" + data);
+        mlogList.add(0, "收 payload数据" +  TimeUtils.getTimeSSS() +"cid=" + type + "\n" + data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 
@@ -188,7 +191,7 @@ public class TransmissionActivity extends BleBaseActivity implements View.OnClic
 
     @Override
     public void sendData(String data) {
-        mlogList.add(0, "发 " + TimeUtils.getTime() + data);
+        mlogList.add(0, "发 " + TimeUtils.getTimeSSS() + data);
         mMHandler.sendEmptyMessage(ToRefreUi);
     }
 

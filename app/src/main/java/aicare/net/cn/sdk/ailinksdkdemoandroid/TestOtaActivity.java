@@ -21,6 +21,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
 import com.elinkthings.bleotalibrary.dialog.DialogOtaManager;
 import com.elinkthings.bleotalibrary.listener.OnBleOTAListener;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -32,14 +36,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.DialogStringImageAdapter;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.DialogStringImageBean;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.ShowListDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.FileUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 
 
 /**
@@ -62,7 +63,7 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle, O
     private BleDevice mBleDevice;
     private String mAddress;
 
-    private ArrayList<DialogStringImageAdapter.DialogStringImageBean> mDialogList;
+    private ArrayList<DialogStringImageBean> mDialogList;
     private String mOTAFileName;
     private DialogOtaManager mDialogOtaManager;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -124,7 +125,7 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle, O
     @Override
     public void onItemListener(int position) {
         if (mDialogList.size() > position) {
-            DialogStringImageAdapter.DialogStringImageBean dialogStringImageBean = mDialogList.get(position);
+            DialogStringImageBean dialogStringImageBean = mDialogList.get(position);
             String name = dialogStringImageBean.getName();
             mOTAFileName = name;
             SP.getInstance().putOtaFileName(name);
@@ -152,7 +153,7 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle, O
                 mDialogList.clear();
                 ArrayList<String> list = FileUtils.list();
                 for (String s : list) {
-                    mDialogList.add(new DialogStringImageAdapter.DialogStringImageBean(s, 0));
+                    mDialogList.add(new DialogStringImageBean(s, 0));
                 }
 
                 ShowListDialogFragment.newInstance().setTitle("").setCancel("", 0).setCancelBlank(true).setBackground(true).setBottom(false).setList(mDialogList).setOnDialogListener(this)
@@ -266,7 +267,7 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle, O
         //与服务建立连接
         if (mBluetoothService != null) {
             mBleDevice = mBluetoothService.getBleDevice(mAddress);
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             if (mDialogOtaManager != null) {
                 mDialogOtaManager.setOnBleOTAListener(this);
             }
@@ -282,6 +283,9 @@ public class TestOtaActivity extends BleBaseActivity implements OnCallbackBle, O
 
     @Override
     public void unbindServices() {
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
         if (mBleDevice != null) {
             mBleDevice.disconnect();
             mBleDevice = null;

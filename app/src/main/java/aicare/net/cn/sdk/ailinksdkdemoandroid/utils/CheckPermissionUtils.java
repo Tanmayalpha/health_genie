@@ -1,7 +1,6 @@
 package aicare.net.cn.sdk.ailinksdkdemoandroid.utils;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,11 +11,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 
-import java.lang.ref.WeakReference;
-import java.util.Map;
-
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -25,6 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import java.lang.ref.WeakReference;
+import java.util.Map;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
 
 /**
  * @author xing<br>
@@ -37,7 +36,7 @@ public class CheckPermissionUtils {
 
     public CheckPermissionUtils(AppCompatActivity activity) {
         mPermissionRequestFragment = new PermissionRequestFragment();
-        WeakReference<AppCompatActivity> mActivity = new WeakReference<>(activity);;
+        WeakReference<AppCompatActivity> mActivity = new WeakReference<>(activity);
         mPermissionRequestFragment.setActivity(mActivity.get());
 
     }
@@ -72,6 +71,7 @@ public class CheckPermissionUtils {
         private String[] LOCATION_PERMISSION = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
         private String[] BLUETOOTH_PERMISSION = new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT};
         private ActivityResultLauncher<String[]> mActivityResultLauncher;
+        private ActivityResultLauncher<Intent> mActivityResultIntentLauncher;
         private int mErrNumber;
         private FragmentManager mFragmentManager;
 
@@ -88,6 +88,7 @@ public class CheckPermissionUtils {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             initPermissions();
+            initLocationActivity();
         }
 
         protected void initPermissions() {
@@ -100,7 +101,7 @@ public class CheckPermissionUtils {
                 }
                 return;
             }
-            if (mContext==null||mActivity==null) {
+            if (mContext == null || mActivity == null) {
                 return;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -118,19 +119,17 @@ public class CheckPermissionUtils {
                     boolean bleStatus = isLocServiceEnable(mContext);
                     if (!bleStatus) {
                         //没有开启定位服务
-                        HintDataDialogFragment.newInstance().setTitle("提示",0)
-                                .setContent("请求打开定位权限", true)
-                                .setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
-                                    @Override
-                                    public void onCancelListener(View v) {
+                        HintDataDialogFragment.newInstance().setTitle("提示", 0).setContent("请求开启定位服务", true).setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
+                            @Override
+                            public void onCancelListener(View v) {
 
-                                    }
+                            }
 
-                                    @Override
-                                    public void onSucceedListener(View v) {
-                                        startLocationActivity();
-                                    }
-                                }).show(mActivity.getSupportFragmentManager());
+                            @Override
+                            public void onSucceedListener(View v) {
+                                startLocationActivity();
+                            }
+                        }).show(mActivity.getSupportFragmentManager());
                     } else {
                         onPermissionsOk();
                     }
@@ -139,6 +138,11 @@ public class CheckPermissionUtils {
 
         }
 
+        /**
+         * 检查蓝牙权限
+         *
+         * @return boolean
+         */
         private boolean checkBluetoothPermission() {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 return true;
@@ -179,23 +183,22 @@ public class CheckPermissionUtils {
                         onPermissionsOk();
                     } else {
                         //请求的权限有一个或者多个被拒绝
-                        HintDataDialogFragment.newInstance().setTitle("提示",0).setContent("请求蓝牙权限", true)
-                                .setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
-                                    @Override
-                                    public void onCancelListener(View v) {
+                        HintDataDialogFragment.newInstance().setTitle("提示", 0).setContent("请求蓝牙权限", true).setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
+                            @Override
+                            public void onCancelListener(View v) {
 
-                                    }
+                            }
 
-                                    @Override
-                                    public void onSucceedListener(View v) {
-                                        mErrNumber++;
-                                        if (mErrNumber >= 3) {
-                                            startUseSetActivity(mContext);
-                                        } else {
-                                            mActivityResultLauncher.launch(BLUETOOTH_PERMISSION);
-                                        }
-                                    }
-                                }).show(mActivity.getSupportFragmentManager());
+                            @Override
+                            public void onSucceedListener(View v) {
+                                mErrNumber++;
+                                if (mErrNumber >= 3) {
+                                    startUseSetActivity(mContext);
+                                } else {
+                                    mActivityResultLauncher.launch(BLUETOOTH_PERMISSION);
+                                }
+                            }
+                        }).show(mActivity.getSupportFragmentManager());
                     }
 
 
@@ -223,40 +226,38 @@ public class CheckPermissionUtils {
                     boolean bleStatus = isLocServiceEnable(mContext);
                     if (!bleStatus) {
                         //没有开启定位服务
-                        HintDataDialogFragment.newInstance().setTitle("提示",0).setContent("请求位置权限", true)
-                                .setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
-                                    @Override
-                                    public void onCancelListener(View v) {
+                        HintDataDialogFragment.newInstance().setTitle("提示", 0).setContent("请求位置权限", true).setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
+                            @Override
+                            public void onCancelListener(View v) {
 
-                                    }
+                            }
 
-                                    @Override
-                                    public void onSucceedListener(View v) {
-                                        startLocationActivity();
-                                    }
-                                }).show(mActivity.getSupportFragmentManager());
+                            @Override
+                            public void onSucceedListener(View v) {
+                                startLocationActivity();
+                            }
+                        }).show(mActivity.getSupportFragmentManager());
                     } else {
                         onPermissionsOk();
                     }
                 } else {
                     //请求的权限有一个或者多个被拒绝
-                    HintDataDialogFragment.newInstance().setTitle("提示",0).setContent("请求定位权限", true)
-                            .setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
-                                @Override
-                                public void onCancelListener(View v) {
+                    HintDataDialogFragment.newInstance().setTitle("提示", 0).setContent("请求定位权限", true).setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
+                        @Override
+                        public void onCancelListener(View v) {
 
-                                }
+                        }
 
-                                @Override
-                                public void onSucceedListener(View v) {
-                                    mErrNumber++;
-                                    if (mErrNumber >= 3) {
-                                        startUseSetActivity(mContext);
-                                    } else {
-                                        mActivityResultLauncher.launch(LOCATION_PERMISSION);
-                                    }
-                                }
-                            }).show(mActivity.getSupportFragmentManager());
+                        @Override
+                        public void onSucceedListener(View v) {
+                            mErrNumber++;
+                            if (mErrNumber >= 3) {
+                                startUseSetActivity(mContext);
+                            } else {
+                                mActivityResultLauncher.launch(LOCATION_PERMISSION);
+                            }
+                        }
+                    }).show(mActivity.getSupportFragmentManager());
                 }
 
 
@@ -264,39 +265,43 @@ public class CheckPermissionUtils {
             mActivityResultLauncher.launch(LOCATION_PERMISSION);
         }
 
+        /**
+         * 初始化位置活动
+         */
+        private void initLocationActivity() {
+            mActivityResultIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                //定位服务页面返回
+                boolean bleStatus = isLocServiceEnable(mContext);
+                if (!bleStatus) {
+                    //没有开启定位服务
+                    HintDataDialogFragment.newInstance().setTitle("提示", 0).setContent("请求开启定位服务", true).setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
+                        @Override
+                        public void onCancelListener(View v) {
+
+                        }
+
+                        @Override
+                        public void onSucceedListener(View v) {
+                            startLocationActivity();
+                        }
+                    }).show(mActivity.getSupportFragmentManager());
+                } else {
+                    onPermissionsOk();
+                }
+            });
+        }
 
         /**
          * 启动去设置定位服务
          */
-        protected void startLocationActivity() {
-            Intent localIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            if (mActivity.getPackageManager().resolveActivity(localIntent, PackageManager.MATCH_DEFAULT_ONLY) != null) {
-                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            //定位服务页面返回
-                            boolean bleStatus = isLocServiceEnable(mContext);
-                            if (!bleStatus) {
-                                //没有开启定位服务
-                                HintDataDialogFragment.newInstance().setTitle("提示",0).setContent("请求位置权限", true)
-                                        .setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
-                                            @Override
-                                            public void onCancelListener(View v) {
-
-                                            }
-
-                                            @Override
-                                            public void onSucceedListener(View v) {
-                                                startLocationActivity();
-                                            }
-                                        }).show(mActivity.getSupportFragmentManager());
-                            } else {
-                                onPermissionsOk();
-                            }
-                        }
-                    }
-                }).launch(localIntent);
+        private void startLocationActivity() {
+            try {
+                if (mActivityResultIntentLauncher != null) {
+                    Intent localIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    mActivityResultIntentLauncher.launch(localIntent);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
@@ -304,7 +309,7 @@ public class CheckPermissionUtils {
          * 权限ok
          */
         private void onPermissionsOk() {
-            if (!isDetached()&&!isRemoving()) {
+            if (!isDetached() && !isRemoving()) {
                 mFragmentManager.beginTransaction().detach(this).commit();
             }
 

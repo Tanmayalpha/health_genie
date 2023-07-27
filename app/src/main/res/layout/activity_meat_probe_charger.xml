@@ -31,7 +31,8 @@
                     android:id="@+id/et_probe_set_hand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="握手需要输入vid"
+                    android:hint="握手需要输入cid,vid,pid,用逗号分隔"
+                    android:digits="1234567890abcedf,ABCEDF"
                     android:textSize="12dp"/>
 
             </LinearLayout>

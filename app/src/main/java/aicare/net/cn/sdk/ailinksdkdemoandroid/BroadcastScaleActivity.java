@@ -13,25 +13,27 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
+import com.pingwang.bluetoothlib.AILinkBleManager;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
+import com.pingwang.bluetoothlib.listener.OnBleBroadcastDataListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackDis;
-import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleNewBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleBleConfig;
 import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleDeviceData;
 import cn.net.aicare.modulelibrary.module.babyscale.BabyBleConfig;
+
 
 
 /**
@@ -39,14 +41,13 @@ import cn.net.aicare.modulelibrary.module.babyscale.BabyBleConfig;
  * 2020/08/10<br>
  * 广播秤
  */
-public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbackDis, BroadcastScaleDeviceData.onNotifyData, OnScanFilterListener, View.OnClickListener,
-        RadioGroup.OnCheckedChangeListener {
+public class BroadcastScaleActivity extends BleNewBaseActivity implements OnCallbackDis, BroadcastScaleDeviceData.onNotifyData, OnBleBroadcastDataListener, View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
     private static String TAG = BroadcastScaleActivity.class.getName();
     private final int REFRESH_DATA = 3;
 
     private RadioButton mRadioButtonKg, mRadioButtonLb, mRadioButtonLbLb, mRadioButtonG, mRadioButtonOz, mRadioButtonStLb, mRadioButtonJin;
-    private TextView tv_broadcast_temp, tv_broadcast_mac,tv_broadcast_did;
+    private TextView tv_broadcast_temp, tv_broadcast_mac, tv_broadcast_did;
 
     private List<String> mList;
     private ArrayAdapter listAdapter;
@@ -77,10 +78,9 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast_scale);
         mContext = this;
-//        mAddress = getIntent().getStringExtra("mac");
+        //        mAddress = getIntent().getStringExtra("mac");
         mBleSendCmdUtil = BleSendCmdUtil.getInstance();
         init();
-
     }
 
     private void init() {
@@ -178,14 +178,10 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
                 mHandler.sendEmptyMessage(REFRESH_DATA);
                 break;
             case R.id.open:
-                if (mBluetoothService != null) {
-                    mBluetoothService.scanLeDevice(0, UUID.fromString("0000F0A0-0000-1000-8000-00805F9B34FB"));
-                }
+                AILinkBleManager.getInstance().startScan(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
                 break;
             case R.id.stop:
-                if (mBluetoothService != null) {
-                    mBluetoothService.stopScan();
-                }
+                AILinkBleManager.getInstance().stopScan();
                 break;
         }
     }
@@ -198,19 +194,16 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
     public void onServiceSuccess() {
         BleLog.i(TAG, "服务与界面建立连接成功");
         //与服务建立连接
-        if (mBluetoothService != null) {
-            mDevice = BroadcastScaleDeviceData.getInstance();
-            mDevice.setOnNotifyData(this);
-            mBluetoothService.setOnScanFilterListener(this);
-            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
-        }
+        mDevice = BroadcastScaleDeviceData.getInstance();
+        mDevice.setOnNotifyData(this);
+        AILinkBleManager.getInstance().setOnBleBroadcastDataListener(this);
+        AILinkBleManager.getInstance().startScan(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
     }
 
     @Override
     public void onServiceErr() {
         BleLog.i(TAG, "服务与界面连接断开");
         //与服务断开连接
-        mBluetoothService = null;
     }
 
     @Override
@@ -240,17 +233,18 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
 
     //-----------------通知-------------------
 
-    private String mOldData="";
+    private String mOldData = "";
+
     @Override
-    public void onData(byte[] dataOriginal,byte[] hex, int type) {
+    public void onData(byte[] dataOriginal, byte[] hex, int type) {
         String data = "";
         if (hex != null)
             data = BleStrUtils.byte2HexStr(hex);
-        if (mOldData.equals(data)){
+        if (mOldData.equals(data)) {
             return;
         }
-        mOldData=data;
-        mList.add(TimeUtils.getTime() + "数据ID" + type+" ,||解密数据:"+data+" ,||原始数据:"+BleStrUtils.byte2HexStr(dataOriginal));
+        mOldData = data;
+        mList.add(TimeUtils.getTime() + "数据ID" + type + " ,||解密数据:" + data + " ,||原始数据:" + BleStrUtils.byte2HexStr(dataOriginal));
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
@@ -300,7 +294,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
                 statusStr += "测阻抗中";
                 break;
             case BroadcastScaleBleConfig.GET_IMPEDANCE_SUCCESS:
-                statusStr+= "测阻抗成功";
+                statusStr += "测阻抗成功";
                 break;
             case BroadcastScaleBleConfig.GET_IMPEDANCE_FAIL:
                 statusStr += "测阻抗失败";
@@ -309,7 +303,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
                 statusStr += "测量完成";
                 break;
             default:
-                statusStr+=Integer.toHexString(status);
+                statusStr += Integer.toHexString(status);
                 break;
 
         }
@@ -355,7 +349,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
     @Override
     public void OnDID(int cid, int vid, int pid) {
         String didStr = "cid:" + cid + "||vid:" + vid + "||pid:" + pid;
-        if (tv_broadcast_did!=null){
+        if (tv_broadcast_did != null) {
             tv_broadcast_did.setText(didStr);
         }
     }
@@ -369,12 +363,7 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
 
 
     @Override
-    public boolean onFilter(BleValueBean bleValueBean) {
-        return true;
-    }
-
-    @Override
-    public void onScanRecord(BleValueBean bleValueBean) {
+    public void onBleBroadcastData(BleValueBean bleValueBean, byte[] payload) {
         if (TextUtils.isEmpty(mAddress) && bleValueBean.isBroadcastModule()) {
             mAddress = bleValueBean.getMac();
             if (tv_broadcast_mac != null) {
@@ -388,10 +377,9 @@ public class BroadcastScaleActivity extends BleBaseActivity implements OnCallbac
             int cid = bleValueBean.getCid();
             int vid = bleValueBean.getVid();
             int pid = bleValueBean.getPid();
-            if (mDevice != null)
-                mDevice.onNotifyData(manufacturerData, cid, vid, pid);
+            if (mDevice != null) {
+                mDevice.onNotifyData( manufacturerData, cid, vid, pid);
+            }
         }
     }
-
-
 }

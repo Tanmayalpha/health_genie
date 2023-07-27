@@ -1,4 +1,4 @@
-package aicare.net.cn.sdk.ailinksdkdemoandroid;
+package aicare.net.cn.sdk.ailinksdkdemoandroid.modules.ropeskipping;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.collection.ArraySet;
 
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
@@ -20,11 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.collection.ArraySet;
 
 /**
  * 跳绳设置模式
@@ -53,7 +55,7 @@ public class RopeSkippingSetActivity extends BleBaseActivity implements View.OnC
                 case 1:
                     refreshLog("正在设置下一个...");
                     if (mBluetoothService != null) {
-                        mBluetoothService.scanLeDevice(0, BleConfig.UUID_BROADCAST_AILINK);
+                        mBluetoothService.startScan(0, BleConfig.UUID_BROADCAST_AILINK);
                     }
                     break;
 
@@ -63,10 +65,9 @@ public class RopeSkippingSetActivity extends BleBaseActivity implements View.OnC
 
     @Override
     public void onServiceSuccess() {
-        mBluetoothService.setOnCallback(this);
         refreshLog("绑定服务成功");
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
 
         }
 
@@ -84,7 +85,9 @@ public class RopeSkippingSetActivity extends BleBaseActivity implements View.OnC
         if (mArrayAdapter != null && logList != null) {
             refreshLog("解除绑定服务");
         }
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
 
@@ -124,7 +127,7 @@ public class RopeSkippingSetActivity extends BleBaseActivity implements View.OnC
             et_rssi.setEnabled(false);
             mSetMode = true;
             if (mBluetoothService != null) {
-                mBluetoothService.scanLeDevice(0, BleConfig.UUID_BROADCAST_AILINK);
+                mBluetoothService.startScan(0, BleConfig.UUID_BROADCAST_AILINK);
             }
         } else if (v.getId() == R.id.btn_start_read) {
             //开始读取
@@ -146,7 +149,7 @@ public class RopeSkippingSetActivity extends BleBaseActivity implements View.OnC
 
     private void refreshLog(String content) {
         if (!isPauseLog) {
-            content= TimeUtils.getTime(System.currentTimeMillis())+content;
+            content=TimeUtils.getTime(System.currentTimeMillis())+content;
             logList.add( content);
             mArrayAdapter.notifyDataSetChanged();
         }
@@ -206,7 +209,7 @@ public class RopeSkippingSetActivity extends BleBaseActivity implements View.OnC
     }
 
     @Override
-    public void onNotifyData(byte[] hex, int type) {
+    public void onNotifyData(String uuid, byte[] hex, int type) {
         if (type == 0x002F) {
             if ((hex[0] & 0xFF) == 0x40) {
 
@@ -237,7 +240,9 @@ public class RopeSkippingSetActivity extends BleBaseActivity implements View.OnC
     @Override
     public void finish() {
         super.finish();
-        if (mBluetoothService != null)
+        if (mBluetoothService!=null) {
             mBluetoothService.disconnectAll();
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 }

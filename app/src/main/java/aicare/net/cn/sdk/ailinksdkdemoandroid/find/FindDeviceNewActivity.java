@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pingwang.bluetoothlib.AILinkSDK;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
@@ -25,9 +29,6 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import cn.net.aicare.modulelibrary.module.findDevice.FindDeviceData;
 
 public class FindDeviceNewActivity extends BleAppBaseActivity implements View.OnClickListener, OnCallbackBle, FindDeviceData.onNotifyData, OnScanFilterListener, FindDeviceAdapter.OnItemClickListener {
@@ -159,7 +160,7 @@ public class FindDeviceNewActivity extends BleAppBaseActivity implements View.On
                         mFindDeviceAdapter.notifyDataSetChanged();
                     }
                     mFindDeviceData.getConnectInfoList();
-                    mBluetoothService.scanLeDevice(30 * 1000);
+                    mBluetoothService.startScan(30 * 1000);
                 }
                 break;
 
@@ -200,7 +201,7 @@ public class FindDeviceNewActivity extends BleAppBaseActivity implements View.On
     @Override
     protected void onPermissionsOk() {
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             mBleDevice = mBluetoothService.getBleDevice(mMac);
             mBluetoothService.setOnScanFilterListener(this);
             if (mBleDevice != null) {
@@ -270,7 +271,7 @@ public class FindDeviceNewActivity extends BleAppBaseActivity implements View.On
             BleConfig.setHandshakeStatus(mMac, false);
             mBluetoothService.stopScan();
             mBluetoothService.connectDevice(mMac);
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
         } else if (bleValueBean.getName() == null || !bleValueBean.getName().trim().toUpperCase().startsWith(BLE_NAME_START.toUpperCase())) {
             onNearbyDeviceInfo(bleValueBean.getMac(), bleValueBean.getRssi(), bleValueBean.getManufacturerData());
         }
@@ -306,7 +307,7 @@ public class FindDeviceNewActivity extends BleAppBaseActivity implements View.On
             if (tv_status != null)
                 tv_status.setText("正在连接...");
             mHandler.sendEmptyMessage(REFRESH_DATA);
-            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_AILINK);
+            mBluetoothService.startScan(0, BleConfig.UUID_SERVER_AILINK);
         }
 
     }

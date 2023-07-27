@@ -6,8 +6,8 @@ android {
         applicationId "aicare.net.cn.sdk.ailinksdkdemoandroid"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 17
-        versionName "1.10.59"
+        versionName "1.11.9"
+        versionCode getVersionCodeNumber(versionName)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -33,6 +33,31 @@ android {
         }
     }
 
+}
+static def getVersionCodeNumber(String versionName) {
+    //1.49.13_beta05
+    int code=0
+    if (versionName!=null){
+        String versionCodeStr=versionName+"80"
+        if (versionName.contains("_")){
+            String[] versionStr=versionName.split("_")
+            versionCodeStr=versionStr[0]+"."+versionStr[1].substring(4)
+        }
+        String[] versionCodes=versionCodeStr.split("\\.")
+        for(int i=0;i<versionCodes.length;i++){
+            String version=versionCodes[i]
+            if (version.length()<=1){
+                version="0"+version;
+            }
+            versionCodes[i]=version
+        }
+        String versionAllStr=""
+        for (String version:versionCodes){
+            versionAllStr+=version
+        }
+        code= (versionAllStr).toInteger()
+    }
+    return code
 }
 
 dependencies {

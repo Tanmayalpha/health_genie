@@ -13,6 +13,9 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
@@ -27,8 +30,6 @@ import java.util.Map;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ShareSocket.ShareSocketData;
 
 public class ShareSocketActivity extends BleBaseActivity implements View.OnClickListener, ShareSocketData.ShareSocketCallback, OnCallbackBle, OnScanFilterListener {
@@ -117,7 +118,7 @@ public class ShareSocketActivity extends BleBaseActivity implements View.OnClick
                 case MSG_TEST_START_SCAN:
                     // 开始扫描设备
                     addText("准备重连，开始扫描设备：" + mMac);
-                    mBluetoothService.scanLeDevice(0);
+                    mBluetoothService.startScan(0);
                     break;
             }
         }
@@ -267,7 +268,7 @@ public class ShareSocketActivity extends BleBaseActivity implements View.OnClick
 
     @Override
     public void onServiceSuccess() {
-        mBluetoothService.setOnCallback(this);
+        mBluetoothService.setOnCallbackBle(this);
         mBluetoothService.setOnScanFilterListener(this);
         mBleDevice = mBluetoothService.getBleDevice(mMac);
         if (mBleDevice != null) {
@@ -301,7 +302,9 @@ public class ShareSocketActivity extends BleBaseActivity implements View.OnClick
 
     @Override
     public void unbindServices() {
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
     @Override

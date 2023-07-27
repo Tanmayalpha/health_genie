@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name" translatable="false">AILink联调工具</string>
+
+    <string name="clear">Vide</string>
+    <string name="handshake">serrer la main</string>
+    <string name="version">version</string>
+    <string name="time">temps</string>
+    <string name="baby_hold">verrouillage</string>
+    <string name="search">rechercher</string>
+    <string name="stop">Arrêtez</string>
+    <string name="open_light">Allume la lumière</string>
+    <string name="close_light">Éteindre les lumières</string>
+    <string name="upgrade">améliorer</string>
+    <string name="schedule_ui">UI programme</string>
+    <string name="schedule_ble">BLE programme</string>
+    <string name="success">Succès</string>
+    <string name="failure">échec</string>
+    <string name="connection_succeeded">connexion réussie:</string>
+    <string name="data_written">Données écrites:</string>
+    <string name="data_received">Donnée reçue:</string>
+
+
+    <string name = "rtk_dfu_progress_state_origin"> prêt à être mis à niveau </string>
+    <string name = "rtk_dfu_state_abort_processing"> en attente d\'annulation ... </string>
+    <string name = "rtk_dfu_state_aborted"> a été annulé </string>
+    <string name = "rtk_dfu_state_connect_ota_remote"> connecter l\'équipement ... </string>
+    <string name = "rtk_dfu_state_error_processing"> gestion des erreurs ... </string>
+    <string name = "rtk_dfu_state_find_ota_remote"> matériel de recherche ... </string>
+    <string name = "rtk_dfu_state_hand_over_processing"> est HandOver ... </string>
+    <string name = "rtk_dfu_state_image_active_success"> Le micrologiciel est activé avec succès </string>
+    <string name = "rtk_dfu_state_initialize"> initialisation ... </string>
+    <string name = "rtk_dfu_state_known"> inconnu </string>
+    <string name = "rtk_dfu_state_origin"> initialisation </string>
+    <string name = "rtk_dfu_state_ota_send_file"> envoie le fichier %1$d/%2$d… </string>
+    <string name = "rtk_dfu_state_pending_active_image"> En attente d\'activation du firmware ... </string>
+    <string name = "rtk_dfu_state_prepare_dfu_processing"> prêt à mettre à niveau l\'environnement ... </string>
+    <string name = "rtk_dfu_state_remote_enter_ota"> entrer en mode de mise à niveau ... </string>
+    <string name = "rtk_dfu_state_scan_secondary_bud"> recherche un équipement auriculaire accessoire ... </string>
+    <string name = "rtk_dfu_state_start"> démarrage ... </string>
+    <string name = "rtk_dfu_state_start_active_image"> le firmware est activé ... </string>
+    <string name = "rtk_dfu_state_start_ota_processing"> est en cours de mise à niveau ... </string>
+    <string name = "rtk_dfu_state_upgrade_success"> mise à niveau réussie </string>
+    <string name="check_version">version:</string>
+    <string name="upgrade_controller">Contrôleur de mise à niveau</string>
+    <string name="upgrade_watch">Mettre à niveau l\'instrument</string>
+</resources>

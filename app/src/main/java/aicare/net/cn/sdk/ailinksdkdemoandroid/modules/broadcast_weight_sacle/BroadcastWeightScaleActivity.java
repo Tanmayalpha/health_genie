@@ -13,11 +13,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
+import com.pingwang.bluetoothlib.AILinkBleManager;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleSendCmdUtil;
+import com.pingwang.bluetoothlib.listener.OnBleBroadcastDataListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackDis;
-import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleDensityUtil;
 import com.pingwang.bluetoothlib.utils.BleLog;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
@@ -28,17 +31,17 @@ import java.util.UUID;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.BroadcastScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleNewBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.broadcastweightscale.BroadcastWeightScaleBleConfig;
 import cn.net.aicare.modulelibrary.module.broadcastweightscale.BroadcastWeightScaleDeviceData;
 
 /**
+ * 广播体重秤
  * @auther ljl
  * on 2023/3/10
  */
-public class BroadcastWeightScaleActivity extends BleBaseActivity implements OnCallbackDis, BroadcastWeightScaleDeviceData.OnNotifyData, OnScanFilterListener, View.OnClickListener,
+public class BroadcastWeightScaleActivity extends BleNewBaseActivity implements OnCallbackDis, BroadcastWeightScaleDeviceData.OnNotifyData, OnBleBroadcastDataListener, View.OnClickListener,
         RadioGroup.OnCheckedChangeListener {
 
     private static String TAG = BroadcastScaleActivity.class.getName();
@@ -160,13 +163,13 @@ public class BroadcastWeightScaleActivity extends BleBaseActivity implements OnC
                 mHandler.sendEmptyMessage(REFRESH_DATA);
                 break;
             case R.id.open_weight:
-                if (mBluetoothService != null) {
-                    mBluetoothService.scanLeDevice(0, UUID.fromString("0000F0A0-0000-1000-8000-00805F9B34FB"));
+                if (AILinkBleManager.getInstance() != null) {
+                    AILinkBleManager.getInstance().startScan(0, UUID.fromString("0000F0A0-0000-1000-8000-00805F9B34FB"));
                 }
                 break;
             case R.id.stop_weight:
-                if (mBluetoothService != null) {
-                    mBluetoothService.stopScan();
+                if (AILinkBleManager.getInstance() != null) {
+                    AILinkBleManager.getInstance().stopScan();
                 }
                 break;
             default:
@@ -182,11 +185,11 @@ public class BroadcastWeightScaleActivity extends BleBaseActivity implements OnC
     public void onServiceSuccess() {
         BleLog.i("ljl", "服务与界面建立连接成功");
         //与服务建立连接
-        if (mBluetoothService != null) {
+        if (AILinkBleManager.getInstance() != null) {
             mDevice = BroadcastWeightScaleDeviceData.getInstance();
             mDevice.setOnNotifyData(this);
-            mBluetoothService.setOnScanFilterListener(this);
-            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
+            AILinkBleManager.getInstance().setOnBleBroadcastDataListener(this);
+            AILinkBleManager.getInstance().startScan(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
         }
     }
 
@@ -194,7 +197,7 @@ public class BroadcastWeightScaleActivity extends BleBaseActivity implements OnC
     public void onServiceErr() {
         BleLog.i("ljl", "服务与界面连接断开");
         //与服务断开连接
-        mBluetoothService = null;
+        AILinkBleManager.getInstance().setOnBleBroadcastDataListener(null);
     }
 
     @Override
@@ -203,7 +206,6 @@ public class BroadcastWeightScaleActivity extends BleBaseActivity implements OnC
             mDevice.clear();
             mDevice = null;
         }
-
     }
 
     //-----------------状态-------------------
@@ -236,7 +238,7 @@ public class BroadcastWeightScaleActivity extends BleBaseActivity implements OnC
             return;
         }
         mOldData = data;
-        mList.add(TimeUtils.getTime() + "数据ID" + type + " ,||解密数据:" + data + " ,||原始数据:" + BleStrUtils.byte2HexStr(dataOriginal));
+        mList.add(TimeUtils.getTime() + "数据ID" + type + " ,||解密payload数据:" + data + " ,||原始厂商数据:" + BleStrUtils.byte2HexStr(dataOriginal));
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
@@ -341,12 +343,7 @@ public class BroadcastWeightScaleActivity extends BleBaseActivity implements OnC
 
 
     @Override
-    public boolean onFilter(BleValueBean bleValueBean) {
-        return true;
-    }
-
-    @Override
-    public void onScanRecord(BleValueBean bleValueBean) {
+    public void onBleBroadcastData(BleValueBean bleValueBean, byte[] payload) {
         if (TextUtils.isEmpty(mAddress) && bleValueBean.isBroadcastModule()) {
             mAddress = bleValueBean.getMac();
             if (tv_broadcast_mac != null) {
@@ -356,12 +353,11 @@ public class BroadcastWeightScaleActivity extends BleBaseActivity implements OnC
 
         //地址相同,并且是广播秤
         if (mAddress.equalsIgnoreCase(bleValueBean.getMac()) && bleValueBean.isBroadcastModule()) {
-            byte[] manufacturerData = bleValueBean.getManufacturerData();
             int cid = bleValueBean.getCid();
             int vid = bleValueBean.getVid();
             int pid = bleValueBean.getPid();
             if (mDevice != null) {
-                mDevice.onNotifyData(manufacturerData, cid, vid, pid);
+                mDevice.onNotifyData(bleValueBean.getManufacturerData(), cid, vid, pid);
             }
         }
     }

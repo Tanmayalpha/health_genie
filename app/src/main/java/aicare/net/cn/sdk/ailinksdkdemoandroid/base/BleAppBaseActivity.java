@@ -12,12 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.CheckPermissionUtils;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
+
+import java.lang.ref.WeakReference;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 

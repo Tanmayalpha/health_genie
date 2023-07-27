@@ -113,6 +113,13 @@ public interface SettingResultInterface {
      * @param content
      */
     public void onResultDataDisplayMode(String content);
+
+    /**
+     * 报警总开关设置
+     * @param content
+     */
+    public void onResultMasterWarnSwitch(String content);
+
     /**
      * 甲醛校准
      * @param content

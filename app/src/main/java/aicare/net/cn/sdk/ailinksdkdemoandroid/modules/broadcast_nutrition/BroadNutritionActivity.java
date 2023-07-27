@@ -7,6 +7,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
@@ -22,7 +24,6 @@ import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 
 public class BroadNutritionActivity extends BleBaseActivity implements View.OnClickListener, OnScanFilterListener {
 
@@ -57,7 +58,7 @@ public class BroadNutritionActivity extends BleBaseActivity implements View.OnCl
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_start) {
-            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
+            mBluetoothService.startScan(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
         } else if (id == R.id.btn_stop) {
             mBluetoothService.stopScan();
         } else if (id == R.id.btn_clear) {
@@ -102,7 +103,7 @@ public class BroadNutritionActivity extends BleBaseActivity implements View.OnCl
     public void onScanRecord(BleValueBean bleValueBean) {
         byte[] manufacturerData = bleValueBean.getManufacturerData();
         mMac = bleValueBean.getMac();
-        onNotifyData(manufacturerData, bleValueBean.getCid(), bleValueBean.getVid(), bleValueBean.getPid());
+        onNotifyData("",manufacturerData, bleValueBean.getCid(), bleValueBean.getVid(), bleValueBean.getPid());
     }
 
     private SimpleDateFormat mSdf;
@@ -131,7 +132,7 @@ public class BroadNutritionActivity extends BleBaseActivity implements View.OnCl
      * @param vid              vid
      * @param pid              pid
      */
-    public void onNotifyData(byte[] manufacturerData, int cid, int vid, int pid) {
+    public void onNotifyData(String uuid, byte[] manufacturerData, int cid, int vid, int pid) {
         if (manufacturerData == null) {
             BleLog.i("Tag1", "接收到的数据:null");
             return;
@@ -188,23 +189,12 @@ public class BroadNutritionActivity extends BleBaseActivity implements View.OnCl
             int symbol = (hex[5] & 0xff) >> 7;
             int battery = hex[6] & 0xff;
             int err = hex[7] & 0xff;
-
             float weightValue = weight;
             if (symbol == 1) {
                 weightValue *= -1;
             }
             weightValue /= Math.pow(10, decimal);
             String weightStr = getPreFloatStr(weightValue, decimal);
-            switch (unit) {
-                default:
-                case 0:
-                    weightStr += "g";
-                    break;
-                case 1:
-                    weightStr += "ml";
-                    break;
-            }
-
             addText("Mac：" + mMac + "\n流水号：" + no + "\n测量标识符：" + type + "\n原始重量：" + weight + "，单位：" + unit + "，小数点：" + decimal + "，正负：" + symbol + "\n重量：" + weightStr + "\n电量：" + battery + "\n异常标志位：" + err);
         }
     }

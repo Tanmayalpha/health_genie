@@ -15,12 +15,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +22,13 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.view.MyItemDecoration;
 
 /**
  * 列表显示的dialog
@@ -43,7 +44,7 @@ public class ShowListDialogFragment extends DialogFragment implements View.OnCli
     private int mCancelColor;
     private CharSequence mCancel;
     private CharSequence mTitle;
-    private ArrayList<DialogStringImageAdapter.DialogStringImageBean> mList;
+    private ArrayList<DialogStringImageBean> mList;
     private boolean mBottom;
     /**
      * 是否显示灰色背景
@@ -142,7 +143,7 @@ public class ShowListDialogFragment extends DialogFragment implements View.OnCli
     /**
      * 初始化数据
      */
-    private void initData(ArrayList<DialogStringImageAdapter.DialogStringImageBean> list, CharSequence title, CharSequence cancel, int cancelColor) {
+    private void initData(ArrayList<DialogStringImageBean> list, CharSequence title, CharSequence cancel, int cancelColor) {
 
         if (mList == null)
             mList = new ArrayList<>();
@@ -195,7 +196,7 @@ public class ShowListDialogFragment extends DialogFragment implements View.OnCli
     /**
      * 修改列表中的内容
      */
-    public ShowListDialogFragment setList(List<DialogStringImageAdapter.DialogStringImageBean> list) {
+    public ShowListDialogFragment setList(List<DialogStringImageBean> list) {
         if (mList == null) {
             mList = new ArrayList<>();
             mList.addAll(list);

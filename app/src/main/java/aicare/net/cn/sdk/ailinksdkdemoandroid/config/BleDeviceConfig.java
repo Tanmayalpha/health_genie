@@ -215,10 +215,6 @@ public class BleDeviceConfig {
      */
     public final static int TEMP_INSTRUMENT = 0x003D;
 
-    /**
-     * 芯一代手表
-     */
-    public final static int LEAP_WATCH = 0x003E;
 
 
     /**
@@ -252,6 +248,15 @@ public class BleDeviceConfig {
      */
     public final static int WEIGHT_SCALE = 0X0056;
 
+    /**
+     * 食物探针
+     */
+    public final static int MEAT_PROBE = 0X003F;
+
+    /**
+     * 气压温湿度计
+     */
+    public static final int BAROMETRIC_TEMP_HUMIDITY = 0x005C;
 
     //------------------特殊
 

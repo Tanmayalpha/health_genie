@@ -14,12 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
-
-import aicare.net.cn.sdk.ailinksdkdemoandroid.BuildConfig;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.AppStart;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -27,6 +21,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import java.lang.ref.WeakReference;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.BuildConfig;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.HintDataDialogFragment;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.AppStart;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 

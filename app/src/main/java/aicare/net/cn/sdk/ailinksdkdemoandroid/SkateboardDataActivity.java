@@ -14,12 +14,13 @@ import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnBleHandshakeListener;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
+import com.realsil.sdk.dfu.DfuConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleAppBaseActivity;
-import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.DialogStringImageAdapter;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.DialogStringImageBean;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.ShowListDialogFragment;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.FileUtils;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
@@ -37,7 +38,7 @@ import cn.net.aicare.modulelibrary.module.scooter.SkateboardDevice;
  * 滑板车界面
  */
 public class SkateboardDataActivity extends BleAppBaseActivity implements OnCallbackBle, View.OnClickListener, SkateboardDevice.onNotifyData,
-        RtkOtaManager.OnRtkOtaInfoListener, ShowListDialogFragment.onDialogListener, OnBleHandshakeListener , OnScooterBleOTAListener {
+        RtkOtaManager.OnRtkOtaInfoListener, ShowListDialogFragment.onDialogListener, OnBleHandshakeListener, OnScooterBleOTAListener {
 
     private final int REFRESH_DATA = 1;
 
@@ -203,7 +204,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
     private SkateboardDevice mDevice;
 
     private int mOtaUpdateStatus;
-    private ArrayList<DialogStringImageAdapter.DialogStringImageBean> mDialogList;
+    private ArrayList<DialogStringImageBean> mDialogList;
     /**
      * OTA类型,0=BOOTLOADER,1=APP,2=FLASH,3=ble
      */
@@ -214,7 +215,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
      * rtk升级方式
      * 默认静默升级
      */
-//    private int mRtkOtaType = RtkOtaManager.OTA_MODE_SILENT_FUNCTION;
+    private int mRtkOtaType = DfuConstants.OTA_MODE_NORMAL_FUNCTION;
     /**
      * ota作用域
      */
@@ -816,7 +817,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
             case R.id.btn_ble:
                 mDialogList.clear();
                 for (String s : FileUtils.list()) {
-                    mDialogList.add(new DialogStringImageAdapter.DialogStringImageBean(s, 0));
+                    mDialogList.add(new DialogStringImageBean(s, 0));
                 }
                 //btn_ble
                 mOTAType = 3;
@@ -825,15 +826,15 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
                 break;
             //OTA类型
             case R.id.btn_ota_type:
-                List<DialogStringImageAdapter.DialogStringImageBean> list = new ArrayList<>();
-//                list.add(new DialogStringImageAdapter.DialogStringImageBean("静默升级", RtkOtaManager.OTA_MODE_SILENT_FUNCTION));
-//                list.add(new DialogStringImageAdapter.DialogStringImageBean("普通升级", RtkOtaManager.OTA_MODE_NORMAL_FUNCTION));
+                List<DialogStringImageBean> list = new ArrayList<>();
+                list.add(new DialogStringImageBean("静默升级", DfuConstants.OTA_MODE_SILENT_FUNCTION));
+                list.add(new DialogStringImageBean("普通升级", DfuConstants.OTA_MODE_NORMAL_FUNCTION));
                 ShowListDialogFragment.newInstance().setTitle("").setCancel("", 0).setCancelBlank(true).setBackground(true).setBottom(false)
                         .setList(list).setOnDialogListener(new ShowListDialogFragment.onDialogListener() {
                     @Override
                     public void onItemListener(int position) {
-                        DialogStringImageAdapter.DialogStringImageBean dialogStringImageBean = list.get(position);
-//                        mRtkOtaType = (int) dialogStringImageBean.getType();
+                        DialogStringImageBean dialogStringImageBean = list.get(position);
+                        mRtkOtaType = (int) dialogStringImageBean.getType();
                         btn_ota_type.setText(dialogStringImageBean.getName());
                     }
                 }).show(getSupportFragmentManager());
@@ -968,7 +969,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
     private void selectOta(int OTAType, int OTAScope) {
         mDialogList.clear();
         for (String s : FileUtils.list()) {
-            mDialogList.add(new DialogStringImageAdapter.DialogStringImageBean(s, 0));
+            mDialogList.add(new DialogStringImageBean(s, 0));
         }
         mOTAType = OTAType;
         mOTAScope = OTAScope;
@@ -979,9 +980,14 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
     private RtkOtaManager mRtkOtaManager;
 
     @Override
+    public void onCancelListener(View v) {
+
+    }
+
+    @Override
     public void onItemListener(int position) {
         if (mDialogList.size() > position) {
-            DialogStringImageAdapter.DialogStringImageBean dialogStringImageBean = mDialogList.get(position);
+            DialogStringImageBean dialogStringImageBean = mDialogList.get(position);
             String name = dialogStringImageBean.getName();
             String byFileName = FileUtils.getByFileName() + name;
             if (mOTAType == 3) {
@@ -1004,7 +1010,7 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
                 mList.add("OTA包中包含:" + stepSize + "个小包\n现在升级" + ((step >= 0) ? step + "包" : "全部包"));
                 mHandler.sendEmptyMessage(REFRESH_DATA);
 
-//                mRtkOtaManager.startOta(mRtkOtaType, step);
+                mRtkOtaManager.startOta(mRtkOtaType, step);
             } else if (mDevice != null) {
 
                 mDevice.setOnScooterBleOTAListener(SkateboardDataActivity.this);
@@ -1036,11 +1042,11 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
     @Override
     public void onServiceSuccess() {
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             mBluetoothService.setOnScanFilterListener(null);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mMac);
             if (bleDevice == null) {
-                mBluetoothService.scanLeDevice(0, SkateboardBleConfig.UUID_BROADCAST, BleConfig.UUID_SERVER_AILINK);
+                mBluetoothService.startScan(0, SkateboardBleConfig.UUID_BROADCAST, BleConfig.UUID_SERVER_AILINK);
             } else {
                 onServicesDiscovered(mMac);
             }
@@ -1055,7 +1061,9 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
 
     @Override
     public void unbindServices() {
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
     @Override
@@ -1092,6 +1100,16 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
 
     }
 
+    @Override
+    public void onScanErr(long time) {
+
+    }
+
+    @Override
+    public void onConnecting(String mac) {
+
+    }
+
 
     @Override
     public void bleClose() {
@@ -1120,11 +1138,16 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
     }
 
     @Override
+    public void onConnectionSuccess(String mac) {
+
+    }
+
+    @Override
     public void bleOpen() {
         mList.add("蓝牙已开启");
         mHandler.sendEmptyMessage(REFRESH_DATA);
         if (mBluetoothService != null) {
-            mBluetoothService.scanLeDevice(0, SkateboardBleConfig.UUID_BROADCAST, BleConfig.UUID_SERVER_AILINK);
+            mBluetoothService.startScan(0, SkateboardBleConfig.UUID_BROADCAST, BleConfig.UUID_SERVER_AILINK);
         }
     }
 
@@ -1267,6 +1290,11 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
+    @Override
+    public void onReconnect(String mac) {
+
+    }
+
 
     public static int getProgressStateResId(int var0) {
         if (var0 != 527) {
@@ -1362,6 +1390,9 @@ public class SkateboardDataActivity extends BleAppBaseActivity implements OnCall
         return String.copyValueOf(dst);
 
     }
+
+
+
 
 
 }

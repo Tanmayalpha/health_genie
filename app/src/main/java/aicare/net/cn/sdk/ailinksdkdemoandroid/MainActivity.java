@@ -11,7 +11,17 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.besthealth.bhBodyComposition120.BhBodyComposition;
+import com.pingwang.bluetoothlib.AILinkBleManager;
+import com.pingwang.bluetoothlib.AILinkSDK;
+import com.pingwang.bluetoothlib.bean.AilinkLicenseBean;
 import com.pingwang.bluetoothlib.utils.BleLog;
 
 import java.util.ArrayList;
@@ -26,15 +36,10 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.broadcast_height.Broadcast
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.broadcast_nutrition.BroadNutritionActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.broadcast_weight_sacle.BroadcastWeightScaleActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.leaone_broadcast.LeaOneBroadcastActivity;
+import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.ropeskipping.RopeSkippingSetActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.AppStart;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.SP;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,20 +61,20 @@ public class MainActivity extends AppCompatActivity {
         int bodyComposition = new BhBodyComposition().getBodyComposition();
         L.i("bodyComposition:" + bodyComposition);
 
-//        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:10086"));
-//        Method setDefaultSim = null;
-//        try {
-//            setDefaultSim = TelephonyManager.class.getDeclaredMethod("setDefaultSim", Context.class, int.class, int.class);
-//            setDefaultSim.invoke(null, this, 0, 0);
-//        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        }
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
+        //        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:10086"));
+        //        Method setDefaultSim = null;
+        //        try {
+        //            setDefaultSim = TelephonyManager.class.getDeclaredMethod("setDefaultSim", Context.class, int.class, int.class);
+        //            setDefaultSim.invoke(null, this, 0, 0);
+        //        } catch (NoSuchMethodException e) {
+        //            e.printStackTrace();
+        //        } catch (IllegalAccessException e) {
+        //            e.printStackTrace();
+        //        } catch (InvocationTargetException e) {
+        //            e.printStackTrace();
+        //        }
+        //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //        startActivity(intent);
     }
 
 
@@ -88,41 +93,41 @@ public class MainActivity extends AppCompatActivity {
 
         MyListener listener = new MyListener();
 
-//        Button btn_shpy = findViewById(R.id.btn_sphy);
-//        Button btn_tempgun = findViewById(R.id.btn_tempgun);
-//        Button btn_temp = findViewById(R.id.btn_temp);
-//        Button btn_baby = findViewById(R.id.btn_baby);
-//        Button btn_height = findViewById(R.id.btn_height);
-//        Button btn_ble = findViewById(R.id.btn_ble);
-//        Button btn_weightScale = findViewById(R.id.btn_lock);
-//        Button btn_ble_test = findViewById(R.id.btn_ble_test);
-//        Button btnConnectTest = findViewById(R.id.btnConnectTest);
-//        Button btn_ad_weight = findViewById(R.id.btn_ad_weight);
-//        Button btn_ble_weight = findViewById(R.id.btn_ble_weight);
-//        Button btn_wifi_ble_tooth = findViewById(R.id.btn_wifi_ble_tooth);
-//        Button wifi_config = findViewById(R.id.wifi_config);
-//        Button eight_scale = findViewById(R.id.eight_scale);
-//        Button btn_ota = findViewById(R.id.btn_ota);
-//        Button btn_wristband = findViewById(R.id.btn_wristband);
-//        Button glucometer = findViewById(R.id.glucometer);
-//        Button btn_broadcast_scale = findViewById(R.id.btn_broadcast_scale);
-//        Button btn_broadcast_blood_oxygen = findViewById(R.id.btn_broadcast_blood_oxygen);
-//        Button btn_smart_mask = findViewById(R.id.btn_smart_mask);
-//        Button btn_bld = findViewById(R.id.btn_bld);
-//        Button btn_bleBo = findViewById(R.id.btn_bleBo);
-//        Button btn_coffeeScale = findViewById(R.id.btn_coffeeScale);
-//        Button btn_scooter = findViewById(R.id.btn_scooter);
-//        Button btn_shareCharger = findViewById(R.id.btn_shareCharger);
-//        Button btn_transmission = findViewById(R.id.btn_transmission);
-//        Button btn_wifi_ble_weight = findViewById(R.id.btn_wifi_ble_weight);
-//        Button btn_baby_body_fat = findViewById(R.id.btn_baby_body_fat);
+        //        Button btn_shpy = findViewById(R.id.btn_sphy);
+        //        Button btn_tempgun = findViewById(R.id.btn_tempgun);
+        //        Button btn_temp = findViewById(R.id.btn_temp);
+        //        Button btn_baby = findViewById(R.id.btn_baby);
+        //        Button btn_height = findViewById(R.id.btn_height);
+        //        Button btn_ble = findViewById(R.id.btn_ble);
+        //        Button btn_weightScale = findViewById(R.id.btn_lock);
+        //        Button btn_ble_test = findViewById(R.id.btn_ble_test);
+        //        Button btnConnectTest = findViewById(R.id.btnConnectTest);
+        //        Button btn_ad_weight = findViewById(R.id.btn_ad_weight);
+        //        Button btn_ble_weight = findViewById(R.id.btn_ble_weight);
+        //        Button btn_wifi_ble_tooth = findViewById(R.id.btn_wifi_ble_tooth);
+        //        Button wifi_config = findViewById(R.id.wifi_config);
+        //        Button eight_scale = findViewById(R.id.eight_scale);
+        //        Button btn_ota = findViewById(R.id.btn_ota);
+        //        Button btn_wristband = findViewById(R.id.btn_wristband);
+        //        Button glucometer = findViewById(R.id.glucometer);
+        //        Button btn_broadcast_scale = findViewById(R.id.btn_broadcast_scale);
+        //        Button btn_broadcast_blood_oxygen = findViewById(R.id.btn_broadcast_blood_oxygen);
+        //        Button btn_smart_mask = findViewById(R.id.btn_smart_mask);
+        //        Button btn_bld = findViewById(R.id.btn_bld);
+        //        Button btn_bleBo = findViewById(R.id.btn_bleBo);
+        //        Button btn_coffeeScale = findViewById(R.id.btn_coffeeScale);
+        //        Button btn_scooter = findViewById(R.id.btn_scooter);
+        //        Button btn_shareCharger = findViewById(R.id.btn_shareCharger);
+        //        Button btn_transmission = findViewById(R.id.btn_transmission);
+        //        Button btn_wifi_ble_weight = findViewById(R.id.btn_wifi_ble_weight);
+        //        Button btn_baby_body_fat = findViewById(R.id.btn_baby_body_fat);
         mList.add(findViewById(R.id.btn_sphy));
         mList.add(findViewById(R.id.btn_tempgun));
         mList.add(findViewById(R.id.btn_temp));
         mList.add(findViewById(R.id.btn_baby));
         mList.add(findViewById(R.id.btn_height));
         mList.add(findViewById(R.id.btn_ble));
-//        mList.add(findViewById(R.id.btn_lock));
+        //        mList.add(findViewById(R.id.btn_lock));
         mList.add(findViewById(R.id.btn_ble_test));
         mList.add(findViewById(R.id.btnConnectTest));
         mList.add(findViewById(R.id.btn_ad_weight));
@@ -162,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
         mList.add(findViewById(R.id.btn_body_scale_4g));
         mList.add(findViewById(R.id.btn_scooter_cm02));
         mList.add(findViewById(R.id.btn_temp_instrument));
-        mList.add(findViewById(R.id.btn_leap_watch));
         mList.add(findViewById(R.id.btn_public_ble_network));
         mList.add(findViewById(R.id.btn_rope_skipping_set_mode));
         mList.add(findViewById(R.id.btn_air_detector));
@@ -173,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         mList.add(findViewById(R.id.btn_meat_probe_charger));
         mList.add(findViewById(R.id.btn_weight_scale));
         mList.add(findViewById(R.id.btn_broadcast_scale_weight));
+        mList.add(findViewById(R.id.btn_meat_probe));
         for (View view : mList) {
             view.setOnClickListener(listener);
         }
@@ -191,100 +196,92 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(mContext, RopeSkippingSetActivity.class));
 
 
-//                Intent intent = new Intent();
-//                intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//
-//                mHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            L.i("按下音量+ start");
-//                            String keyCommand = "input keyevent " + KeyEvent.KEYCODE_VOLUME_UP;
-//                            Runtime runtime = Runtime.getRuntime();
-//                            Process proc = runtime.exec(keyCommand);
-//                            L.i("按下音量+ stop"+proc.toString());
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                }, 5000);
+                //                Intent intent = new Intent();
+                //                intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+                //                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //                startActivity(intent);
+                //
+                //                mHandler.postDelayed(new Runnable() {
+                //                    @Override
+                //                    public void run() {
+                //                        try {
+                //                            L.i("按下音量+ start");
+                //                            String keyCommand = "input keyevent " + KeyEvent.KEYCODE_VOLUME_UP;
+                //                            Runtime runtime = Runtime.getRuntime();
+                //                            Process proc = runtime.exec(keyCommand);
+                //                            L.i("按下音量+ stop"+proc.toString());
+                //                        } catch (IOException e) {
+                //                            e.printStackTrace();
+                //                        }
+                //
+                //                    }
+                //                }, 5000);
 
             }
         });
 
-//        AILinkBleManager.getInstance().init(mContext, new AILinkBleManager.onInitListener() {
-//            @Override
-//            public void onInitSuccess() {
-//                L.i("初始化成功");
-//                AILinkBleManager.getInstance().startScan(1000);
-//                AILinkBleManager.getInstance().setOnCallbackBle(new OnCallbackBle() {
-//                    @Override
-//                    public void onScanning(BleValueBean data) {
-//                        L.i("当前搜索到的设备:"+data.getName()+" mac="+data.getMac());
-//                        AILinkBleManager.getInstance().stopScan();
-//                        AILinkBleManager.getInstance().connectDevice(data);
-//                    }
-//
-//                    @Override
-//                    public void onServicesDiscovered(String mac) {
-//                        L.i("连接成功:"+mac);
-//                    }
-//                });
-//
-//            }
-//
-//            @Override
-//            public void onInitFailure() {
-//                L.i("初始化失败");
-//            }
-//        });
+        //        AILinkBleManager.getInstance().init(mContext, new AILinkBleManager.onInitListener() {
+        //            @Override
+        //            public void onInitSuccess() {
+        //                L.i("初始化成功");
+        //                AILinkBleManager.getInstance().startScan(1000);
+        //                AILinkBleManager.getInstance().setOnCallbackBle(new OnCallbackBle() {
+        //                    @Override
+        //                    public void onScanning(BleValueBean data) {
+        //                        L.i("当前搜索到的设备:"+data.getName()+" mac="+data.getMac());
+        //                        AILinkBleManager.getInstance().stopScan();
+        //                        AILinkBleManager.getInstance().connectDevice(data);
+        //                    }
+        //
+        //                    @Override
+        //                    public void onServicesDiscovered(String mac) {
+        //                        L.i("连接成功:"+mac);
+        //                    }
+        //                });
+        //
+        //            }
+        //
+        //            @Override
+        //            public void onInitFailure() {
+        //                L.i("初始化失败");
+        //            }
+        //        });
 
     }
 
     protected void initData() {
         initPermissions();
-
+        List<AilinkLicenseBean> list = new ArrayList<>();
+        list.add(new AilinkLicenseBean(0x2F, 0x03, 0x09));
+        AILinkSDK.getInstance().initLicense(list);
     }
 
     protected void initView() {
-        BleLog.init("", "", true);
+        BleLog.init(true);
         //connectDevice(BleValueBean bleValueBean);连接的时候需要传广播对象,否则返回的cid,vid,pid始终都是0
-//        AILinkSDK.getInstance().init(getApplication(), new AILinkSDK.OnNewKeyListener() {
-//            @Override
-//            public boolean onNewKey(int cid, int vid, int pid) {
-//                if (vid == 1) {
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-        //每次连接之前都要设置一次,设置一次之后就一直有效
         //sdk
-//        AILinkBleManager.getInstance().init(mContext, new AILinkBleManager.onInitListener() {
-//            @Override
-//            public void onInitSuccess() {
-//                AILinkBleManager.getInstance().startScan(0);
-//            }
-//
-//            @Override
-//            public void onInitFailure() {
-//
-//            }
-//        });
-//        BleConfig.addVendorID(0xac05);
+        AILinkSDK.getInstance().init(mContext);
+        AILinkBleManager.getInstance().init(mContext, new AILinkBleManager.onInitListener() {
+            @Override
+            public void onInitSuccess() {
+                AILinkBleManager.getInstance().startScan(0);
+            }
+
+            @Override
+            public void onInitFailure() {
+
+            }
+        });
         SP.init(this);
     }
 
     private class MyListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-//          boolean onClick=  initPermissions();
-//          if (!onClick){
-//              return;
-//          }
+            //          boolean onClick=  initPermissions();
+            //          if (!onClick){
+            //              return;
+            //          }
             int type = 0;
             switch (v.getId()) {
 
@@ -306,9 +303,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.btn_height:
                     type = BleDeviceConfig.HEIGHT_METER;
-                    break;
-                case R.id.btn_lock:
-                    type = BleDeviceConfig.SMART_LOCK;
                     break;
                 case R.id.btn_ad_weight:
                     type = BleDeviceConfig.WEIGHT_BODY_FAT_SCALE_AD;
@@ -356,9 +350,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_bleBo:
                     type = BleDeviceConfig.BLE_BOOLD_OXYGEN;
                     break;
-//                case R.id.btn_bld:
-//                    type = BleDeviceConfig.BLD_WEIGHT;
-//                    break;
+                //                case R.id.btn_bld:
+                //                    type = BleDeviceConfig.BLD_WEIGHT;
+                //                    break;
                 case R.id.btn_ble:
                     type = -1;
                     break;
@@ -465,10 +459,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent bodyScaleIntent = new Intent(MainActivity.this, BodyScale4GActivity.class);
                     startActivity(bodyScaleIntent);
                     return;
-                case R.id.btn_leap_watch:
-                    // 芯一代手表
-                    type = BleDeviceConfig.LEAP_WATCH;
-                    break;
+
                 case R.id.btn_public_ble_network:
                     // BLE通用配网
                     type = BleDeviceConfig.PUBLIC_BLE_NETWORK;
@@ -489,6 +480,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.btn_weight_scale:
                     //体重秤
                     type = BleDeviceConfig.WEIGHT_SCALE;
+                    break;
+                case R.id.btn_meat_probe:
+                    // 食物探针
+                    type = BleDeviceConfig.MEAT_PROBE;
                     break;
                 case R.id.btn_mqtt:
 
@@ -520,12 +515,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//-----------------------权限----------------------------------------
+    //-----------------------权限----------------------------------------
     /**
      * 需要申请的权限
      */
     private String[] LOCATION_PERMISSION = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
+    private final static String[] BLUETOOTH_PERMISSION = new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_ADVERTISE, Manifest.permission.BLUETOOTH_CONNECT};
     /**
      * 权限请求返回
      */
@@ -541,26 +536,34 @@ public class MainActivity extends AppCompatActivity {
             onPermissionsOk();
             return;
         }
-        if (ContextCompat.checkSelfPermission(this, LOCATION_PERMISSION[0]) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, LOCATION_PERMISSION, PERMISSION);
-        } else {
-            boolean bleStatus = AppStart.isLocServiceEnable(mContext);
-            if (!bleStatus) {
-                //没有开启定位服务
-                mHintDataDialog = HintDataDialogFragment.newInstance().setTitle("提示", 0).setCancel("取消", 0).setOk("确定", 0).setContent("请求开启定位服务", true)
-                        .setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
-                            @Override
-                            public void onSucceedListener(View v) {
-                                startLocationActivity();
-                            }
-                        });
-                mHintDataDialog.show(getSupportFragmentManager());
 
-
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, LOCATION_PERMISSION[0]) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, LOCATION_PERMISSION, PERMISSION);
             } else {
-                onPermissionsOk();
+                boolean bleStatus = AppStart.isLocServiceEnable(mContext);
+                if (!bleStatus) {
+                    //没有开启定位服务
+                    mHintDataDialog = HintDataDialogFragment.newInstance().setTitle("提示", 0).setCancel("取消", 0).setOk("确定", 0).setContent("请求开启定位服务", true).setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
+                        @Override
+                        public void onSucceedListener(View v) {
+                            startLocationActivity();
+                        }
+                    });
+                    mHintDataDialog.show(getSupportFragmentManager());
+
+
+                } else {
+                    onPermissionsOk();
+                }
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(this, BLUETOOTH_PERMISSION[0]) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, BLUETOOTH_PERMISSION, PERMISSION);
             }
         }
+
+
     }
 
 
@@ -571,26 +574,34 @@ public class MainActivity extends AppCompatActivity {
         //请求权限被拒绝
         if (requestCode != PERMISSION)
             return;
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            initPermissions();
-        } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, LOCATION_PERMISSION[0])) {
-                //权限请求失败，但未选中“不再提示”选项,再次请求
-                ActivityCompat.requestPermissions(this, LOCATION_PERMISSION, PERMISSION);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initPermissions();
             } else {
-                //权限请求失败，选中“不再提示”选项
-                mHintDataDialog = HintDataDialogFragment.newInstance().setTitle("提示", 0).setCancel("取消", 0).setOk("确定", 0).setContent("请求开启定位权限", true)
-                        .setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
-                            @Override
-                            public void onSucceedListener(View v) {
-                                AppStart.startUseSetActivity(mContext);
-                            }
-                        });
-                mHintDataDialog.show(getSupportFragmentManager());
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, LOCATION_PERMISSION[0])) {
+                    //权限请求失败，但未选中“不再提示”选项,再次请求
+                    ActivityCompat.requestPermissions(this, LOCATION_PERMISSION, PERMISSION);
+                } else {
+                    //权限请求失败，选中“不再提示”选项
+                    mHintDataDialog = HintDataDialogFragment.newInstance().setTitle("提示", 0).setCancel("取消", 0).setOk("确定", 0).setContent("请求开启定位权限", true).setOnDialogListener(new HintDataDialogFragment.onDialogListener() {
+                        @Override
+                        public void onSucceedListener(View v) {
+                            AppStart.startUseSetActivity(mContext);
+                        }
+                    });
+                    mHintDataDialog.show(getSupportFragmentManager());
+
+                }
 
             }
-
+        } else {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initPermissions();
+            }
         }
+
+
     }
 
 

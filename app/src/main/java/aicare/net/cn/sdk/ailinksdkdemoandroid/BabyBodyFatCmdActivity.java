@@ -12,6 +12,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.CmdConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -30,8 +33,6 @@ import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.babyBodyFat.BabyBodyFatBleConfig;
 import cn.net.aicare.modulelibrary.module.babyBodyFat.BabyBodyFatDeviceData;
 import cn.net.aicare.modulelibrary.module.babyscale.BabyBleConfig;
@@ -256,7 +257,7 @@ public class BabyBodyFatCmdActivity extends BleBaseActivity implements OnCallbac
         BleLog.i(TAG, "服务与界面建立连接成功");
         //与服务建立连接
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 mDevice = BabyBodyFatDeviceData.getInstance(bleDevice);
@@ -282,7 +283,9 @@ public class BabyBodyFatCmdActivity extends BleBaseActivity implements OnCallbac
             mDevice.clear();
             mDevice = null;
         }
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
     //-----------------状态-------------------

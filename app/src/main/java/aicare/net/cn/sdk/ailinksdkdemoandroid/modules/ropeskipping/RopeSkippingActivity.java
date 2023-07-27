@@ -1,9 +1,11 @@
-package aicare.net.cn.sdk.ailinksdkdemoandroid;
+package aicare.net.cn.sdk.ailinksdkdemoandroid.modules.ropeskipping;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.pingwang.bluetoothlib.device.BleDevice;
@@ -12,8 +14,8 @@ import com.pingwang.bluetoothlib.listener.OnCallbackBle;
 import java.util.ArrayList;
 import java.util.List;
 
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.RopeSkipping.OnRopeSkipCallBack;
 import cn.net.aicare.modulelibrary.module.RopeSkipping.RopeSkipRecord;
 import cn.net.aicare.modulelibrary.module.RopeSkipping.RopeSkippingBleData;
@@ -31,10 +33,9 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
 
     @Override
     public void onServiceSuccess() {
-        mBluetoothService.setOnCallback(this);
         logList.add("绑定服务成功");
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 RopeSkippingBleData.init(bleDevice);
@@ -57,7 +58,9 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
         if (mArrayAdapter != null && logList != null) {
             refreshLog("解除绑定服务");
         }
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
 
@@ -119,7 +122,7 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
         } else if (v.getId() == R.id.btn_clear_log) {
             if (!isPauseLog) {
                 isPauseLog = true;
-            }else {
+            } else {
                 isPauseLog = false;
             }
 
@@ -179,7 +182,7 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
     @Override
     public void onFinish(RopeSkipRecord ropeSkipBean) {
 
-        refreshLog("跳绳结束"+"\n"+ropeSkipBean.toString() + " \n绊绳=" + new Gson().toJson(ropeSkipBean.getStopDetail()));
+        refreshLog("跳绳结束" + "\n" + ropeSkipBean.toString() + " \n绊绳=" + new Gson().toJson(ropeSkipBean.getStopDetail()));
     }
 
     @Override
@@ -187,11 +190,19 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
 
     }
 
+    private String mOldData = "";
+    private int mId = 0;
+
     @Override
     public void onCurrentData(int status, int mode, int defaultValue, int currentJumpNum, int currentJumpTime, int batter) {
-        refreshLog("实时数据 \n" + "状态: " + status + " ( 0：准备 1：进行中 2：完成) \n" + "模式: "
-                + mode + " (1：自由 2：倒计时 3：倒计数) \n"
-                + "默认值: " + defaultValue + "  电量 " + batter + "\n 当前个数: " + currentJumpNum + " 时间 " + currentJumpTime);
+        String data = "实时数据 \n" + "状态: " + status + " ( 0：准备 1：进行中 2：完成) \n" + "模式: " + mode + " (1：自由 2：倒计时 3：倒计数) \n" + "默认值: " + defaultValue + "  电量 " + batter + "\n 当前个数: " + currentJumpNum +
+                " 时间 " + currentJumpTime;
+        mId++;
+        if (mOldData.equals(data)) {
+            return;
+        }
+        mOldData = data;
+        refreshLog(mId+data);
     }
 
     @Override
@@ -224,14 +235,15 @@ public class RopeSkippingActivity extends BleBaseActivity implements View.OnClic
             refreshLog("没有离线记录");
         } else {
 
-            refreshLog("离线记录：\n"+new Gson().toJson(list));
+            refreshLog("离线记录：\n" + new Gson().toJson(list));
         }
     }
 
     @Override
     public void finish() {
         super.finish();
-        if (mBluetoothService != null)
+        if (mBluetoothService != null){
             mBluetoothService.disconnectAll();
+        }
     }
 }

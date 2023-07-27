@@ -8,6 +8,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSeekBar;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
@@ -17,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatSeekBar;
 import cn.net.aicare.modulelibrary.module.BloodOxygen.BleBloodOxygenBleConfig;
 import cn.net.aicare.modulelibrary.module.BloodOxygen.BleBloodOxygenDeviceData;
 
@@ -206,7 +207,7 @@ public class BloodOxygenActivity extends BleBaseActivity implements OnCallbackBl
     @Override
     public void onServiceSuccess() {
         loglist.add(0, "连接设备成功");
-        mBluetoothService.setOnCallback(this);
+        mBluetoothService.setOnCallbackBle(this);
         BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
         BleBloodOxygenDeviceData.init(bleDevice, this);
         mBleBloodOxygenDeviceData = BleBloodOxygenDeviceData.getInstance();
@@ -219,7 +220,9 @@ public class BloodOxygenActivity extends BleBaseActivity implements OnCallbackBl
 
     @Override
     public void unbindServices() {
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
     @Override

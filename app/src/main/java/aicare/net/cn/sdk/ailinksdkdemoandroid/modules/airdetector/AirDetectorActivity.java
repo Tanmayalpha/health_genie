@@ -271,7 +271,7 @@ public class AirDetectorActivity extends BleAppBaseActivity implements AirDetect
     public void onServiceSuccess() {
         mAddress = getIntent().getStringExtra("mac");
         BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
-        mBluetoothService.setOnCallback(this);
+        mBluetoothService.setOnCallbackBle(this);
         if (mAirDetectorWifeBleData == null) {
             AirDetectorWifeBleData.init(bleDevice);
             mAirDetectorWifeBleData = AirDetectorWifeBleData.getInstance();
@@ -287,7 +287,9 @@ public class AirDetectorActivity extends BleAppBaseActivity implements AirDetect
 
     @Override
     public void unbindServices() {
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
     @Override
@@ -416,15 +418,18 @@ public class AirDetectorActivity extends BleAppBaseActivity implements AirDetect
                     String valueMin = ed_min.getText().toString().trim();
                     float myValueMax = valueMax.contains("\\.") ? Float.parseFloat(valueMax) : Integer.parseInt(valueMax);
                     float myValueMin = valueMin.contains("\\.") ? Float.parseFloat(valueMin) : Integer.parseInt(valueMin);
-                    sendDataBean = AirSendUtil.setWarmTemp(supportBean.getPoint(), supportBean.getUnit(), myValueMax, myValueMin,1);
+                    int warmStateTemp = Integer.parseInt(ed_warm_state.getText().toString().trim());
+                    sendDataBean = AirSendUtil.setWarmTemp(supportBean.getPoint(),
+                            supportBean.getUnit(), myValueMax, myValueMin, warmStateTemp);
                     break;
                 case AirConst.AIR_TYPE_HUMIDITY:
                     valueMax = ed_max.getText().toString().trim();
                     valueMin = ed_min.getText().toString().trim();
                     myValueMax = valueMax.contains("\\.") ? Float.parseFloat(valueMax) : Integer.parseInt(valueMax);
                     myValueMin = valueMin.contains("\\.") ? Float.parseFloat(valueMin) : Integer.parseInt(valueMin);
+                    int warmStateHumi = Integer.parseInt(ed_warm_state.getText().toString().trim());
                     sendDataBean = AirSendUtil.setWarmHumidity(supportBean.getPoint(),
-                            myValueMax, myValueMin,1);
+                            myValueMax, myValueMin, warmStateHumi);
                     break;
                 case AirConst.AIR_SETTING_VOICE:
                     warmState = Integer.parseInt(ed_warm_state.getText().toString().trim());

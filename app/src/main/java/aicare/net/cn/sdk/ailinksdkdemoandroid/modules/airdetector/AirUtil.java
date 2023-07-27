@@ -50,6 +50,7 @@ public class AirUtil {
         typeNameArray.append(AirConst.AIR_ICON_DISPLAY, "图标显示");
         typeNameArray.append(AirConst.AIR_MONITORING_DISPLAY_DATA, "监控显示数据");
         typeNameArray.append(AirConst.AIR_DATA_DISPLAY_MODE, "数据显示模式");
+        typeNameArray.append(AirConst.AIR_PROTOCOL_VERSION, "协议版本");
     }
 
 
@@ -246,11 +247,11 @@ public class AirUtil {
             }
             StringBuilder builder = new StringBuilder();
             for (AlarmClockInfoList.AlarmInfo bean : list) {
-                builder.append(getSwitchStatus(bean.getSwitchStatus() == 1));
+                builder.append("编号：").append(bean.getId());
+                builder.append(", " + getSwitchStatus(bean.getSwitchStatus() == 1));
                 builder.append(", 删除：").append(bean.isDeleted());
-                builder.append(", 编号：").append(bean.getId());
                 builder.append(", 模式：").append(bean.getMode());
-                builder.append(", 闹钟时间：").append(bean.getHour()).append(":").append(bean.getMinute());
+                builder.append(", 闹钟时间：").append(dealTime(bean.getHour())).append(":").append(dealTime(bean.getMinute()));
                 builder.append(", 闹钟周期：").append(dealAlarmDay(bean.getAlarmDays()));
                 builder.append("\n");
             }
@@ -258,6 +259,13 @@ public class AirUtil {
         } else {
             return "[]";
         }
+    }
+
+    private static String dealTime(int num){
+        if (num < 10) {
+            return "0" + num;
+        }
+        return num + "";
     }
 
     private static String dealAlarmDay(int[] days){
@@ -274,5 +282,30 @@ public class AirUtil {
         }
         builder.append("]");
         return builder.toString();
+    }
+
+    public static int[] getAlarmClockDayByMode(int mode){
+        switch (mode){
+            case 1:
+                return new int[]{0,1,1,1,1,1,1,1};
+            case 2:
+                return new int[]{0,1,1,1,1,1,0,0};
+            case 3:
+                return new int[]{0,1,1,1,1,1,1,0};
+            case 4:
+                return new int[]{0,1,1,0,1,1,0,1};
+            case 0:
+            default:
+                return new int[]{0,0,0,0,0,0,0,0};
+        }
+    }
+
+    public static String dealWarnSwitch(int val){
+        if (val == 1) {
+            return "各报警功能可单独设置开关";
+        } else if(val == 2){
+            return "报警功能只支持总开关";
+        }
+        return "未知";
     }
 }

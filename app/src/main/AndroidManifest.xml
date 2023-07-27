@@ -11,43 +11,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:maxSdkVersion="30"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="30"/>
     <!--OTA需要读写文件-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-
-    <!--兼容6.0以上的手机Ble-->
-    <uses-permission-sdk-23
-        android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-    <uses-permission-sdk-23
-        android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-    <uses-permission
-        android:name="android.permission.BLUETOOTH"
-        android:maxSdkVersion="30" />
-    <uses-permission
-        android:name="android.permission.BLUETOOTH_ADMIN"
-        android:maxSdkVersion="30" />
-    <!--android12还需要增加如下权限,也需求动态申请-->
-    <uses-permission
-        android:name="android.permission.BLUETOOTH_SCAN"
-        android:usesPermissionFlags="neverForLocation"
-        tools:targetApi="s" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <!--android10,11需要后台扫描的,需要添加如下权限-->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
-    <uses-feature
-        android:name="android.hardware.bluetooth_le"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.bluetooth"
-        android:required="false" />
 
 
     <application
@@ -62,6 +32,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="q">
+        <activity android:name=".ClearShakeHandsActivity" />
         <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -105,7 +76,7 @@
         <activity android:name=".HeightWeightScaleActivity" />
         <activity android:name=".find.FindDeviceActivity" />
         <activity android:name=".TempHumidityActivity" />
-        <activity android:name=".RopeSkippingActivity" />
+        <activity android:name=".modules.ropeskipping.RopeSkippingActivity" />
         <activity android:name=".modules.airdetector.AirDetectorActivity" />
         <activity android:name=".modules.airdetector_test.AirDetectorActivityTest" />
         <activity
@@ -121,15 +92,20 @@
         <activity android:name=".modules.leaone_broadcast.LeaOneBroadcastActivity" />
         <activity android:name=".modules.fascia_gun.FasciaGunActivity" />
         <activity android:name=".modules.blood_pressure_tc.BloodPressureTcActivity" />
-        <activity android:name=".RopeSkippingSetActivity" />
+        <activity android:name=".modules.ropeskipping.RopeSkippingSetActivity" />
         <activity android:name=".modules.body_scale_4g.BodyScale4GActivity" />
         <activity android:name=".AiLinkScooterActivity" />
         <activity android:name=".modules.TempInstrument.TempInstrumentActivity" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".PublicBleNetworkCmdActivity" />
+        <activity android:name=".modules.PublicBleNetworkCmdActivity" />
         <activity android:name=".modules.noise_meter.WifiBleNoiseMeterActivity" />
         <activity android:name=".modules.noise_meter.BleNoiseMeterActivity" />
-
+        <activity
+            android:name=".modules.meat_probe_charger.MeatProbeChargerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.meat_probe.MeatProbeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".modules.weight_scale.WeightScaleActivity"
             android:screenOrientation="portrait" />
@@ -147,6 +123,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <service android:name="com.pingwang.bluetoothlib.server.ELinkBleServer"/>
     </application>
 
 </manifest>

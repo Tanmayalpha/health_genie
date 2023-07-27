@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 
@@ -18,7 +20,6 @@ import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BleNutrition.BleNutritionData;
 
 public class BleNutritionActivity extends BleBaseActivity implements View.OnClickListener, BleNutritionData.BleNutritionCallback {

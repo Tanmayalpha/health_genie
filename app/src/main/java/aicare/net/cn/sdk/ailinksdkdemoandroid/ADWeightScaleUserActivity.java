@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleBleConfig;
 import cn.net.aicare.modulelibrary.module.ADWeight.ADWeightScaleUserData;
 

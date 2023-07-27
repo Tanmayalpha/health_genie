@@ -5,7 +5,6 @@ import android.view.View;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.AppBaseActivity;
 
-
 /**
  * xing<br>
  * 2022/4/6<br>

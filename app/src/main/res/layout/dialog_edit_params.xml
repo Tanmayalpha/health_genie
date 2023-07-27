@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="设置采样频率和保存频率"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_label1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="采样频率："
+        android:textColor="#000000"
+        android:layout_marginStart="16dp"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <EditText
+        android:id="@+id/et_context1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:focusable="true"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:inputType="number"
+        android:textSize="18dp"
+        android:hint="范围1-10"
+        app:layout_constraintBottom_toBottomOf="@id/tv_label1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_label1"
+        app:layout_constraintTop_toTopOf="@id/tv_label1" />
+
+    <TextView
+        android:id="@+id/tv_label2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="保存频率："
+        android:textColor="#000000"
+        android:layout_marginStart="16dp"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_context1" />
+
+    <EditText
+        android:id="@+id/et_context2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:focusable="true"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:inputType="number"
+        android:textSize="18dp"
+        android:hint="范围1-60"
+        app:layout_constraintBottom_toBottomOf="@id/tv_label2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_label2"
+        app:layout_constraintTop_toTopOf="@id/tv_label2" />
+
+    <TextView
+        android:id="@+id/tv_label3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="设备定时器间隔："
+        android:textColor="#000000"
+        android:layout_marginStart="16dp"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_context2" />
+
+    <EditText
+        android:id="@+id/et_context3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:focusable="true"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:inputType="number"
+        android:textSize="18dp"
+        android:hint="范围2-20, n * 100ms"
+        app:layout_constraintBottom_toBottomOf="@id/tv_label3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_label3"
+        app:layout_constraintTop_toTopOf="@id/tv_label3" />
+
+
+    <TextView
+        android:id="@+id/tv_ok"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="25dp"
+        android:background="#2878ce"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="确认"
+        android:textColor="#ffffff"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_label3" />
+
+    <TextView
+        android:id="@+id/tv_cancel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="取消"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_ok" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_cancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

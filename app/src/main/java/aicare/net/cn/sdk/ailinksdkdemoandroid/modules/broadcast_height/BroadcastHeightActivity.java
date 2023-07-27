@@ -13,12 +13,15 @@ import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.listener.OnCallbackDis;
 import com.pingwang.bluetoothlib.listener.OnScanFilterListener;
 import com.pingwang.bluetoothlib.utils.BleStrUtils;
-import com.pinwang.ailinkble.AiLinkPwdUtil;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -28,12 +31,10 @@ import java.util.Locale;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import cn.net.aicare.modulelibrary.module.BroadcastScale.BroadcastScaleBleConfig;
+import cn.net.aicare.modulelibrary.module.broadcastheight.BroadCastHeightConfig;
+import cn.net.aicare.modulelibrary.module.broadcastheight.BroadCastHeightDeviceData;
 
-public class BroadcastHeightActivity extends BleBaseActivity implements OnCallbackDis, OnScanFilterListener {
+public class BroadcastHeightActivity extends BleBaseActivity implements OnCallbackDis, OnScanFilterListener,BroadCastHeightDeviceData.OnNotifyHeightData {
 
     private Context mContext;
 
@@ -43,6 +44,9 @@ public class BroadcastHeightActivity extends BleBaseActivity implements OnCallba
     private ArrayAdapter mListAdapter;
 
     private String mMac;
+    private String mac;
+
+    private BroadCastHeightDeviceData mBroadCastHeightDeviceData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,7 +75,10 @@ public class BroadcastHeightActivity extends BleBaseActivity implements OnCallba
 
     @Override
     public void unbindServices() {
-
+        if (mBroadCastHeightDeviceData != null) {
+            mBroadCastHeightDeviceData.clear();
+            mBroadCastHeightDeviceData = null;
+        }
     }
 
     @Override
@@ -104,127 +111,128 @@ public class BroadcastHeightActivity extends BleBaseActivity implements OnCallba
     public void onScanRecord(BleValueBean bleValueBean) {
         if (TextUtils.isEmpty(mMac) && bleValueBean.isBroadcastModule()) {
             // 是广播模块
-            if (bleValueBean.getCid() == 0x03) {
+            if (bleValueBean.getCid() == BroadCastHeightConfig.BROAD_CAST_HEIGHT) {
                 // 是身高仪，进行数据解析
-                notifyData(bleValueBean.getManufacturerData(), bleValueBean.getCid(), bleValueBean.getVid(), bleValueBean.getPid(), bleValueBean.getMac());
+                mac = bleValueBean.getMac();
+                mBroadCastHeightDeviceData.onNotifyData(bleValueBean.getManufacturerData(), bleValueBean.getCid(), bleValueBean.getVid(), bleValueBean.getPid());
+//                notifyData(bleValueBean.getManufacturerData(), bleValueBean.getCid(), bleValueBean.getVid(), bleValueBean.getPid(), bleValueBean.getMac());
             }
         }
     }
 
-    /**
-     * @param manufacturerData 自定义厂商数据0xFF后面的数据
-     * @param cid              cid 设备类型
-     * @param vid              vid
-     * @param pid              pid
-     */
-    private void notifyData(byte[] manufacturerData, int cid, int vid, int pid, String mac) {
-        if (manufacturerData == null) {
-            addText("接收到的数据:null");
-            return;
-        }
-        if (manufacturerData.length >= 20) {
-            byte sum = manufacturerData[9];
-            byte[] data = new byte[10];
-            System.arraycopy(manufacturerData, 10, data, 0, data.length);
-            byte newSum = cmdSum(data);
-            if (newSum == sum) {
-//                addText("接收到的数据:原始数据:" + BleStrUtils.byte2HexStr(data));
-                byte[] bytes;
-                byte[] dataOriginal = data.clone();
-                if (cid != 0 || vid != 0 || pid != 0) {
-                    //数据需要解密
-                    if (cid == BroadcastScaleBleConfig.BROADCAST_SCALE_LING_YANG_CID) {
-                        bytes = AiLinkPwdUtil.decryptLingYang(data);
-                    } else {
-                        bytes = AiLinkPwdUtil.decryptBroadcast(cid, vid, pid, data);
-                    }
-                } else {
-                    bytes = data;
-                }
-
-//                addText("接收到的数据:" + BleStrUtils.byte2HexStr(bytes));
-                checkData(bytes, cid, vid, pid, mac);
-            } else {
-                addText("校验和错误");
-            }
-        }
-    }
-
-    // 上一次的流水号
-    private int mLastSerialNum = -1;
-
-    /**
-     * 解析数据
-     *
-     * @param hex 解密后的数据
-     * @param cid cid
-     * @param vid vid
-     * @param pid pid
-     */
-    private void checkData(byte[] hex, int cid, int vid, int pid, String mac) {
-        // 流水号
-        int serialNum = hex[0];
-        if (serialNum == mLastSerialNum) {
-            return;
-        }
-        mLastSerialNum = serialNum;
-
-        // 测量标识
-        int flag = hex[1] & 0xff;
-        // 身高原始数据
-        int heightOrigin = (hex[2] & 0xff) << 8 | (hex[3] & 0xff);
-        // 身高单位 0：cm；1：inch；2：ft-in
-        int heightUnit = (hex[4] & 0xff) & 0x0f;
-        // 身高小数点
-        int heightDecimal = ((hex[4] & 0xff) & 0xf0) >> 4;
-        // 体重原始数据
-        int weightOrigin = (hex[5] & 0xff) << 8 | (hex[6] & 0xff);
-        // 体重单位 0：kg；1：斤；2：lb:oz；3：oz；4：st:lb；5：g；6：lb
-        int weightUnit = (hex[7] & 0xff) & 0x0f;
-        // 体重正负号
-        int weightSymbol = ((hex[7] & 0xff) & 0x10) >> 4;
-        // 体重小数点
-        int weightDecimal = ((hex[7] & 0xff) & 0xe0) >> 5;
-        // 电量
-        int battery = hex[8] & 0xff;
-
-        // 输出
-        String text = "";
-        text += "MAC地址：" + mac;
-        text += "\n数据解析：" + BleStrUtils.byte2HexStr(hex);
-        text += "\n测量标识：" + flag + "：" + getFlagStr(flag);
-        text += "\n身高原始数据：" + heightOrigin;
-        text += "\n身高单位：" + heightUnit;
-        text += "\n身高小数点：" + heightDecimal;
-        text += "\n身高最终值：" + getHeightStr(heightOrigin, heightUnit, heightDecimal);
-
-        if (weightOrigin != 0xffff) {
-            text += "\n体重原始数据：" + weightOrigin;
-            text += "\n体重单位：" + weightUnit;
-            text += "\n体重正负号：" + weightSymbol;
-            text += "\n体重小数点：" + weightDecimal;
-            text += "\n体重最终值：" + getWeightStr(weightOrigin, weightUnit, weightDecimal, weightSymbol);
-        } else {
-            text += "\n体重：" + "不支持";
-        }
-        if (battery != 0xff) {
-            text += "\n电量：" + battery;
-        } else {
-            text += "\n电量：" + "不支持";
-        }
-        addText(text);
-    }
+//    /**
+//     * @param manufacturerData 自定义厂商数据0xFF后面的数据
+//     * @param cid              cid 设备类型
+//     * @param vid              vid
+//     * @param pid              pid
+//     */
+//    private void notifyData(byte[] manufacturerData, int cid, int vid, int pid, String mac) {
+//        if (manufacturerData == null) {
+//            addText("接收到的数据:null");
+//            return;
+//        }
+//        if (manufacturerData.length >= 20) {
+//            byte sum = manufacturerData[9];
+//            byte[] data = new byte[10];
+//            System.arraycopy(manufacturerData, 10, data, 0, data.length);
+//            byte newSum = cmdSum(data);
+//            if (newSum == sum) {
+////                addText("接收到的数据:原始数据:" + BleStrUtils.byte2HexStr(data));
+//                byte[] bytes;
+//                if (cid != 0 || vid != 0 || pid != 0) {
+//                    //数据需要解密
+//                    if (cid == BroadcastScaleBleConfig.BROADCAST_SCALE_LING_YANG_CID) {
+//                        bytes = AiLinkPwdUtil.decryptLingYang(data);
+//                    } else {
+//                        bytes = AiLinkPwdUtil.decryptBroadcast(cid, vid, pid, data);
+//                    }
+//                } else {
+//                    bytes = data;
+//                }
+//
+////                addText("接收到的数据:" + BleStrUtils.byte2HexStr(bytes));
+//                checkData(bytes, cid, vid, pid, mac);
+//            } else {
+//                addText("校验和错误");
+//            }
+//        }
+//    }
+//
+//    // 上一次的流水号
+//    private int mLastSerialNum = -1;
+//
+//    /**
+//     * 解析数据
+//     *
+//     * @param hex 解密后的数据
+//     * @param cid cid
+//     * @param vid vid
+//     * @param pid pid
+//     */
+//    private void checkData(byte[] hex, int cid, int vid, int pid, String mac) {
+//        // 流水号
+//        int serialNum = hex[0];
+//        if (serialNum == mLastSerialNum) {
+//            return;
+//        }
+//        mLastSerialNum = serialNum;
+//
+//        // 测量标识
+//        int flag = hex[1] & 0xff;
+//        // 身高原始数据
+//        int heightOrigin = (hex[2] & 0xff) << 8 | (hex[3] & 0xff);
+//        // 身高单位 0：cm；1：inch；2：ft-in
+//        int heightUnit = (hex[4] & 0xff) & 0x0f;
+//        // 身高小数点
+//        int heightDecimal = ((hex[4] & 0xff) & 0xf0) >> 4;
+//        // 体重原始数据
+//        int weightOrigin = (hex[5] & 0xff) << 8 | (hex[6] & 0xff);
+//        // 体重单位 0：kg；1：斤；2：lb:oz；3：oz；4：st:lb；5：g；6：lb
+//        int weightUnit = (hex[7] & 0xff) & 0x0f;
+//        // 体重正负号
+//        int weightSymbol = ((hex[7] & 0xff) & 0x10) >> 4;
+//        // 体重小数点
+//        int weightDecimal = ((hex[7] & 0xff) & 0xe0) >> 5;
+//        // 电量
+//        int battery = hex[8] & 0xff;
+//
+//        // 输出
+//        String text = "";
+//        text += "MAC地址：" + mac;
+//        text += "\n数据解析：" + BleStrUtils.byte2HexStr(hex);
+//        text += "\n测量标识：" + flag + "：" + getFlagStr(flag);
+//        text += "\n身高原始数据：" + heightOrigin;
+//        text += "\n身高单位：" + heightUnit;
+//        text += "\n身高小数点：" + heightDecimal;
+//        text += "\n身高最终值：" + getHeightStr(heightOrigin, heightUnit, heightDecimal);
+//
+//        if (weightOrigin != 0xffff) {
+//            text += "\n体重原始数据：" + weightOrigin;
+//            text += "\n体重单位：" + weightUnit;
+//            text += "\n体重正负号：" + weightSymbol;
+//            text += "\n体重小数点：" + weightDecimal;
+//            text += "\n体重最终值：" + getWeightStr(weightOrigin, weightUnit, weightDecimal, weightSymbol);
+//        } else {
+//            text += "\n体重：" + "不支持";
+//        }
+//        if (battery != 0xff) {
+//            text += "\n电量：" + battery;
+//        } else {
+//            text += "\n电量：" + "不支持";
+//        }
+//        addText(text);
+//    }
 
     private String getFlagStr(int flag) {
         String str = "";
         switch (flag) {
-            case 0:
+            case BroadCastHeightConfig.MEASURING:
                 str = "正在测量";
                 break;
-            case 1:
+            case BroadCastHeightConfig.MEASURING_STABLE:
                 str = "稳定身高体重";
                 break;
-            case 0xff:
+            case BroadCastHeightConfig.MEASURING_FAILED:
                 str = "测量失败";
                 break;
         }
@@ -236,20 +244,22 @@ public class BroadcastHeightActivity extends BleBaseActivity implements OnCallba
         str += getPreFloatStr((float) (heightOrigin * 1.0f / Math.pow(10, heightDecimal)), heightDecimal, 0);
 
         switch (heightUnit) {
-            case 0:
+            case BroadCastHeightConfig.UNIT_CM:
                 str += "cm";
                 break;
-            case 1:
+            case BroadCastHeightConfig.UNIT_INCH:
                 str += "inch";
                 break;
-            case 2:
+            case BroadCastHeightConfig.UNIT_FT_IN:
                 try {
-                    int ft = Integer.parseInt(str);
-                    int f = ft / 12;
-                    int i = ft - f * 12;
-                    str = f + "'" + i + "\"";
+                    float inchSize = Float.parseFloat(str);
+                    int feet = (int) (inchSize / 12);
+                    float inch = (inchSize % 12f);
+                    String decimalStr = "%." + heightDecimal + "f";
+                    inch = Float.parseFloat(String.format(Locale.US, decimalStr, inch));
+                    str = feet + "'" + inch + "\"";
                 } catch (Exception e) {
-                    str = "解析异常，原始值不是int型";
+                    str = "解析异常";
                 }
                 break;
         }
@@ -262,25 +272,25 @@ public class BroadcastHeightActivity extends BleBaseActivity implements OnCallba
         str += getPreFloatStr((float) (weightOrigin * 1.0f / Math.pow(10, weightDecimal)) * (weightSymbol == 1 ? -1 : 1), weightDecimal, 0);
 
         switch (weightUnit) {
-            case 0:
+            case BroadCastHeightConfig.UNIT_KG:
                 str += "kg";
                 break;
-            case 1:
+            case BroadCastHeightConfig.UNIT_JIN:
                 str += "斤";
                 break;
-            case 2:
+            case BroadCastHeightConfig.UNIT_LB_OZ:
                 str += "lb:oz";
                 break;
-            case 3:
+            case BroadCastHeightConfig.UNIT_OZ:
                 str += "oz";
                 break;
-            case 4:
+            case BroadCastHeightConfig.UNIT_ST_LB:
                 str += "st:lb";
                 break;
-            case 5:
+            case BroadCastHeightConfig.UNIT_G:
                 str += "g";
                 break;
-            case 6:
+            case BroadCastHeightConfig.UNIT_LB:
                 str += "lb";
                 break;
         }
@@ -371,8 +381,10 @@ public class BroadcastHeightActivity extends BleBaseActivity implements OnCallba
         // 权限都有了，OK
         addText("权限都有，开始接收广播数据");
         if (mBluetoothService != null) {
+            mBroadCastHeightDeviceData = BroadCastHeightDeviceData.getInstance();
+            mBroadCastHeightDeviceData.setOnNotifyHeightData(this);
             mBluetoothService.setOnScanFilterListener(this);
-            mBluetoothService.scanLeDevice(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
+            mBluetoothService.startScan(0, BleConfig.UUID_SERVER_BROADCAST_AILINK);
         }
     }
 
@@ -440,5 +452,54 @@ public class BroadcastHeightActivity extends BleBaseActivity implements OnCallba
         mList.add(sdf.format(System.currentTimeMillis()) + "：\n" + text);
         mListAdapter.notifyDataSetChanged();
         list_view.smoothScrollToPosition(mList.size() - 1);
+    }
+
+    /**
+     *
+     * @param hex 解析后的数据
+     * @param flag 测量标识
+     * @param heightOrigin 身高原始数据
+     * @param heightUnit 身高单位
+     * @param heightDecimal 身高小数点
+     * @param weightOrigin 体重原始数据
+     * @param weightUnit 体重单位
+     * @param weightSymbol 体重正负号
+     * @param weightDecimal 体重小数点
+     * @param battery 体重最终值
+     */
+    @Override
+    public void notifyData(byte[] hex, int flag, int heightOrigin, int heightUnit, int heightDecimal,
+                           int weightOrigin, int weightUnit, int weightSymbol, int weightDecimal, int battery) {
+
+        if (heightOrigin == 0){
+            return;
+        }
+
+        // 输出
+        String text = "";
+        text += "MAC地址：" + mac;
+        text += "\n数据解析：" + BleStrUtils.byte2HexStr(hex);
+        text += "\n测量标识：" + flag + "：" + getFlagStr(flag);
+        text += "\n身高原始数据：" + heightOrigin;
+        text += "\n身高单位：" + heightUnit;
+        text += "\n身高小数点：" + heightDecimal;
+        text += "\n身高最终值：" + getHeightStr(heightOrigin, heightUnit, heightDecimal);
+
+        if (weightOrigin != 0xffff) {
+            text += "\n体重原始数据：" + weightOrigin;
+            text += "\n体重单位：" + weightUnit;
+            text += "\n体重正负号：" + weightSymbol;
+            text += "\n体重小数点：" + weightDecimal;
+            text += "\n体重最终值：" + getWeightStr(weightOrigin, weightUnit, weightDecimal, weightSymbol);
+        } else {
+            text += "\n体重：" + "不支持";
+        }
+        if (battery != 0xff) {
+            text += "\n电量：" + battery;
+        } else {
+            text += "\n电量：" + "不支持";
+        }
+        addText(text);
+
     }
 }

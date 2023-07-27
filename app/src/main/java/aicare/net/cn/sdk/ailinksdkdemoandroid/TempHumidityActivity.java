@@ -9,6 +9,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
@@ -19,8 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.TempHumidity.TempHumidityBleUtils;
 
 /**
@@ -44,10 +45,9 @@ public class TempHumidityActivity extends BleBaseActivity implements OnCallbackB
 
     @Override
     public void onServiceSuccess() {
-        mBluetoothService.setOnCallback(this);
         logList.add(0, "绑定服务成功");
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             mBluetoothService.deviceConnectListener(mAddress, true);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
@@ -68,7 +68,9 @@ public class TempHumidityActivity extends BleBaseActivity implements OnCallbackB
 
     @Override
     public void unbindServices() {
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
 

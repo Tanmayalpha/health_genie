@@ -2,11 +2,12 @@ package aicare.net.cn.sdk.ailinksdkdemoandroid.modules.airdetector_test;
 
 import android.util.SparseArray;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.modules.airdetector.AirUtil;
-import androidx.annotation.NonNull;
 import cn.net.aicare.modulelibrary.module.airDetector.AirConst;
 import cn.net.aicare.modulelibrary.module.airDetector.CalibrationListBean;
 import cn.net.aicare.modulelibrary.module.airDetector.StatusBean;
@@ -107,15 +108,34 @@ public class AirDetectorTestShowUtil {
         return builder.toString();
     }
 
+
+    /**
+     * 参数校准后，实时状态返回
+     *
+     * @param statusList
+     * @param supportList
+     * @return
+     */
+    public static String showCalSettingAfterTextStatus(SparseArray<StatusBean> statusList, SparseArray<SupportBean> supportList) {
+        StringBuilder builder = new StringBuilder();
+        StatusBean statusBean = statusList.get(AirConst.AIR_CALIBRATION_PARAMETERS);
+        // 支持列表不包含，添加空字符串
+        SupportBean supportBean = supportList.get(AirConst.AIR_CALIBRATION_PARAMETERS);
+        if (supportBean != null) {
+            builder.append(AirUtil.dealCalResultAllStatus(statusBean, supportList));
+        }
+        return builder.toString();
+    }
+
     /**
      * 设置指令返回
      *
      * @param settingList
      * @param supportList
-     * @Param resultInterface
      * @return
+     * @Param resultInterface
      */
-    public static String showGetResultSettings(SparseArray<StatusBean> settingList, SparseArray<SupportBean> supportList){
+    public static String showGetResultSettings(SparseArray<StatusBean> settingList, SparseArray<SupportBean> supportList) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < settingList.size(); i++) {
             int type = settingList.keyAt(i);
@@ -141,11 +161,11 @@ public class AirDetectorTestShowUtil {
                     break;
                 case AirConst.AIR_TYPE_HUMIDITY:
                     int hPow = (int) Math.pow(10, supportBean.getPoint());
-                    String humpStr = "下限值：" + settingBean.getWarmMin() / hPow + ", 上限值： "+ settingBean.getWarmMax() / hPow;
+                    String humpStr = "下限值：" + settingBean.getWarmMin() / hPow + ", 上限值： " + settingBean.getWarmMax() / hPow;
                     builder.append(humpStr);
                     break;
                 case AirConst.AIR_TYPE_TEMP:
-                    String tempStr = "下限值：" + settingBean.getWarmMin() + ", 上限值： "+ settingBean.getWarmMax();
+                    String tempStr = "下限值：" + settingBean.getWarmMin() + ", 上限值： " + settingBean.getWarmMax();
                     builder.append(tempStr);
                     break;
                 case AirConst.AIR_SETTING_VOICE:
@@ -242,15 +262,15 @@ public class AirDetectorTestShowUtil {
                     resultInterface.onWarmResultCO(AirUtil.getWarmResultStr(supportBean, resultBean));
                     break;
                 case AirConst.AIR_TYPE_HUMIDITY:
-                    String humpStr = "下限值：" + resultBean.getWarmMin() + ", 上限值： "+ resultBean.getWarmMax();
+                    String humpStr = "下限值：" + resultBean.getWarmMin() + ", 上限值： " + resultBean.getWarmMax();
                     resultInterface.onWarmResultHumidity(humpStr);
                     break;
                 case AirConst.AIR_TYPE_TEMP:
-                    String tempStr = "下限值：" + resultBean.getWarmMin() + ", 上限值： "+ resultBean.getWarmMax();
+                    String tempStr = "下限值：" + resultBean.getWarmMin() + ", 上限值： " + resultBean.getWarmMax();
                     resultInterface.onWarmResultTemp(tempStr);
                     break;
                 case AirConst.AIR_SETTING_VOICE:
-                    resultInterface.onResultVoice("开关：" + AirUtil.getSwitchStatus(resultBean.isOpen()) + ", Level: "+ resultBean.getValue());
+                    resultInterface.onResultVoice("开关：" + AirUtil.getSwitchStatus(resultBean.isOpen()) + ", Level: " + resultBean.getValue());
                     break;
                 case AirConst.AIR_SETTING_WARM_DURATION:
                     resultInterface.onResultWarmDuration("时长：" + resultBean.getValue() + " S");
@@ -297,6 +317,9 @@ public class AirDetectorTestShowUtil {
                 case AirConst.AIR_MONITORING_DISPLAY_DATA:
                     resultInterface.onResultMonitoringDisplayData("监测显示数据开关：" + AirUtil.getSwitchStatus(resultBean.isOpen()));
                     break;
+                case AirConst.AIR_SETTING_WARM:
+                    resultInterface.onResultMasterWarnSwitch("指标报警总开关：" + AirUtil.getSwitchStatus(resultBean.isOpen()));
+                    break;
                 default:
                     break;
             }
@@ -318,7 +341,7 @@ public class AirDetectorTestShowUtil {
             }
             for (CalibrationListBean.CalibrationBean bean : list) {
                 String resultStr = AirUtil.getOperateStr(bean.getCalOperate());
-                switch (bean.getCalType()){
+                switch (bean.getCalType()) {
                     case AirConst.AIR_TYPE_FORMALDEHYDE:
                         resultInterface.onCalResultHCHO(resultStr);
                         break;
@@ -359,6 +382,5 @@ public class AirDetectorTestShowUtil {
         }
     }
 
-    
 
 }

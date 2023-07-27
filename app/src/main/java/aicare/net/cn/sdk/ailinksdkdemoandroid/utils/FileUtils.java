@@ -12,6 +12,9 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,8 +25,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.MyApplication;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 
 public class FileUtils {

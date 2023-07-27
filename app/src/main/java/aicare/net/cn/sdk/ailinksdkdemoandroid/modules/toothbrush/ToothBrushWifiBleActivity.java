@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.elinkthings.bleotalibrary.listener.OnBleOTAListener;
 import com.elinkthings.bleotalibrary.netstrap.OPLOtaManager;
 import com.pingwang.bluetoothlib.bean.BleValueBean;
@@ -33,15 +35,13 @@ import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.dialog.WifiDialog;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.L;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.ToothBrushUtils;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushBleCmd;
 import cn.net.aicare.modulelibrary.module.ToothBrush.ToothBrushWiFiBleUtilsData;
 
 /**
  * Wifi+ble 牙刷
  */
-public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, ToothBrushWiFiBleUtilsData.BleToothBrushWiFiCallback,
-        ToothBrushWiFiBleUtilsData.BleToothBrushCallback {
+public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.OnClickListener, OnCallbackBle, ToothBrushWiFiBleUtilsData.BleToothBrushWiFiCallback, ToothBrushWiFiBleUtilsData.BleToothBrushCallback {
     private String TAG = ToothBrushWifiBleActivity.class.getName();
     private String mAddress;
     private List<String> mList;
@@ -92,10 +92,10 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
 
         //与服务建立连接
         mList.add(0, "服务与界面建立连接成功");
-//        mList.add(0, "搜索设备");
+        //        mList.add(0, "搜索设备");
         mMHandler.sendEmptyMessage(ToRefreUi);
-        mBluetoothService.setOnCallback(this);
-        mBluetoothService.scanLeDevice(30 * 1000);
+        mBluetoothService.setOnCallbackBle(this);
+        mBluetoothService.startScan(30 * 1000);
 
 
     }
@@ -108,7 +108,8 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
 
     @Override
     public void unbindServices() {
-        if (mBluetoothService!=null) {
+        if (mBluetoothService != null) {
+            mBluetoothService.removeOnCallbackBle(this);
             mBluetoothService.disconnectAll();
         }
     }
@@ -122,7 +123,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
     public void onScanning(BleValueBean data) {
         BleLog.i(TAG, "MAC=" + mAddress + "||CID=" + data.getCid() + "||VID=" + data.getVid() + "||PID=" + data.getPid());
         if (data.getMac().equalsIgnoreCase(mAddress)) {
-            if (mBluetoothService!=null) {
+            if (mBluetoothService != null) {
                 mBluetoothService.stopScan();
                 mBluetoothService.connectDevice(data.getMac());
             }
@@ -149,7 +150,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
     public void onServicesDiscovered(String mac) {
         mList.add(0, "蓝牙已连接");
         mMHandler.sendEmptyMessage(ToRefreUi);
-        mBluetoothService.setOnCallback(this);
+        mBluetoothService.setOnCallbackBle(this);
         BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
         if (bleDevice != null) {
             ToothBrushWiFiBleUtilsData.init(bleDevice, this, this);
@@ -374,7 +375,7 @@ public class ToothBrushWifiBleActivity extends BleBaseActivity implements View.O
 
                 case R.id.ota:
                     showFileChooser();
-//                    mToothBrushWiFiBleUtilsData.setOta();
+                    //                    mToothBrushWiFiBleUtilsData.setOta();
 
                     break;
 

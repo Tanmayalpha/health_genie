@@ -6,13 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pingwang.bluetoothlib.bean.BleValueBean;
 
 import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * xing<br>
@@ -96,32 +97,5 @@ public class StringAdapter extends RecyclerView.Adapter<StringAdapter.KeyViewHol
         }
     }
 
-
-    public static class DialogStringImageBean{
-
-        String mName;
-        long mType;
-
-        public DialogStringImageBean(String name, long type) {
-            mName = name;
-            mType = type;
-        }
-
-        public String getName() {
-            return mName;
-        }
-
-        public void setName(String name) {
-            mName = name;
-        }
-
-        public long getType() {
-            return mType;
-        }
-
-        public void setType(long type) {
-            mType = type;
-        }
-    }
 
 }

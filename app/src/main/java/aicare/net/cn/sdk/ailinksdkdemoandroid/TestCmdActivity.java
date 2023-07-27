@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.config.BleConfig;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.device.SendDataBean;
@@ -30,8 +33,6 @@ import java.util.UUID;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.utils.TimeUtils;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 
 /**
@@ -51,7 +52,7 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     private ArrayAdapter listAdapter;
     private Context mContext;
     private EditText et_cmd, et_uuid, et_uuid_server, et_time, et_notify;
-    private BleDevice bleDevice;
+    private BleDevice mBleDevice;
     private String mAddress;
     private int sendTime = 1000;
     private UUID sendUuid = null;
@@ -61,6 +62,7 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     private long mSendNumber = 0;
     private long mReceiveNumber = 0;
     private boolean mShowLog = true;
+    private int mNum = 1;
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -75,8 +77,9 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
                 case SEND_DATA:
 
                     if (sendUuid != null && sendUuidServer != null) {
-                        SendDataBean sendDataBean = new SendDataBean(sendCmd.getBytes(), sendUuid, BleConfig.WRITE_DATA, sendUuidServer);
-                        bleDevice.sendData(sendDataBean);
+                        mNum++;
+                        SendDataBean sendDataBean = new SendDataBean(String.valueOf(mNum).getBytes(), sendUuid, BleConfig.WRITE_DATA, sendUuidServer);
+                        mBleDevice.sendData(sendDataBean);
                         if (sendTime > 0) {
                             mHandler.sendEmptyMessageDelayed(SEND_DATA, sendTime);
                         }
@@ -139,7 +142,7 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
             case R.id.clear:
                 if (mList != null)
                     mList.clear();
-                mSendNumber=0;
+                mSendNumber = 0;
                 mReceiveNumber = 0;
                 tv_receive_number.setText("0");
                 tv_send_number.setText("0");
@@ -182,11 +185,11 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
      */
     private void readNotify(String notify, boolean notifyOpen) {
         UUID uuidNotify = UuidUtils.getUuid(notify);
-        if (bleDevice != null && sendUuidServer != null) {
+        if (mBleDevice != null && sendUuidServer != null) {
             if (notifyOpen) {
-                bleDevice.setNotify(sendUuidServer, uuidNotify);
+                mBleDevice.setNotify(sendUuidServer, uuidNotify);
             } else {
-                bleDevice.setCloseNotify(sendUuidServer, uuidNotify);
+                mBleDevice.setCloseNotify(sendUuidServer, uuidNotify);
             }
 
         } else {
@@ -203,11 +206,11 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         BleLog.i(TAG, "服务与界面建立连接成功");
         //与服务建立连接
         if (mBluetoothService != null) {
-            bleDevice = mBluetoothService.getBleDevice(mAddress);
+            mBleDevice = mBluetoothService.getBleDevice(mAddress);
             CallbackDisIm.getInstance().addListListener(this);
-            if (bleDevice != null) {
-                bleDevice.setOnBleOtherDataListener(this);
-                bleDevice.setOnBleDeviceDataListener(this);
+            if (mBleDevice != null) {
+                mBleDevice.setOnBleOtherDataListener(this);
+                mBleDevice.setOnBleDeviceDataListener(this);
 
             }
         }
@@ -223,9 +226,9 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     @Override
     public void unbindServices() {
         CallbackDisIm.getInstance().removeListener(this);
-        if (bleDevice != null) {
-            bleDevice.disconnect();
-            bleDevice = null;
+        if (mBleDevice != null) {
+            mBleDevice.disconnect();
+            mBleDevice = null;
         }
 
     }
@@ -268,9 +271,8 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
     //-----------------通知-------------------
 
 
-
     @Override
-    public void onNotifyData(byte[] hex, int type) {
+    public void onNotifyData(String uuid, byte[] hex, int type) {
         if (!mShowLog) {
             return;
         }
@@ -280,20 +282,26 @@ public class TestCmdActivity extends BleBaseActivity implements OnCallbackDis, O
         if (type == 100) {
             mList.add(TimeUtils.getTime() + "send->" + data);
         } else {
-            mList.add(TimeUtils.getTime() + "notify->" + data);
+            mList.add(TimeUtils.getTime() + "notify1->" + data);
             mReceiveNumber += hex.length;
             tv_receive_number.setText(String.valueOf(mReceiveNumber));
         }
         mHandler.sendEmptyMessage(REFRESH_DATA);
     }
 
+
     @Override
-    public void onNotifyOtherData(byte[] hex) {
+    public void onNotifyOtherData(String uuid, byte[] hex) {
+        if (mBleDevice != null) {
+            hex[0]= (byte) (hex[0]+1);
+            SendDataBean sendDataBean = new SendDataBean(hex,BleConfig.UUID_WRITE_AILINK,BleConfig.WRITE_DATA,BleConfig.UUID_SERVER_AILINK);
+            mBleDevice.sendDataNow(sendDataBean);
+        }
         if (mShowLog) {
             String data = "";
             if (hex != null)
                 data = BleStrUtils.byte2HexStr(hex);
-            mList.add(TimeUtils.getTime() + "notify->" + data);
+            mList.add(TimeUtils.getTime() + "notify2->" + data);
             mHandler.sendEmptyMessage(REFRESH_DATA);
         }
         mReceiveNumber += hex.length;

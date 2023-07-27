@@ -35,6 +35,8 @@ public class AirDetectorShowUtil {
                 builder.append("max : ").append(bean.getMax()).append(", min: ").append(bean.getMin()).append(", 小数点：").append(bean.getPoint());
                 break;
             case AirConst.AIR_SETTING_WARM:
+                builder.append("数值：").append(bean.getCurValue()).append(", ").append(AirUtil.dealWarnSwitch((int) bean.getCurValue()));
+                break;
             case AirConst.AIR_SETTING_DEVICE_ERROR:
             case AirConst.AIR_SETTING_DEVICE_SELF_TEST:
             case AirConst.AIR_RESTORE_FACTORY_SETTINGS:
@@ -51,12 +53,13 @@ public class AirDetectorShowUtil {
                 AlarmClockStatement alarmClockStatement = (AlarmClockStatement) bean.getExtentObject();
                 String alarmShow = "闹钟显示：" + alarmClockStatement.isShowIcon();
                 String alarmCount = ", 闹钟数量：" + alarmClockStatement.getAlarmCount();
+                String supportDelete = ", 支持添加删除闹钟：" + alarmClockStatement.isSupportDelete();
                 String mode0 = ", 模式 0:一次性,当天有效：" + alarmClockStatement.isMode0();
                 String mode1 = ", 模式 1:每天都响：" + alarmClockStatement.isMode1();
                 String mode2 = ", 模式 2:周一至周五：" + alarmClockStatement.isMode2();
                 String mode3 = ", 模式 3:周一至周六：" + alarmClockStatement.isMode3();
                 String mode4 = ", 模式 4:自定义：" + alarmClockStatement.isMode4();
-                builder.append(alarmShow).append(alarmCount).append(mode0).append(mode1).append(mode2).append(mode3).append(mode4);
+                builder.append(alarmShow).append(alarmCount).append(supportDelete).append(mode0).append(mode1).append(mode2).append(mode3).append(mode4);
                 break;
             case AirConst.AIR_KEY_SOUND:
             case AirConst.AIR_ALARM_SOUND_EFFECT:
@@ -87,6 +90,9 @@ public class AirDetectorShowUtil {
                 break;
             case AirConst.AIR_SETTING_SWITCH_TEMP_UNIT:
                 builder.append("温度: ").append(bean.getCurValue() == 1 ? "1 - 支持" : "0 - 不支持");
+                break;
+            case AirConst.AIR_PROTOCOL_VERSION:
+                builder.append(bean.getCurValue());
                 break;
             default:
                 break;
@@ -164,6 +170,9 @@ public class AirDetectorShowUtil {
             case AirConst.AIR_MONITORING_DISPLAY_DATA:
                 builder.append(AirUtil.getSwitchStatus(statusBean.isOpen()));
                 break;
+            case AirConst.AIR_SETTING_SWITCH_TEMP_UNIT:
+                builder.append("可忽略，不处理");
+                break;
             default:
                 break;
         }
@@ -202,10 +211,15 @@ public class AirDetectorShowUtil {
                 int hPow = (int) Math.pow(10, supportBean.getPoint());
                 String humpStr = "下限值：" + settingBean.getWarmMin() / hPow + ", 上限值： " + settingBean.getWarmMax() / hPow;
                 builder.append(humpStr);
+                builder.append(", 子开关：").append(AirUtil.getSwitchStatus(settingBean.isOpen()));
                 break;
             case AirConst.AIR_TYPE_TEMP:
                 String tempStr = "下限值：" + settingBean.getWarmMin() + ", 上限值： " + settingBean.getWarmMax();
                 builder.append(tempStr);
+                builder.append(", 子开关：").append(AirUtil.getSwitchStatus(settingBean.isOpen()));
+                break;
+            case AirConst.AIR_SETTING_WARM:
+                builder.append(", 总开关：").append(AirUtil.getSwitchStatus(settingBean.isOpen()));
                 break;
             case AirConst.AIR_SETTING_VOICE:
                 builder.append("开关：").append(AirUtil.getSwitchStatus(settingBean.isOpen())).append(", Level: ").append(settingBean.getValue());

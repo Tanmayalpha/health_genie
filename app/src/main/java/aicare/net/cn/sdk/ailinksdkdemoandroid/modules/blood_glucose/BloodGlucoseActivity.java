@@ -9,6 +9,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 
+import androidx.annotation.Nullable;
+
 import com.pingwang.bluetoothlib.bean.SupportUnitBean;
 import com.pingwang.bluetoothlib.device.BleDevice;
 import com.pingwang.bluetoothlib.listener.OnCallbackBle;
@@ -18,7 +20,6 @@ import java.util.List;
 
 import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import aicare.net.cn.sdk.ailinksdkdemoandroid.base.BleBaseActivity;
-import androidx.annotation.Nullable;
 import cn.net.aicare.modulelibrary.module.BloodGlucose.BloodGlucoseBleDeviceData;
 import cn.net.aicare.modulelibrary.module.BloodGlucose.BloodGlucoseUtil;
 
@@ -106,7 +107,7 @@ public class BloodGlucoseActivity extends BleBaseActivity implements OnCallbackB
         mLogList.add(0, "绑定服务成功");
         listAdapter.notifyDataSetChanged();
         if (mBluetoothService != null) {
-            mBluetoothService.setOnCallback(this);
+            mBluetoothService.setOnCallbackBle(this);
             BleDevice bleDevice = mBluetoothService.getBleDevice(mAddress);
             if (bleDevice != null) {
                 mBloodGlucoseBleDeviceData = new BloodGlucoseBleDeviceData(bleDevice);
@@ -128,7 +129,9 @@ public class BloodGlucoseActivity extends BleBaseActivity implements OnCallbackB
 
     @Override
     public void unbindServices() {
-
+        if (mBluetoothService!=null) {
+            mBluetoothService.removeOnCallbackBle(this);
+        }
     }
 
 

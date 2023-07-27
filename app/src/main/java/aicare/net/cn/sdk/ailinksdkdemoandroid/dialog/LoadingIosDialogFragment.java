@@ -11,12 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import aicare.net.cn.sdk.ailinksdkdemoandroid.R;
 
 
 /**
@@ -32,7 +33,7 @@ public class LoadingIosDialogFragment extends DialogFragment {
     /**
      * 默认超时时间
      */
-    private int timeOut = 30;
+    private int timeOut = 10;
     private boolean show = false;
 
     public boolean isShow() {
