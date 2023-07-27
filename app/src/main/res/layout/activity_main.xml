@@ -142,7 +142,7 @@
                     android:id="@+id/btn_broadcast_scale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="广播秤" />
+                    android:text="广播体脂秤" />
 
                 <Button
                     android:id="@+id/btn_broadcast_blood_oxygen"
@@ -476,15 +476,7 @@
                     android:id="@+id/btn_weight_scale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="体重秤"/>
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-
+                    android:text="连接体重秤"/>
 
             </LinearLayout>
 
