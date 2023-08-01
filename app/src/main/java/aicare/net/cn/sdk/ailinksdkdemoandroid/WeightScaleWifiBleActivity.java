@@ -49,6 +49,7 @@ import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatBleUtilsData;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatDataUtil;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.BodyFatRecord;
 import cn.net.aicare.modulelibrary.module.BodyFatScale.McuHistoryRecordBean;
+import cn.net.aicare.modulelibrary.module.BodyFatScale.User;
 
 /**
  * wifi+ble体脂秤
@@ -154,6 +155,18 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
         FileUtils.init();
         mDialogList = new ArrayList<>();
         initLauncher();
+    }
+
+    private User getDefault(){
+        User user = new User();
+        user.setModeType(BodyFatDataUtil.MODE_ORDINARY);
+        user.setSex(BodyFatDataUtil.SEX_MAN);
+        user.setAge(18);
+        user.setHeight(170);
+        user.setAdc(560);
+        user.setWeight(50);
+        user.setId(1);
+        return user;
     }
 
     private void initLauncher() {
@@ -283,6 +296,9 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                 break;
             case BodyFatDataUtil.TEST_FINISH:
                 mList.add(0, "测量状态：" + status + " 测量完成");
+                if (bodyFatBleUtilsData != null) {
+                    bodyFatBleUtilsData.sendData(BodyFatDataUtil.getInstance().sendTestStatus(1));
+                }
                 break;
             case BodyFatDataUtil.MUC_REQUEST_USER_INFO:
                 mList.add(0, "测量状态：" + status + "请求用户信息");
@@ -646,7 +662,8 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                 try {
                     int selectWifi = Integer.valueOf(mEditText.getText().toString().trim());
                     if (mHashMap.get(selectWifi) != null && wifimacMap.get(selectWifi) != null) {
-                        WifiDialog.newInstance().setTitle(mHashMap.get(selectWifi), wifimacMap.get(selectWifi)).setOnDialogListener(new WifiDialog.OnDialogListener() {
+                        WifiDialog
+                                .newInstance().setTitle(mHashMap.get(selectWifi), wifimacMap.get(selectWifi)).setOnDialogListener(new WifiDialog.OnDialogListener() {
                             @Override
                             public void tvCancelListener(View v) {
 
@@ -723,7 +740,8 @@ public class WeightScaleWifiBleActivity extends BleBaseActivity implements View.
                     for (String s : list) {
                         mDialogList.add(new DialogStringImageBean(s, 0));
                     }
-                    ShowListDialogFragment.newInstance().setTitle("").setCancel("", 0).setCancelBlank(true).setBackground(true).setBottom(false).setList(mDialogList).setOnDialogListener(new ShowListDialogFragment.onDialogListener() {
+                    ShowListDialogFragment
+                            .newInstance().setTitle("").setCancel("", 0).setCancelBlank(true).setBackground(true).setBottom(false).setList(mDialogList).setOnDialogListener(new ShowListDialogFragment.onDialogListener() {
                         @Override
                         public void onItemListener(int position) {
                             if (mDialogList.size() > position) {
